@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-tw64Rgv4K3hwrgA8q1ekQeMnCHHUimqBUhb4fewMSTw=' 'sha256-F6VvqTmKVVmhcygICT2ER9uF+qAVE2V2jkNx8oaG3/g='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-tw64Rgv4K3hwrgA8q1ekQeMnCHHUimqBUhb4fewMSTw=' 'sha256-am8qqxxmo7ZYZVEsWGrOwcmxvB5SMyL05KG+UKlkIh8='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -1329,7 +1329,7 @@ function onBuilderType(inp, side){
   box.classList.add('show');
 }
 function pickBuilderSuggest(name, side){ addToBuilder(name, side); const inp=document.getElementById(side==='give'?'giveInput':'getInput'); const box=document.getElementById(side==='give'?'giveSuggest':'getSuggest'); inp.value=''; box.classList.remove('show'); box.innerHTML=''; inp.focus(); }
-document.addEventListener('click', e=>{ if(!e.target.closest('#giveInput') && !e.target.closest('#giveSuggest')){ const b=document.getElementById('giveSuggest'); if(b) b.classList.remove('show'); } if(!e.target.closest('#getInput') && !e.target.closest('#getSuggest')){ const b=document.getElementById('getSuggest'); if(b) b.classList.remove('show'); } });
+document.addEventListener('click', e=>{ if(!e.target.closest('#giveInput') && !e.target.closest('#giveSuggest')){ const b=document.getElementById('giveSuggest'); if(b) b.classList.remove('show'); } if(!e.target.closest('#getInput') && !e.target.closest('#getSuggest')){ const b=document.getElementById('getSuggest'); if(b) b.classList.remove('show'); } document.querySelectorAll('.data-menu').forEach(m=>{ if(m.open && !m.contains(e.target)) m.open=false; }); });
 function onDragStart(e, playerName, team){ e.dataTransfer.setData('text/plain', JSON.stringify({playerName,team})); e.dataTransfer.effectAllowed='copy' }
 function onDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over') }
 function onDragLeave(e){ e.currentTarget.classList.remove('drag-over') }
