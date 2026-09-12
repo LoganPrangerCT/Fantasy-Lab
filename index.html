@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-tw64Rgv4K3hwrgA8q1ekQeMnCHHUimqBUhb4fewMSTw=' 'sha256-dRGXoHfbKbxzewJ3iD9f/vjug4aeW6GDtbIzYE4rkok='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-tw64Rgv4K3hwrgA8q1ekQeMnCHHUimqBUhb4fewMSTw=' 'sha256-0Hgew/ziUsP806tJO8gKiUgss0XGD+PyiebSmqFZaVo='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -2037,7 +2037,7 @@ function renderTeamsDetail(){
     const ro=rosters[name]; const {total,starters,bench}=starterScore(ro);
     return `<div class="detail-team"><h4>${safeHTML(name)}${name===myTeam?' — YOU':''} <span class="kbd">${total.toFixed(0)}</span></h4>
     <div class="starter-line">${starters.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')}</div>
-    <div class="small" style="margin-top:8px">Bench: ${bench.slice(0,8).map(p=>safeHTML(p.player_name)).join(' · ')}</div>
+    <div class="starter-line" style="margin-top:8px">${bench.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')||'<span class="small">No bench</span>'}</div>
     <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-sm" onclick="viewTargetsTeam('${encodeURIComponent(name).replace(/'/g,'%27')}')">View targets</button><button class="btn btn-sm btn-ghost" onclick="switchToTeam('${encodeURIComponent(name).replace(/'/g,'%27')}')">Switch</button></div>
     </div>`
   }).join('')}
