@@ -254,6 +254,7 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 
 
 <button aria-label="Open saved trades" class="btn btn-icon" onclick="toggleFavs()">Saved <span class="kbd" id="favCount">0</span></button>
+<details class="data-menu" id="leagueMenu"><summary onclick="renderLeagueLibrary()">Leagues <span class="kbd" id="leagueCount">0</span> <span>⌄</span></summary><div class="data-menu-body" id="leagueLibraryBody" style="width:250px"><div class="data-section"><span class="data-section-title">Saved leagues</span><div id="leagueLibraryList"></div></div><div class="data-section"><button class="btn btn-icon" onclick="document.getElementById('leagueMenu').open=false;openLeagueUpload()" title="Upload another league JSON"><span aria-hidden="true">↑</span><span class="desktop-label">Upload another league</span></button></div></div></details>
 <details class="data-menu"><summary>Data <span>⌄</span></summary><div class="data-menu-body" id="dataMenuBody"><div class="data-section"><span class="data-section-title">League file</span><button class="btn btn-icon" onclick="openLeagueUpload()" title="Upload league JSON"><span aria-hidden="true">↑</span><span class="desktop-label">Upload league</span></button></div><div class="data-section"><span class="data-section-title">Rankings</span><button class="btn" onclick="document.getElementById('csvUpload').click()">Upload rankings CSV</button></div><div class="data-section"><span class="data-section-title">Sleeper league</span><input aria-label="Sleeper league ID" class="sleeper-input" id="sleeperLeagueId" inputmode="numeric" placeholder="Sleeper league ID"/><button class="btn sleeper-load-btn" id="sleeperLoadBtn" onclick="loadSleeperLeague()">Load Sleeper ID</button><span class="small" id="sleeperLoadStatus"></span></div><div class="data-section"><span class="data-section-title">Values</span><button class="btn btn-icon" onclick="resetValues()" title="Reset personal values"><span class="desktop-label">Reset values</span><span class="mobile-label">Reset</span></button></div><div class="data-section"><span class="data-section-title">Saved in this browser</span><span class="small" id="persistStatus">Nothing stored yet</span><button class="btn btn-ghost btn-sm" onclick="clearSavedLabData()">Clear saved data</button></div></div></details></div>
 </div>
 <span aria-hidden="true" id="liveIndicator" style="display:none"></span>
@@ -585,11 +586,66 @@ function persistLeagueSnapshot(){
   try{
     localStorage.setItem('fantasyLab.league',JSON.stringify({kind:leagueSource.kind,leagueId:leagueSource.leagueId||'',savedAt:Date.now(),data:LEAGUE_DATA}));
   }catch(e){}
+  upsertLibraryEntry();
   renderPersistStatus();
+}
+const LEAGUE_LIBRARY_KEY='fantasyLab.leagues';
+const LEAGUE_LIBRARY_MAX=10;
+let __libOrder=[];
+function getLeagueLibrary(){ try{ const raw=localStorage.getItem(LEAGUE_LIBRARY_KEY); const lib=raw?JSON.parse(raw):{}; return (lib&&typeof lib==='object'&&!Array.isArray(lib))?lib:{}; }catch(e){ return {}; } }
+function saveLeagueLibrary(lib){ try{ localStorage.setItem(LEAGUE_LIBRARY_KEY,JSON.stringify(lib)); }catch(e){} renderLeagueLibrary(); }
+function libraryKeyFor(kind,leagueId,data){ const name=(!Array.isArray(data)&&data&&data.league)||'League'; return kind+':'+(leagueId||String(name)); }
+function libraryLabel(entry){ if(entry.kind==='sleeper') return 'Sleeper '+((entry.leagueId||'')||'league'); if(entry.kind==='upload') return 'Uploaded league'; return 'Embedded league'; }
+function upsertLibraryEntry(){
+  if(!leagueTeams().length) return;
+  const lib=getLeagueLibrary();
+  const key=libraryKeyFor(leagueSource.kind,leagueSource.leagueId,LEAGUE_DATA);
+  lib[key]={kind:leagueSource.kind,leagueId:leagueSource.leagueId||'',savedAt:Date.now(),name:(!Array.isArray(LEAGUE_DATA)&&LEAGUE_DATA.league)||'League',teams:leagueTeams().length,data:LEAGUE_DATA};
+  const oldest=Object.keys(lib).sort((a,b)=>((lib[a]||{}).savedAt||0)-(((lib[b]||{}).savedAt||0)));
+  while(oldest.length>LEAGUE_LIBRARY_MAX){ const drop=oldest.shift(); if(drop!==key) delete lib[drop]; else break; }
+  saveLeagueLibrary(lib);
+}
+function importActiveToLibrary(){
+  if(!leagueTeams().length) return;
+  const lib=getLeagueLibrary();
+  if(!lib[libraryKeyFor(leagueSource.kind,leagueSource.leagueId,LEAGUE_DATA)]) upsertLibraryEntry();
+}
+function switchLibraryIndex(i){
+  const key=__libOrder[i]; const entry=getLeagueLibrary()[key];
+  if(!entry||!entry.data){ toast('Saved league not found'); return; }
+  try{
+    const source=entry.kind==='sleeper'
+      ? {kind:'sleeper',leagueId:entry.leagueId||'',label:'Sleeper '+(((entry.leagueId||'')||'saved'))}
+      : {kind:'upload',label:'Uploaded league (saved)'};
+    const count=setLeagueData(entry.data,source);
+    const menu=document.getElementById('leagueMenu'); if(menu) menu.open=false;
+    toast('Switched to '+(entry.name||'league')+' · '+count+' teams');
+  }catch(err){ console.error('League switch failed',err); toast('Switch failed: '+err.message); }
+}
+function removeLibraryIndex(i,ev){
+  if(ev&&ev.stopPropagation) ev.stopPropagation();
+  const key=__libOrder[i]; const lib=getLeagueLibrary();
+  delete lib[key]; saveLeagueLibrary(); renderPersistStatus();
+  toast('Removed from saved leagues — current session unchanged');
+}
+function renderLeagueLibrary(){
+  const lib=getLeagueLibrary();
+  __libOrder=Object.keys(lib).sort((a,b)=>(((lib[b]||{}).savedAt||0))-(((lib[a]||{}).savedAt||0)));
+  const badge=document.getElementById('leagueCount');
+  if(badge) badge.textContent=__libOrder.length;
+  const box=document.getElementById('leagueLibraryList');
+  if(!box) return;
+  if(!__libOrder.length){ box.innerHTML='<div class="small" style="padding:6px 2px">No saved leagues yet — upload one and it will appear here.</div>'; return; }
+  const activeKey=leagueTeams().length?libraryKeyFor(leagueSource.kind,leagueSource.leagueId,LEAGUE_DATA):'';
+  box.innerHTML=__libOrder.map((k,i)=>{
+    const e=lib[k]||{}; const isActive=k===activeKey;
+    const when=e.savedAt?new Date(e.savedAt).toLocaleDateString():'';
+    return '<div class="data-section" style="padding:6px 0"><button class="btn" onclick="switchLibraryIndex('+i+')" title="Switch to this league" style="'+(isActive?'border-color:var(--accent);':'')+'"><span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+safeHTML(e.name||'League')+(isActive?' ✓':'')+'</span></button><div class="small">'+safeHTML(libraryLabel(e))+' · '+(e.teams||0)+' teams'+(when?' · '+when:'')+' <a href="#" onclick="removeLibraryIndex('+i+',event);return false" style="float:right">remove</a></div></div>';
+  }).join('');
 }
 function clearSavedLabData(){
   if(__persistTimer){clearTimeout(__persistTimer);__persistTimer=null;}
-  try{ ['fantasyLab.league','fantasyLab.sleeperLeague','fantasyLab.values','fantasyLab.sleeperId','sleeperLeagueId','fantasyLab.welcomed'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  try{ ['fantasyLab.league','fantasyLab.sleeperLeague','fantasyLab.values','fantasyLab.sleeperId','sleeperLeagueId','fantasyLab.welcomed','fantasyLab.leagues'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
   const box=document.getElementById('sleeperLeagueId'); if(box) box.value='';
   renderPersistStatus();
   toast('Browser-saved lab data cleared — current session unchanged');
@@ -612,6 +668,7 @@ function renderPersistStatus(){
     if(parts.length) saved='Reopens with '+parts.join(' + ');
   }catch(e){ saved='Storage unavailable'; }
   el.textContent='Now: '+now.join(' · ')+' — '+saved;
+  renderLeagueLibrary();
 }
 // Session-only per-position value-curve multipliers (Values tab sliders). Reset on reload.
 let curveMult={QB:1,RB:1,WR:1,TE:1}, curveTimer=null
@@ -1529,6 +1586,7 @@ applyLeagueFormat(); buildRankings(); buildRosters()
 syncTeamSelects(); markLeagueSource();
 document.getElementById('myTeamSel').addEventListener('change',e=>{ myTeam=e.target.value; giveSet.clear(); buildRosters(); syncTeamSelects(); renderAll(); generate() })
 restoreLeagueSnapshot();
+importActiveToLibrary();
 maybeShowWelcome();
 renderPersistStatus();
 document.getElementById('fairRange').addEventListener('input', e=>{ fairnessFloor=Number(e.target.value); document.getElementById('fairVal').textContent=e.target.value+'%'; })
@@ -1774,7 +1832,7 @@ async function loadSleeperLeague(opts={}){
     renderAll(); generate();
     rememberSleeperId(lid); cacheSleeperLeague(); persistLeagueSnapshot();
     if(!keepSession) clearValueState();
-    const menu=document.querySelector('.data-menu'); if(menu) menu.open=false;
+    const menu=document.querySelectorAll('.data-menu'); menu.forEach(m=>{ if(m) m.open=false; });
     say('');
     const msg=`Sleeper: ${teams.length} teams · ${matched}/${total} skill matched · ${formatShort()}${skippedUnknown?` · ${skippedUnknown} unknown IDs skipped`:''}`;
     if(matched===0) toast('Sleeper loaded, but no players matched the rankings — check the rankings CSV');
@@ -1995,7 +2053,7 @@ document.getElementById('oppSel').addEventListener('change',e=>{selectedTeam=e.t
 document.getElementById('fairRange').addEventListener('change',()=>queueGenerate());
 document.getElementById('tab-builder').addEventListener('dragenter',e=>{if(e.dataTransfer?.types.includes('text/plain')){e.preventDefault();setDock('builder');}});
 document.getElementById('tab-builder').addEventListener('dragover',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLeagueUpload();dismissWelcome();document.getElementById('favDrawer').classList.remove('show');document.querySelector('.data-menu').open=false;}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLeagueUpload();dismissWelcome();document.getElementById('favDrawer').classList.remove('show');document.querySelectorAll('.data-menu').forEach(m=>m.open=false);}});
 document.querySelector('.dock-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const tabs=[...document.querySelectorAll('[data-dock]')],i=tabs.indexOf(document.activeElement);if(i<0)return;e.preventDefault();const next=tabs[(i+(e.key==='ArrowRight'?1:2))%3];next.click();next.focus();});
 for(const id of ['expandOverlay','leagueUploadOverlay','welcomeOverlay']){
   const overlay=document.getElementById(id);let lastFocus=null;
