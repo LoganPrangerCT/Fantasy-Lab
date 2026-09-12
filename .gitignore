@@ -1,0 +1,7 @@
+# Only the generated app and live rankings belong in the Pages repository.
+*
+!.gitignore
+!index.html
+!data/
+!data/rankings/
+!data/rankings/REDRAFT-rankings.csv
