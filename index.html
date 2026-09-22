@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-tw64Rgv4K3hwrgA8q1ekQeMnCHHUimqBUhb4fewMSTw=' 'sha256-CqFHyR17Nxw7RvHBvOyhVFafmix5DOLWdZ8B67usHiw='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-/iUt34jjCrJjiY1teyvIkDGMiId6oLtp2VJrk0zitGA=' 'sha256-WU6crJjgW0yjqJob1cIIOMjeKwH9ZimOjTsFqt4+jUA='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -259,6 +259,48 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 .welcome-status{padding:8px 26px 0;font-size:11px;color:var(--warn);min-height:18px}
 .welcome-foot{display:flex;justify-content:flex-end;padding:10px 26px 20px}
 @media(max-width:560px){.welcome-grid{grid-template-columns:1fr}}
+
+/* Trade builder dock: spacing as structure (4/8/12/16/24 steps).
+   Small gaps inside components, larger gaps between sections. */
+.builder-shell{display:flex;flex-direction:column;gap:16px;padding:16px 16px 20px}
+.builder-searches{margin-bottom:0}
+.builder-finder{display:flex;flex-direction:column;gap:10px;padding:12px;background:linear-gradient(145deg,#101d2b,#0d1824);border:1px solid #30475e;border-radius:7px}
+.builder-finder-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.builder-finder-head p{font-size:9px;line-height:1.45;color:var(--text3);margin:4px 0 0}.builder-finder-head .kbd{white-space:nowrap;color:var(--accent)}
+.builder-finder-positions{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.builder-finder-positions .pill{padding:7px 4px;font-size:9px;text-align:center}.builder-finder-positions .pill.active{background:#244541;border-color:#4b8076;color:#9cebdc}
+.builder-finder-actions{display:grid;grid-template-columns:minmax(88px,.8fr) 1.2fr;gap:7px;align-items:end}.builder-finder-actions label>span{display:block;margin-bottom:5px;font:8px 'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--text3)}.builder-finder-actions .select{height:34px;font-size:9px}.builder-finder-actions .btn{height:34px;justify-content:center;font-size:9px;padding:7px}
+.builder-finder-status{min-height:28px;padding-top:2px;line-height:1.45}.builder-finder-status b{color:var(--text2)}.builder-finder-status span{color:#91a9c4}
+.builder-match-options{display:flex;flex-direction:column;gap:5px;max-height:265px;overflow:auto;padding-right:2px}.builder-match-options[hidden]{display:none}.builder-match-option{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:9px 10px;text-align:left;background:#101b29;border:1px solid #2c4055;border-radius:5px;color:var(--text2);cursor:pointer}.builder-match-option:hover{background:#17283a;border-color:#45627e}.builder-match-option.active{background:#17302f;border-color:#4b8076;box-shadow:inset 2px 0 #79decb}.builder-match-option>span{display:flex;flex-direction:column;gap:3px;min-width:0}.builder-match-option>span:first-child{flex:1}.builder-match-option>span:last-child{text-align:right;flex-shrink:0}.builder-match-option b{font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.builder-match-option small{font:8px 'JetBrains Mono',monospace;color:var(--text3)}
+.builder{margin-bottom:0}
+.builder-actions{margin-top:0}
+#builderMetrics{margin-top:0}
+.dropzone{padding:12px;gap:8px;min-height:0}
+.dropzone h4{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#giveList,#getList{display:flex;flex-direction:column;gap:6px;min-width:0}
+.builder-chip{margin:0;display:flex;align-items:center;gap:8px;width:100%;min-width:0;padding:7px 8px}
+.builder-chip .chip-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.builder-chip .chip-val{color:var(--text3);flex-shrink:0}
+.builder-chip .chip-x{border:1px solid var(--border2);background:var(--surface);color:var(--text2);border-radius:8px;width:24px;height:24px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;line-height:1}
+.builder-chip .chip-x:hover{background:var(--surface3);color:var(--text)}
+.trade-impact-head{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:4px 0 12px}
+.trade-impact-head>b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.trade-impact-head .fair-label{display:block;text-align:center}
+.share-bar{position:relative;height:30px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;overflow:hidden;display:flex;margin-bottom:8px}
+.share-give,.share-get{display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;white-space:nowrap;overflow:hidden;min-width:0}
+.share-give{background:linear-gradient(90deg,#7c3aed,#3b82f6)}
+.share-get{background:linear-gradient(90deg,#10b981,#06b6d4)}
+.share-mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--text);opacity:.9;transform:translateX(-50%);pointer-events:none}
+.share-summary{display:flex;flex-direction:column;gap:2px;margin:0 2px 4px;font-size:10px;color:var(--text3);font-weight:700}
+.builder-shell .impact-grid{gap:12px;margin-top:4px}
+.builder-shell .impact-card{padding:12px}
+.builder-shell .impact-row{padding:8px 0}
+.builder-shell .impact-row .impact-delta{margin-left:auto;padding-left:12px;white-space:nowrap;flex-shrink:0}
+.pos-impact-card{margin-top:4px}
+.pos-impact-grid{display:grid;gap:8px;grid-template-columns:repeat(2,1fr)}
+.expand-body .pos-impact-grid{grid-template-columns:repeat(4,1fr)}
+.pos-impact-cell{display:flex;flex-direction:column;gap:4px;padding:10px 8px;text-align:center;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-size:10px;min-width:0}
+.pos-impact-cell>b{font-size:10px}
+.pos-impact-cell .impact-delta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pos-impact-cell .pct{opacity:.6}
 </style>
 </head>
 <body><a class="skip-link" href="#terminalMain">Skip to trades</a><div id="appScene"><div id="headerMount"><header class="app-header">
@@ -282,9 +324,9 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 <span aria-hidden="true" id="liveIndicator" style="display:none"></span>
 </header></div><main id="terminalMain"><div aria-live="polite" class="terminal-summary" id="terminalSummary"></div><div class="trading-workspace" id="tradingWorkspace"><div id="resultsMount"><section aria-labelledby="resultsTitle" class="results-stage" id="tradesPanel"><div class="toolbar"><h2>Trade results <span id="resultCount">0</span></h2>
 <div class="search"><svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input aria-label="Search trades" id="tradeSearch" maxlength="64" oninput="renderTrades()" placeholder="Search player or team"/><button aria-label="Clear trade search" class="icon-btn" onclick="clearSearch('tradeSearch',renderTrades)" style="position:absolute;right:5px;top:5px;width:24px;height:24px">×</button></div>
-<select aria-label="Sort trades" class="select" id="sortSel" onchange="renderTrades()"><option value="score">Sort: Best score</option><option value="relevance">Sort: Relevance</option><option value="starter">Sort: My starter Δ</option><option value="value">Sort: Value win</option><option value="fair">Sort: Fairness</option></select>
+<select aria-label="Sort trades" class="select" id="sortSel" onchange="renderTrades()"><option value="score">Sort: Best fits</option><option value="relevance">Sort: Relevance</option><option value="starter">Sort: My starter Δ</option><option value="value">Sort: Value win</option><option value="fair">Sort: Fairness</option></select>
 
-<button aria-expanded="true" class="btn btn-sm" id="filterToggle" onclick="toggleFilterPanel()">Filters <span aria-hidden="true">≡</span></button><button class="btn btn-primary" id="generateButton" onclick="generate()"><span aria-hidden="true">ϟ</span> Generate trades</button></div><div class="filters-block"><label class="partner-field control-label">PARTNER<select aria-label="Opponent filter" class="select" id="oppSel"><option value="ALL">All opponents</option></select></label><label class="partner-field control-label">PACKAGE<select aria-label="Trade package size" class="select" id="sizeSel" onchange="generate()"><option value="2-2">Up to 2 ↔ 2</option><option value="1-1">1 for 1</option><option value="2-1">2 for 1</option><option value="1-2">1 for 2</option></select></label><div class="filter-row"><span class="filter-name">You send</span><div id="givePosPills" style="display:flex;gap:4px;flex-wrap:wrap"></div></div><div class="filter-row"><span class="filter-name">You receive</span><div id="wantPosPills" style="display:flex;gap:4px;flex-wrap:wrap"></div></div><div class="filter-row fairness-row"><b class="filter-name">Value floor</b><span class="kbd" id="fairVal">50%</span><input aria-label="Fairness floor" class="range" id="fairRange" max="70" min="40" oninput="onFairChange(this.value)" type="range" value="50"/></div><button class="btn btn-ghost btn-sm" onclick="clearAllFilters()" aria-label="Reset filters" title="Reset filters">↺</button></div><div class="strategy-strip"><span class="control-label">STRATEGY</span><div class="arch-pills" id="archPills"></div></div>
+<button aria-expanded="true" class="btn btn-sm" id="filterToggle" onclick="toggleFilterPanel()">Filters <span aria-hidden="true">≡</span></button><button class="btn btn-primary" id="generateButton" onclick="generate()"><span aria-hidden="true">ϟ</span> Generate trades</button></div><div class="filters-block"><label class="partner-field control-label">PARTNER<select aria-label="Opponent filter" class="select" id="oppSel"><option value="ALL">All opponents</option></select></label><label class="partner-field control-label">PACKAGE<select aria-label="Trade package size" class="select" id="sizeSel" onchange="generate()"><option value="2-2">Up to 2 ↔ 2</option><option value="1-1">1 for 1</option><option value="2-1">2 for 1</option><option value="1-2">1 for 2</option><option value="3-2">3 for 2</option><option value="2-3">2 for 3</option></select></label><div class="filter-row"><span class="filter-name">You send</span><div id="givePosPills" style="display:flex;gap:4px;flex-wrap:wrap"></div></div><div class="filter-row"><span class="filter-name">You receive</span><div id="wantPosPills" style="display:flex;gap:4px;flex-wrap:wrap"></div></div><div class="filter-row fairness-row"><b class="filter-name">Value balance</b><span class="kbd" id="fairVal">80%</span><input aria-label="Minimum value balance: smaller package divided by larger" title="Smaller package / larger package. 100% means equal value." class="range" id="fairRange" max="100" min="70" oninput="onFairChange(this.value)" type="range" value="80"/></div><button class="btn btn-ghost btn-sm" onclick="clearAllFilters()" aria-label="Reset filters" title="Reset filters">↺</button></div><div class="strategy-strip"><span class="control-label">STRATEGY</span><div class="arch-pills" id="archPills"></div></div>
 
 
 
@@ -295,7 +337,7 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 <div class="trade-grid" id="tradeGrid"></div>
 <div id="tradesExpandHint" onclick="event.stopPropagation(); toggleTradesExpand()" style="display:none;padding:10px 14px;text-align:center"></div>
 <div id="tradeEmpty" style="padding:30px;text-align:center;color:var(--text3);display:none">
-<div style="font-size:16px;font-weight:900">No trades match your filters</div><div class="small" style="margin-top:6px">Loosen fairness, change archetype, or clear targets/Give selections.</div>
+<div style="font-size:16px;font-weight:900">No trades match your filters</div><div class="small" style="margin-top:6px">Try another package size or clear player filters. Each strategy checks roster fit and its own tradeoffs. Consolidation needs two useful mid/high players for a higher tier player. Exploit offers deliberately favor you.</div>
 <button class="btn btn-primary" onclick="clearAllFilters()" style="margin-top:12px">Reset filters</button>
 </div>
 </section></div><aside aria-label="Trade tools" class="inspector"><div aria-label="Trade tools" class="dock-tabs" role="tablist"><button aria-controls="dock-roster" aria-selected="true" class="active" data-dock="roster" id="tab-roster" onclick="setDock('roster')" role="tab">Roster</button><button aria-controls="dock-targets" aria-selected="false" data-dock="targets" id="tab-targets" onclick="setDock('targets')" role="tab">Targets</button><button aria-controls="dock-builder" aria-selected="false" data-dock="builder" id="tab-builder" onclick="setDock('builder')" role="tab">Builder <span id="builderCount">0</span></button></div><div id="dockMount"><aside aria-label="Trade refinement" aria-labelledby="tab-roster" class="dock-panel" id="dock-roster" role="tabpanel">
@@ -315,6 +357,15 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 <div style="position:relative"><input aria-label="Players to send" autocomplete="off" class="search" id="giveInput" maxlength="64" onfocus="onBuilderType(this,'give')" oninput="onBuilderType(this,'give')" placeholder="Type to add — your players" style="width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px"/><div class="suggest-box" id="giveSuggest"></div></div>
 <div style="position:relative"><input aria-label="Players to receive" autocomplete="off" class="search" id="getInput" maxlength="64" onfocus="onBuilderType(this,'get')" oninput="onBuilderType(this,'get')" placeholder="Type to add — any player" style="width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px"/><div class="suggest-box" id="getSuggest"></div></div>
 </div>
+<section class="builder-finder" aria-labelledby="builderFinderTitle">
+<div class="builder-finder-head"><div><span class="control-label" id="builderFinderTitle">AUTO-FILL RETURN</span><p>Choose what you need and the Lab will build a fair return from one opponent.</p></div><span class="kbd" id="builderShape">0 for 1</span></div>
+<div class="builder-finder-positions" aria-label="Position wanted" role="group">
+<button class="pill active" data-builder-pos="ANY" onclick="setBuilderReturnPos('ANY')" aria-pressed="true">ANY</button><button class="pill" data-builder-pos="QB" onclick="setBuilderReturnPos('QB')" aria-pressed="false">QB</button><button class="pill" data-builder-pos="RB" onclick="setBuilderReturnPos('RB')" aria-pressed="false">RB</button><button class="pill" data-builder-pos="WR" onclick="setBuilderReturnPos('WR')" aria-pressed="false">WR</button><button class="pill" data-builder-pos="TE" onclick="setBuilderReturnPos('TE')" aria-pressed="false">TE</button>
+</div>
+<div class="builder-finder-actions"><label><span>PLAYERS BACK</span><select class="select" id="builderReturnCount" onchange="setBuilderReturnCount(this.value)" aria-label="Number of players to receive"><option value="1">1 player</option><option value="2">2 players</option><option value="3">3 players</option></select></label><button class="btn btn-primary" id="builderFindButton" onclick="findBuilderReturns()">Find my return</button></div>
+<div class="builder-finder-status small" id="builderFinderStatus" aria-live="polite">Add the players you want to send, then find a return.</div>
+<div class="builder-match-options" id="builderMatchOptions" hidden></div>
+</section>
 <div class="builder">
 <div class="dropzone" id="giveZone" ondragleave="onDragLeave(event)" ondragover="onDragOver(event)" ondrop="onDrop(event,'give')"><h4>You give <span class="kbd" id="giveVal">0</span></h4><div id="giveList"></div><div class="empty" id="giveEmpty">Type or drag players here</div></div>
 <div class="dropzone" id="getZone" ondragleave="onDragLeave(event)" ondragover="onDragOver(event)" ondrop="onDrop(event,'get')"><h4>You get <span class="kbd" id="getVal">0</span></h4><div id="getList"></div><div class="empty" id="getEmpty">Type or drag opponents here</div></div>
@@ -373,9 +424,39 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 </div>
 <script>
 let LEAGUE_DATA = {"league": "Upload a league to begin", "format": {}, "teams": []};
-let RANKINGS = [{"name": "Jahmyr Gibbs", "team": "DET", "pos": "RB", "rank": 1}, {"name": "Bijan Robinson", "team": "ATL", "pos": "RB", "rank": 2}, {"name": "Ja'Marr Chase", "team": "CIN", "pos": "WR", "rank": 3}, {"name": "Puka Nacua", "team": "LAR", "pos": "WR", "rank": 4}, {"name": "Christian McCaffrey", "team": "SF", "pos": "RB", "rank": 5}, {"name": "Amon-Ra St. Brown", "team": "DET", "pos": "WR", "rank": 6}, {"name": "Jaxon Smith-Njigba", "team": "SEA", "pos": "WR", "rank": 7}, {"name": "Jonathan Taylor", "team": "IND", "pos": "RB", "rank": 8}, {"name": "CeeDee Lamb", "team": "DAL", "pos": "WR", "rank": 9}, {"name": "James Cook", "team": "BUF", "pos": "RB", "rank": 10}, {"name": "Justin Jefferson", "team": "MIN", "pos": "WR", "rank": 11}, {"name": "Chase Brown", "team": "CIN", "pos": "RB", "rank": 12}, {"name": "Devon Achane", "team": "MIA", "pos": "RB", "rank": 13}, {"name": "Omarion Hampton", "team": "LAC", "pos": "RB", "rank": 14}, {"name": "Saquon Barkley", "team": "PHI", "pos": "RB", "rank": 15}, {"name": "Kenneth Walker", "team": "KC", "pos": "RB", "rank": 16}, {"name": "Ashton Jeanty", "team": "LV", "pos": "RB", "rank": 17}, {"name": "Drake London", "team": "ATL", "pos": "WR", "rank": 18}, {"name": "Derrick Henry", "team": "BAL", "pos": "RB", "rank": 19}, {"name": "Malik Nabers", "team": "NYG", "pos": "WR", "rank": 20}, {"name": "George Pickens", "team": "DAL", "pos": "WR", "rank": 21}, {"name": "Nico Collins", "team": "HOU", "pos": "WR", "rank": 22}, {"name": "Rashee Rice", "team": "KC", "pos": "WR", "rank": 23}, {"name": "Chris Olave", "team": "NO", "pos": "WR", "rank": 24}, {"name": "Trey McBride", "team": "ARI", "pos": "TE", "rank": 25}, {"name": "DeVonta Smith", "team": "PHI", "pos": "WR", "rank": 26}, {"name": "Jeremiyah Love", "team": "ARI", "pos": "RB", "rank": 27}, {"name": "Breece Hall", "team": "NYJ", "pos": "RB", "rank": 28}, {"name": "Kyren Williams", "team": "LAR", "pos": "RB", "rank": 29}, {"name": "Javonte Williams", "team": "DAL", "pos": "RB", "rank": 30}, {"name": "Brock Bowers", "team": "LV", "pos": "TE", "rank": 31}, {"name": "Zay Flowers", "team": "BAL", "pos": "WR", "rank": 32}, {"name": "Tee Higgins", "team": "CIN", "pos": "WR", "rank": 33}, {"name": "Jaylen Waddle", "team": "DEN", "pos": "WR", "rank": 34}, {"name": "Ladd McConkey", "team": "LAC", "pos": "WR", "rank": 35}, {"name": "Emeka Egbuka", "team": "TB", "pos": "WR", "rank": 36}, {"name": "Josh Allen", "team": "BUF", "pos": "QB", "rank": 37}, {"name": "Garrett Wilson", "team": "NYJ", "pos": "WR", "rank": 38}, {"name": "Travis Etienne", "team": "NO", "pos": "RB", "rank": 39}, {"name": "Colston Loveland", "team": "CHI", "pos": "TE", "rank": 40}, {"name": "Tetairoa McMillan", "team": "CAR", "pos": "WR", "rank": 41}, {"name": "Bucky Irving", "team": "TB", "pos": "RB", "rank": 42}, {"name": "D'Andre Swift", "team": "CHI", "pos": "RB", "rank": 43}, {"name": "Cam Skattebo", "team": "NYG", "pos": "RB", "rank": 44}, {"name": "Luther Burden", "team": "CHI", "pos": "WR", "rank": 45}, {"name": "Quinshon Judkins", "team": "CLE", "pos": "RB", "rank": 46}, {"name": "David Montgomery", "team": "HOU", "pos": "RB", "rank": 47}, {"name": "Bhayshul Tuten", "team": "JAX", "pos": "RB", "rank": 48}, {"name": "Jameson Williams", "team": "DET", "pos": "WR", "rank": 49}, {"name": "Davante Adams", "team": "LAR", "pos": "WR", "rank": 50}, {"name": "Jadarian Price", "team": "SEA", "pos": "RB", "rank": 51}, {"name": "Terry McLaurin", "team": "WAS", "pos": "WR", "rank": 52}, {"name": "Rome Odunze", "team": "CHI", "pos": "WR", "rank": 53}, {"name": "Lamar Jackson", "team": "BAL", "pos": "QB", "rank": 54}, {"name": "Mike Evans", "team": "SF", "pos": "WR", "rank": 55}, {"name": "A.J. Brown", "team": "NE", "pos": "WR", "rank": 56}, {"name": "Christian Watson", "team": "GB", "pos": "WR", "rank": 57}, {"name": "Tyler Warren", "team": "IND", "pos": "TE", "rank": 58}, {"name": "Carnell Tate", "team": "TEN", "pos": "WR", "rank": 59}, {"name": "DJ Moore", "team": "BUF", "pos": "WR", "rank": 60}, {"name": "Brian Thomas", "team": "JAX", "pos": "WR", "rank": 61}, {"name": "Jaylen Warren", "team": "PIT", "pos": "RB", "rank": 62}, {"name": "Rhamondre Stevenson", "team": "NE", "pos": "RB", "rank": 63}, {"name": "Parker Washington", "team": "JAX", "pos": "WR", "rank": 64}, {"name": "Marvin Harrison", "team": "ARI", "pos": "WR", "rank": 65}, {"name": "TreVeyon Henderson", "team": "NE", "pos": "RB", "rank": 66}, {"name": "Joe Burrow", "team": "CIN", "pos": "QB", "rank": 67}, {"name": "Jayden Daniels", "team": "WAS", "pos": "QB", "rank": 68}, {"name": "Chris Godwin", "team": "TB", "pos": "WR", "rank": 69}, {"name": "Jonathon Brooks", "team": "CAR", "pos": "RB", "rank": 70}, {"name": "Caleb Williams", "team": "CHI", "pos": "QB", "rank": 71}, {"name": "Drake Maye", "team": "NE", "pos": "QB", "rank": 72}, {"name": "Tucker Kraft", "team": "GB", "pos": "TE", "rank": 73}, {"name": "Tony Pollard", "team": "TEN", "pos": "RB", "rank": 74}, {"name": "Jalen Hurts", "team": "PHI", "pos": "QB", "rank": 75}, {"name": "Michael Pittman", "team": "PIT", "pos": "WR", "rank": 76}, {"name": "Jordan Addison", "team": "MIN", "pos": "WR", "rank": 77}, {"name": "Makai Lemon", "team": "PHI", "pos": "WR", "rank": 78}, {"name": "Quentin Johnston", "team": "LAC", "pos": "WR", "rank": 79}, {"name": "MarShawn Lloyd", "team": "GB", "pos": "RB", "rank": 80}, {"name": "DK Metcalf", "team": "PIT", "pos": "WR", "rank": 81}, {"name": "Rico Dowdle", "team": "PIT", "pos": "RB", "rank": 82}, {"name": "Sam LaPorta", "team": "DET", "pos": "TE", "rank": 83}, {"name": "J.K. Dobbins", "team": "DEN", "pos": "RB", "rank": 84}, {"name": "RJ Harvey", "team": "DEN", "pos": "RB", "rank": 85}, {"name": "Trevor Lawrence", "team": "JAX", "pos": "QB", "rank": 86}, {"name": "Stefon Diggs", "team": "WAS", "pos": "WR", "rank": 87}, {"name": "Courtland Sutton", "team": "DEN", "pos": "WR", "rank": 88}, {"name": "Chuba Hubbard", "team": "CAR", "pos": "RB", "rank": 89}, {"name": "Michael Wilson", "team": "ARI", "pos": "WR", "rank": 90}, {"name": "Justin Herbert", "team": "LAC", "pos": "QB", "rank": 91}, {"name": "Jordan Mason", "team": "MIN", "pos": "RB", "rank": 92}, {"name": "Alec Pierce", "team": "IND", "pos": "WR", "rank": 93}, {"name": "Kyle Pitts", "team": "ATL", "pos": "TE", "rank": 94}, {"name": "Jacory Croskey-Merritt", "team": "WAS", "pos": "RB", "rank": 95}, {"name": "Harold Fannin", "team": "CLE", "pos": "TE", "rank": 96}, {"name": "Dak Prescott", "team": "DAL", "pos": "QB", "rank": 97}, {"name": "George Kittle", "team": "SF", "pos": "TE", "rank": 98}, {"name": "Blake Corum", "team": "LAR", "pos": "RB", "rank": 99}, {"name": "Josh Downs", "team": "IND", "pos": "WR", "rank": 100}, {"name": "KC Concepcion", "team": "CLE", "pos": "WR", "rank": 101}, {"name": "Wan'Dale Robinson", "team": "TEN", "pos": "WR", "rank": 102}, {"name": "Rachaad White", "team": "WAS", "pos": "RB", "rank": 103}, {"name": "Matthew Golden", "team": "GB", "pos": "WR", "rank": 104}, {"name": "Deebo Samuel", "team": "SF", "pos": "WR", "rank": 105}, {"name": "Brock Purdy", "team": "SF", "pos": "QB", "rank": 106}, {"name": "Jayden Reed", "team": "GB", "pos": "WR", "rank": 107}, {"name": "Jordyn Tyson", "team": "NO", "pos": "WR", "rank": 108}, {"name": "Bo Nix", "team": "DEN", "pos": "QB", "rank": 109}, {"name": "Josh Jacobs", "team": "GB", "pos": "RB", "rank": 110}, {"name": "Kenneth Gainwell", "team": "TB", "pos": "RB", "rank": 111}, {"name": "Kyle Monangai", "team": "CHI", "pos": "RB", "rank": 112}, {"name": "Xavier Worthy", "team": "KC", "pos": "WR", "rank": 113}, {"name": "Jaxson Dart", "team": "NYG", "pos": "QB", "rank": 114}, {"name": "Patrick Mahomes", "team": "KC", "pos": "QB", "rank": 115}, {"name": "Jared Goff", "team": "DET", "pos": "QB", "rank": 116}, {"name": "Matthew Stafford", "team": "LAR", "pos": "QB", "rank": 117}, {"name": "Kyler Murray", "team": "MIN", "pos": "QB", "rank": 118}, {"name": "Jakobi Meyers", "team": "JAX", "pos": "WR", "rank": 119}, {"name": "Jalen Coker", "team": "CAR", "pos": "WR", "rank": 120}, {"name": "Aaron Jones", "team": "MIN", "pos": "RB", "rank": 121}, {"name": "Travis Kelce", "team": "KC", "pos": "TE", "rank": 122}, {"name": "Denzel Boston", "team": "CLE", "pos": "WR", "rank": 123}, {"name": "Romeo Doubs", "team": "NE", "pos": "WR", "rank": 124}, {"name": "Jake Ferguson", "team": "DAL", "pos": "TE", "rank": 125}, {"name": "Chris Rodriguez", "team": "JAX", "pos": "RB", "rank": 126}, {"name": "Mike Washington Jr.", "team": "LV", "pos": "RB", "rank": 127}, {"name": "Dallas Goedert", "team": "PHI", "pos": "TE", "rank": 128}, {"name": "Dalton Kincaid", "team": "BUF", "pos": "TE", "rank": 129}, {"name": "Baker Mayfield", "team": "TB", "pos": "QB", "rank": 130}, {"name": "Rashid Shaheed", "team": "SEA", "pos": "WR", "rank": 131}, {"name": "Keenan Allen", "team": "IND", "pos": "WR", "rank": 132}, {"name": "Woody Marks", "team": "HOU", "pos": "RB", "rank": 133}, {"name": "Jonah Coleman", "team": "DEN", "pos": "RB", "rank": 134}, {"name": "Isaiah Likely", "team": "NYG", "pos": "TE", "rank": 135}, {"name": "Jordan Love", "team": "GB", "pos": "QB", "rank": 136}, {"name": "Mark Andrews", "team": "BAL", "pos": "TE", "rank": 137}, {"name": "Travis Hunter", "team": "JAX", "pos": "WR", "rank": 138}, {"name": "Khalil Shakir", "team": "BUF", "pos": "WR", "rank": 139}, {"name": "De'Zhaun Stribling", "team": "SF", "pos": "WR", "rank": 140}, {"name": "Tyler Allgeier", "team": "ARI", "pos": "RB", "rank": 141}, {"name": "Malik Willis", "team": "MIA", "pos": "QB", "rank": 142}, {"name": "Tyler Shough", "team": "NO", "pos": "QB", "rank": 143}, {"name": "Juwan Johnson", "team": "NO", "pos": "TE", "rank": 144}, {"name": "Keaton Mitchell", "team": "LAC", "pos": "RB", "rank": 145}, {"name": "Tank Bigsby", "team": "PHI", "pos": "RB", "rank": 146}, {"name": "Kaelon Black", "team": "SF", "pos": "RB", "rank": 147}, {"name": "Brenton Strange", "team": "JAX", "pos": "TE", "rank": 148}, {"name": "Jalen McMillan", "team": "TB", "pos": "WR", "rank": 149}, {"name": "Ja'Kobi Lane", "team": "BAL", "pos": "WR", "rank": 150}, {"name": "Tre Tucker", "team": "LV", "pos": "WR", "rank": 151}, {"name": "Chig Okonkwo", "team": "WAS", "pos": "TE", "rank": 152}, {"name": "Omar Cooper Jr.", "team": "NYJ", "pos": "WR", "rank": 153}, {"name": "C.J. Stroud", "team": "HOU", "pos": "QB", "rank": 154}, {"name": "Emmett Johnson", "team": "KC", "pos": "RB", "rank": 155}, {"name": "Kayshon Boutte", "team": "HOU", "pos": "WR", "rank": 156}, {"name": "Daniel Jones", "team": "IND", "pos": "QB", "rank": 157}, {"name": "Hunter Henry", "team": "NE", "pos": "TE", "rank": 158}, {"name": "Brian Robinson", "team": "ATL", "pos": "RB", "rank": 159}, {"name": "Cam Ward", "team": "TEN", "pos": "QB", "rank": 160}, {"name": "Dalton Schultz", "team": "HOU", "pos": "TE", "rank": 161}, {"name": "Dylan Sampson", "team": "CLE", "pos": "RB", "rank": 162}, {"name": "Tyjae Spears", "team": "TEN", "pos": "RB", "rank": 163}, {"name": "Bryce Young", "team": "CAR", "pos": "QB", "rank": 164}, {"name": "T.J. Hockenson", "team": "MIN", "pos": "TE", "rank": 165}, {"name": "Kaleb Johnson", "team": "GB", "pos": "RB", "rank": 166}, {"name": "Kenyon Sadiq", "team": "NYJ", "pos": "TE", "rank": 167}, {"name": "Tre Harris", "team": "LAC", "pos": "WR", "rank": 168}, {"name": "Caleb Douglas", "team": "MIA", "pos": "WR", "rank": 169}, {"name": "Chris Brooks", "team": "GB", "pos": "RB", "rank": 170}, {"name": "Roschon Johnson", "team": "CHI", "pos": "RB", "rank": 171}, {"name": "Isiah Pacheco", "team": "DET", "pos": "RB", "rank": 172}, {"name": "Terrance Ferguson", "team": "LAR", "pos": "TE", "rank": 173}, {"name": "Zach Charbonnet", "team": "SEA", "pos": "RB", "rank": 174}, {"name": "AJ Barner", "team": "SEA", "pos": "TE", "rank": 175}, {"name": "Jalen Nailor", "team": "LV", "pos": "WR", "rank": 176}, {"name": "Oronde Gadsden", "team": "LAC", "pos": "TE", "rank": 177}, {"name": "Darnell Mooney", "team": "NYG", "pos": "WR", "rank": 178}, {"name": "Sam Darnold", "team": "SEA", "pos": "QB", "rank": 179}, {"name": "Najee Harris", "team": "NYG", "pos": "RB", "rank": 180}, {"name": "Alvin Kamara", "team": "NO", "pos": "RB", "rank": 181}, {"name": "Tyrone Tracy", "team": "NYG", "pos": "RB", "rank": 182}, {"name": "Nicholas Singleton", "team": "TEN", "pos": "RB", "rank": 183}, {"name": "Aaron Rodgers", "team": "PIT", "pos": "QB", "rank": 184}, {"name": "Malik Washington", "team": "MIA", "pos": "WR", "rank": 185}, {"name": "Antonio Williams", "team": "WAS", "pos": "WR", "rank": 186}, {"name": "Chris Bell", "team": "MIA", "pos": "WR", "rank": 187}, {"name": "Ryan Flournoy", "team": "DAL", "pos": "WR", "rank": 188}, {"name": "Kaytron Allen", "team": "WAS", "pos": "RB", "rank": 189}, {"name": "Braelon Allen", "team": "NYJ", "pos": "RB", "rank": 190}, {"name": "Cyrus Allen", "team": "KC", "pos": "WR", "rank": 191}, {"name": "Ray Davis", "team": "BUF", "pos": "RB", "rank": 192}, {"name": "Tank Dell", "team": "HOU", "pos": "WR", "rank": 193}, {"name": "Calvin Ridley", "team": "TEN", "pos": "WR", "rank": 194}, {"name": "Devin Singletary", "team": "NYG", "pos": "RB", "rank": 195}, {"name": "Sean Tucker", "team": "TB", "pos": "RB", "rank": 196}, {"name": "Germie Bernard", "team": "PIT", "pos": "WR", "rank": 197}, {"name": "Gunnar Helm", "team": "TEN", "pos": "TE", "rank": 198}, {"name": "Jacoby Brissett", "team": "ARI", "pos": "QB", "rank": 199}, {"name": "Jerry Jeudy", "team": "CLE", "pos": "WR", "rank": 200}, {"name": "Zachariah Branch", "team": "ATL", "pos": "WR", "rank": 201}, {"name": "Kimani Vidal", "team": "LAC", "pos": "RB", "rank": 202}, {"name": "Isaac TeSlaa", "team": "DET", "pos": "WR", "rank": 203}, {"name": "Mack Hollins", "team": "NE", "pos": "WR", "rank": 204}, {"name": "Malachi Fields", "team": "NYG", "pos": "WR", "rank": 205}, {"name": "Adonai Mitchell", "team": "NYJ", "pos": "WR", "rank": 206}, {"name": "David Njoku", "team": "LAC", "pos": "TE", "rank": 207}, {"name": "Jauan Jennings", "team": "MIN", "pos": "WR", "rank": 208}, {"name": "Greg Dulcich", "team": "MIA", "pos": "TE", "rank": 209}, {"name": "Pat Freiermuth", "team": "PIT", "pos": "TE", "rank": 210}, {"name": "Demond Claiborne", "team": "MIN", "pos": "RB", "rank": 211}, {"name": "Geno Smith", "team": "NYJ", "pos": "QB", "rank": 212}, {"name": "Troy Franklin", "team": "DEN", "pos": "WR", "rank": 213}, {"name": "Cade Otton", "team": "TB", "pos": "TE", "rank": 214}, {"name": "Pat Bryant", "team": "DEN", "pos": "WR", "rank": 215}, {"name": "Michael Mayer", "team": "LV", "pos": "TE", "rank": 216}, {"name": "Elijah Sarratt", "team": "BAL", "pos": "WR", "rank": 217}, {"name": "Dontayvion Wicks", "team": "PHI", "pos": "WR", "rank": 218}, {"name": "Brashard Smith", "team": "KC", "pos": "RB", "rank": 219}, {"name": "Elic Ayomanor", "team": "TEN", "pos": "WR", "rank": 220}, {"name": "Ted Hurst", "team": "TB", "pos": "WR", "rank": 221}, {"name": "Ollie Gordon II", "team": "MIA", "pos": "RB", "rank": 222}, {"name": "Calvin Austin", "team": "NYG", "pos": "WR", "rank": 223}, {"name": "Devaughn Vele", "team": "NO", "pos": "WR", "rank": 224}, {"name": "Luke McCaffrey", "team": "WAS", "pos": "WR", "rank": 225}, {"name": "Fernando Mendoza", "team": "LV", "pos": "QB", "rank": 226}, {"name": "Eli Stowers", "team": "PHI", "pos": "TE", "rank": 227}, {"name": "Keon Coleman", "team": "BUF", "pos": "WR", "rank": 228}, {"name": "Chimere Dike", "team": "TEN", "pos": "WR", "rank": 229}, {"name": "Jaylin Noel", "team": "HOU", "pos": "WR", "rank": 230}, {"name": "Samaje Perine", "team": "CIN", "pos": "RB", "rank": 231}, {"name": "James Conner", "team": "ARI", "pos": "RB", "rank": 232}, {"name": "Charlie Kolar", "team": "LAC", "pos": "TE", "rank": 233}, {"name": "Jordan James", "team": "SF", "pos": "RB", "rank": 234}, {"name": "Drew Lock", "team": "SEA", "pos": "QB", "rank": 235}, {"name": "Seth McGowan", "team": "IND", "pos": "RB", "rank": 236}, {"name": "Jack Bech", "team": "LV", "pos": "WR", "rank": 237}, {"name": "Cooper Kupp", "team": "SEA", "pos": "WR", "rank": 238}, {"name": "Tez Johnson", "team": "TB", "pos": "WR", "rank": 239}, {"name": "Christian Kirk", "team": "SF", "pos": "WR", "rank": 240}, {"name": "George Holani", "team": "SEA", "pos": "RB", "rank": 241}, {"name": "Bryce Lance", "team": "NO", "pos": "WR", "rank": 242}, {"name": "Kendre Miller", "team": "NO", "pos": "RB", "rank": 243}, {"name": "Jaydon Blue", "team": "PHI", "pos": "RB", "rank": 244}, {"name": "Kyle Williams", "team": "", "pos": "WR", "rank": 245}, {"name": "Tyquan Thornton", "team": "KC", "pos": "WR", "rank": 246}, {"name": "Adam Randall", "team": "BAL", "pos": "RB", "rank": 247}, {"name": "Cedric Tillman", "team": "NO", "pos": "WR", "rank": 248}, {"name": "Tory Horton", "team": "SEA", "pos": "WR", "rank": 249}, {"name": "Skyler Bell", "team": "BUF", "pos": "WR", "rank": 250}, {"name": "Max Klare", "team": "LAR", "pos": "TE", "rank": 251}, {"name": "Justice Hill", "team": "BAL", "pos": "RB", "rank": 252}, {"name": "Tua Tagovailoa", "team": "ATL", "pos": "QB", "rank": 253}, {"name": "Ty Johnson", "team": "BUF", "pos": "RB", "rank": 254}, {"name": "Eli Raridon", "team": "NE", "pos": "TE", "rank": 255}, {"name": "Isaiah Davis", "team": "NYJ", "pos": "RB", "rank": 256}, {"name": "Isaac Guerendo", "team": "SF", "pos": "RB", "rank": 257}, {"name": "Andrei Iosivas", "team": "CIN", "pos": "WR", "rank": 258}, {"name": "Mike Gesicki", "team": "CIN", "pos": "TE", "rank": 259}, {"name": "Emari Demercado", "team": "DAL", "pos": "RB", "rank": 260}, {"name": "Rashod Bateman", "team": "BAL", "pos": "WR", "rank": 261}, {"name": "DJ Giddens", "team": "IND", "pos": "RB", "rank": 262}, {"name": "Michael Penix", "team": "ATL", "pos": "QB", "rank": 263}, {"name": "Evan Engram", "team": "DEN", "pos": "TE", "rank": 264}, {"name": "Xavier Legette", "team": "CAR", "pos": "WR", "rank": 265}, {"name": "Kirk Cousins", "team": "LV", "pos": "QB", "rank": 266}, {"name": "Hollywood Brown", "team": "PHI", "pos": "WR", "rank": 267}, {"name": "Brandon Aiyuk", "team": "SF", "pos": "WR", "rank": 268}, {"name": "Colby Parkinson", "team": "LAR", "pos": "TE", "rank": 269}, {"name": "Deshaun Watson", "team": "CLE", "pos": "QB", "rank": 270}, {"name": "Shedeur Sanders", "team": "CLE", "pos": "QB", "rank": 271}, {"name": "Jaylen Wright", "team": "MIA", "pos": "RB", "rank": 272}, {"name": "DeMario Douglas", "team": "NE", "pos": "WR", "rank": 273}, {"name": "Darius Slayton", "team": "", "pos": "WR", "rank": 274}, {"name": "Devin Neal", "team": "", "pos": "RB", "rank": 275}, {"name": "Emanuel Wilson", "team": "SEA", "pos": "RB", "rank": 276}, {"name": "Konata Mumpfield", "team": "LAR", "pos": "WR", "rank": 277}, {"name": "Trey Benson", "team": "ARI", "pos": "RB", "rank": 278}, {"name": "Darnell Washington", "team": "PIT", "pos": "TE", "rank": 279}, {"name": "Carson Beck", "team": "ARI", "pos": "QB", "rank": 280}, {"name": "Darren Waller", "team": "CAR", "pos": "TE", "rank": 281}, {"name": "Jake Tonges", "team": "SF", "pos": "TE", "rank": 282}, {"name": "Tyreek Hill", "team": "", "pos": "WR", "rank": 283}, {"name": "Theo Johnson", "team": "NYG", "pos": "TE", "rank": 284}, {"name": "LeQuint Allen", "team": "JAX", "pos": "RB", "rank": 285}, {"name": "Mason Taylor", "team": "NYJ", "pos": "TE", "rank": 286}, {"name": "Anthony Richardson", "team": "IND", "pos": "QB", "rank": 287}, {"name": "Olamide Zaccheaus", "team": "ATL", "pos": "WR", "rank": 288}, {"name": "Cooper Rush", "team": "ATL", "pos": "QB", "rank": 289}, {"name": "J.J. McCarthy", "team": "MIN", "pos": "QB", "rank": 290}, {"name": "Mac Jones", "team": "SF", "pos": "QB", "rank": 291}, {"name": "Jaylin Lane", "team": "WAS", "pos": "WR", "rank": 292}, {"name": "Joshua Palmer", "team": "BUF", "pos": "WR", "rank": 293}, {"name": "Justin Fields", "team": "KC", "pos": "QB", "rank": 294}, {"name": "Trevor Etienne", "team": "CAR", "pos": "RB", "rank": 295}, {"name": "Elijah Arroyo", "team": "SEA", "pos": "TE", "rank": 296}, {"name": "Dawson Knox", "team": "BUF", "pos": "TE", "rank": 297}, {"name": "Cole Kmet", "team": "CHI", "pos": "TE", "rank": 298}, {"name": "Oscar Delp", "team": "NO", "pos": "TE", "rank": 299}, {"name": "Dont'e Thornton Jr.", "team": "LV", "pos": "WR", "rank": 300}, {"name": "Isaiah Bond", "team": "CLE", "pos": "WR", "rank": 301}, {"name": "Jarquez Hunter", "team": "MIA", "pos": "RB", "rank": 302}, {"name": "Ja'Tavion Sanders", "team": "CAR", "pos": "TE", "rank": 303}, {"name": "Zavion Thomas", "team": "CHI", "pos": "WR", "rank": 304}, {"name": "Treylon Burks", "team": "WAS", "pos": "WR", "rank": 305}, {"name": "Noah Gray", "team": "KC", "pos": "TE", "rank": 306}, {"name": "Jalen Tolbert", "team": "MIA", "pos": "WR", "rank": 307}, {"name": "Marvin Mims", "team": "DEN", "pos": "WR", "rank": 308}, {"name": "Justin Joly", "team": "MIA", "pos": "TE", "rank": 309}, {"name": "Kyle Williams", "team": "NE", "pos": "WR", "rank": 310}, {"name": "Jerome Ford", "team": "", "pos": "RB", "rank": 311}, {"name": "Tahj Brooks", "team": "CIN", "pos": "RB", "rank": 312}, {"name": "Noah Fant", "team": "NO", "pos": "TE", "rank": 313}, {"name": "Jahan Dotson", "team": "ATL", "pos": "WR", "rank": 314}, {"name": "Jaleel McLaughlin", "team": "CLE", "pos": "RB", "rank": 315}, {"name": "Drew Allar", "team": "PIT", "pos": "QB", "rank": 316}, {"name": "Demarcus Robinson", "team": "SF", "pos": "WR", "rank": 317}, {"name": "Audric Estime", "team": "NO", "pos": "RB", "rank": 318}, {"name": "Luke Musgrave", "team": "GB", "pos": "TE", "rank": 319}, {"name": "Will Shipley", "team": "PHI", "pos": "RB", "rank": 320}, {"name": "Cade Klubnik", "team": "NYJ", "pos": "QB", "rank": 321}, {"name": "Tutu Atwell", "team": "LAR", "pos": "WR", "rank": 322}, {"name": "Kendrick Bourne", "team": "ARI", "pos": "WR", "rank": 323}, {"name": "Kareem Hunt", "team": "", "pos": "RB", "rank": 324}, {"name": "Ty Simpson", "team": "LAR", "pos": "QB", "rank": 325}, {"name": "Tyler Higbee", "team": "LAR", "pos": "TE", "rank": 326}, {"name": "Jameis Winston", "team": "NYG", "pos": "QB", "rank": 327}, {"name": "Marcus Mariota", "team": "WAS", "pos": "QB", "rank": 328}, {"name": "Jordan Whittington", "team": "LAR", "pos": "WR", "rank": 329}, {"name": "Luke Schoonmaker", "team": "DAL", "pos": "TE", "rank": 330}, {"name": "Eli Heidenreich", "team": "PIT", "pos": "RB", "rank": 331}, {"name": "Brenen Thompson", "team": "LAC", "pos": "WR", "rank": 332}, {"name": "Jawhar Jordan", "team": "HOU", "pos": "RB", "rank": 333}, {"name": "Savion Williams", "team": "GB", "pos": "WR", "rank": 334}, {"name": "Xavier Hutchinson", "team": "HOU", "pos": "WR", "rank": 335}, {"name": "Kevin Coleman Jr.", "team": "MIA", "pos": "WR", "rank": 336}, {"name": "KaVontae Turpin", "team": "DAL", "pos": "WR", "rank": 337}, {"name": "Kalif Raymond", "team": "CHI", "pos": "WR", "rank": 338}, {"name": "Nick Westbrook-Ikhine", "team": "IND", "pos": "WR", "rank": 339}, {"name": "Ashton Dulin", "team": "IND", "pos": "WR", "rank": 340}, {"name": "Joe Flacco", "team": "CIN", "pos": "QB", "rank": 341}, {"name": "Devontez Walker", "team": "BAL", "pos": "WR", "rank": 342}, {"name": "Dameon Pierce", "team": "PHI", "pos": "RB", "rank": 343}, {"name": "Roman Wilson", "team": "PIT", "pos": "WR", "rank": 344}, {"name": "Dyami Brown", "team": "WAS", "pos": "WR", "rank": 345}, {"name": "Greg Dortch", "team": "BUF", "pos": "WR", "rank": 346}, {"name": "Theo Wease Jr.", "team": "LAC", "pos": "WR", "rank": 347}, {"name": "Mo Alie-Cox", "team": "IND", "pos": "TE", "rank": 348}, {"name": "Riley Leonard", "team": "IND", "pos": "QB", "rank": 349}, {"name": "DeAndre Hopkins", "team": "", "pos": "WR", "rank": 350}, {"name": "Taysom Hill", "team": "", "pos": "TE", "rank": 351}, {"name": "Gardner Minshew", "team": "ARI", "pos": "QB", "rank": 352}, {"name": "JuJu Smith-Schuster", "team": "", "pos": "WR", "rank": 353}, {"name": "Zonovan Knight", "team": "ARI", "pos": "RB", "rank": 354}, {"name": "Raheim Sanders", "team": "CLE", "pos": "RB", "rank": 355}, {"name": "Tyrod Taylor", "team": "GB", "pos": "QB", "rank": 356}];
+let RANKINGS = [{"name": "Jahmyr Gibbs", "team": "DET", "pos": "RB", "rank": 1, "tier": "S"}, {"name": "Bijan Robinson", "team": "ATL", "pos": "RB", "rank": 2, "tier": "S"}, {"name": "Ja'Marr Chase", "team": "CIN", "pos": "WR", "rank": 3, "tier": "S"}, {"name": "Puka Nacua", "team": "LAR", "pos": "WR", "rank": 4, "tier": "A"}, {"name": "Amon-Ra St. Brown", "team": "DET", "pos": "WR", "rank": 5, "tier": "A"}, {"name": "Jaxon Smith-Njigba", "team": "SEA", "pos": "WR", "rank": 6, "tier": "A"}, {"name": "Christian McCaffrey", "team": "SF", "pos": "RB", "rank": 7, "tier": "A"}, {"name": "Jonathan Taylor", "team": "IND", "pos": "RB", "rank": 8, "tier": "A"}, {"name": "Kenneth Walker", "team": "KC", "pos": "RB", "rank": 9, "tier": "B"}, {"name": "Justin Jefferson", "team": "MIN", "pos": "WR", "rank": 10, "tier": "B"}, {"name": "James Cook", "team": "BUF", "pos": "RB", "rank": 11, "tier": "B"}, {"name": "CeeDee Lamb", "team": "DAL", "pos": "WR", "rank": 12, "tier": "B"}, {"name": "Ashton Jeanty", "team": "LV", "pos": "RB", "rank": 13, "tier": "B"}, {"name": "Chase Brown", "team": "CIN", "pos": "RB", "rank": 14, "tier": "B"}, {"name": "Derrick Henry", "team": "BAL", "pos": "RB", "rank": 15, "tier": "B"}, {"name": "Saquon Barkley", "team": "PHI", "pos": "RB", "rank": 16, "tier": "B"}, {"name": "Omarion Hampton", "team": "LAC", "pos": "RB", "rank": 17, "tier": "C"}, {"name": "Devon Achane", "team": "MIA", "pos": "RB", "rank": 18, "tier": "C"}, {"name": "Malik Nabers", "team": "NYG", "pos": "WR", "rank": 19, "tier": "C"}, {"name": "Chris Olave", "team": "NO", "pos": "WR", "rank": 20, "tier": "C"}, {"name": "Nico Collins", "team": "HOU", "pos": "WR", "rank": 21, "tier": "C"}, {"name": "Drake London", "team": "ATL", "pos": "WR", "rank": 22, "tier": "C"}, {"name": "George Pickens", "team": "DAL", "pos": "WR", "rank": 23, "tier": "C"}, {"name": "Trey McBride", "team": "ARI", "pos": "TE", "rank": 24, "tier": "C"}, {"name": "Jeremiyah Love", "team": "ARI", "pos": "RB", "rank": 25, "tier": "C"}, {"name": "Breece Hall", "team": "NYJ", "pos": "RB", "rank": 26, "tier": "D"}, {"name": "Zay Flowers", "team": "BAL", "pos": "WR", "rank": 27, "tier": "D"}, {"name": "Brock Bowers", "team": "LV", "pos": "TE", "rank": 28, "tier": "D"}, {"name": "Rashee Rice", "team": "KC", "pos": "WR", "rank": 29, "tier": "D"}, {"name": "Josh Allen", "team": "BUF", "pos": "QB", "rank": 30, "tier": "D"}, {"name": "Javonte Williams", "team": "DAL", "pos": "RB", "rank": 31, "tier": "D"}, {"name": "DeVonta Smith", "team": "PHI", "pos": "WR", "rank": 32, "tier": "D"}, {"name": "Ladd McConkey", "team": "LAC", "pos": "WR", "rank": 33, "tier": "D"}, {"name": "Kyren Williams", "team": "LAR", "pos": "RB", "rank": 34, "tier": "D"}, {"name": "Tee Higgins", "team": "CIN", "pos": "WR", "rank": 35, "tier": "D"}, {"name": "D'Andre Swift", "team": "CHI", "pos": "RB", "rank": 36, "tier": "E"}, {"name": "Bucky Irving", "team": "TB", "pos": "RB", "rank": 37, "tier": "E"}, {"name": "Garrett Wilson", "team": "NYJ", "pos": "WR", "rank": 38, "tier": "E"}, {"name": "Jaylen Waddle", "team": "DEN", "pos": "WR", "rank": 39, "tier": "E"}, {"name": "Emeka Egbuka", "team": "TB", "pos": "WR", "rank": 40, "tier": "E"}, {"name": "Christian Watson", "team": "GB", "pos": "WR", "rank": 41, "tier": "E"}, {"name": "David Montgomery", "team": "HOU", "pos": "RB", "rank": 42, "tier": "E"}, {"name": "Cam Skattebo", "team": "NYG", "pos": "RB", "rank": 43, "tier": "E"}, {"name": "Tetairoa McMillan", "team": "CAR", "pos": "WR", "rank": 44, "tier": "E"}, {"name": "Travis Etienne", "team": "NO", "pos": "RB", "rank": 45, "tier": "E"}, {"name": "Bhayshul Tuten", "team": "JAX", "pos": "RB", "rank": 46, "tier": "E"}, {"name": "Mike Evans", "team": "SF", "pos": "WR", "rank": 47, "tier": "E"}, {"name": "Jameson Williams", "team": "DET", "pos": "WR", "rank": 48, "tier": "E"}, {"name": "Luther Burden", "team": "CHI", "pos": "WR", "rank": 49, "tier": "E"}, {"name": "Parker Washington", "team": "JAX", "pos": "WR", "rank": 50, "tier": "F"}, {"name": "Lamar Jackson", "team": "BAL", "pos": "QB", "rank": 51, "tier": "F"}, {"name": "DJ Moore", "team": "BUF", "pos": "WR", "rank": 52, "tier": "F"}, {"name": "Davante Adams", "team": "LAR", "pos": "WR", "rank": 53, "tier": "F"}, {"name": "Quinshon Judkins", "team": "CLE", "pos": "RB", "rank": 54, "tier": "F"}, {"name": "Jadarian Price", "team": "SEA", "pos": "RB", "rank": 55, "tier": "F"}, {"name": "Rome Odunze", "team": "CHI", "pos": "WR", "rank": 56, "tier": "F"}, {"name": "Terry McLaurin", "team": "WAS", "pos": "WR", "rank": 57, "tier": "F"}, {"name": "Rhamondre Stevenson", "team": "NE", "pos": "RB", "rank": 58, "tier": "F"}, {"name": "A.J. Brown", "team": "NE", "pos": "WR", "rank": 59, "tier": "F"}, {"name": "Jaylen Warren", "team": "PIT", "pos": "RB", "rank": 60, "tier": "F"}, {"name": "Chuba Hubbard", "team": "CAR", "pos": "RB", "rank": 61, "tier": "F"}, {"name": "Colston Loveland", "team": "CHI", "pos": "TE", "rank": 62, "tier": "F"}, {"name": "Dalton Kincaid", "team": "BUF", "pos": "TE", "rank": 63, "tier": "F"}, {"name": "TreVeyon Henderson", "team": "NE", "pos": "RB", "rank": 64, "tier": "F"}, {"name": "Caleb Williams", "team": "CHI", "pos": "QB", "rank": 65, "tier": "G"}, {"name": "Carnell Tate", "team": "TEN", "pos": "WR", "rank": 66, "tier": "G"}, {"name": "Tyler Warren", "team": "IND", "pos": "TE", "rank": 67, "tier": "G"}, {"name": "Joe Burrow", "team": "CIN", "pos": "QB", "rank": 68, "tier": "G"}, {"name": "Brian Thomas", "team": "JAX", "pos": "WR", "rank": 69, "tier": "G"}, {"name": "Chris Godwin", "team": "TB", "pos": "WR", "rank": 70, "tier": "G"}, {"name": "Jayden Daniels", "team": "WAS", "pos": "QB", "rank": 71, "tier": "G"}, {"name": "Marvin Harrison", "team": "ARI", "pos": "WR", "rank": 72, "tier": "G"}, {"name": "Stefon Diggs", "team": "WAS", "pos": "WR", "rank": 73, "tier": "G"}, {"name": "Tucker Kraft", "team": "GB", "pos": "TE", "rank": 74, "tier": "G"}, {"name": "Jalen Hurts", "team": "PHI", "pos": "QB", "rank": 75, "tier": "G"}, {"name": "Matthew Golden", "team": "GB", "pos": "WR", "rank": 76, "tier": "G"}, {"name": "Trevor Lawrence", "team": "JAX", "pos": "QB", "rank": 77, "tier": "G"}, {"name": "Sam LaPorta", "team": "DET", "pos": "TE", "rank": 78, "tier": "G"}, {"name": "Jacory Croskey-Merritt", "team": "WAS", "pos": "RB", "rank": 79, "tier": "H"}, {"name": "DK Metcalf", "team": "PIT", "pos": "WR", "rank": 80, "tier": "H"}, {"name": "Drake Maye", "team": "NE", "pos": "QB", "rank": 81, "tier": "H"}, {"name": "Quentin Johnston", "team": "LAC", "pos": "WR", "rank": 82, "tier": "H"}, {"name": "Deebo Samuel", "team": "SF", "pos": "WR", "rank": 83, "tier": "H"}, {"name": "Michael Pittman", "team": "PIT", "pos": "WR", "rank": 84, "tier": "H"}, {"name": "Michael Wilson", "team": "ARI", "pos": "WR", "rank": 85, "tier": "H"}, {"name": "RJ Harvey", "team": "DEN", "pos": "RB", "rank": 86, "tier": "H"}, {"name": "Jordan Addison", "team": "MIN", "pos": "WR", "rank": 87, "tier": "H"}, {"name": "Rico Dowdle", "team": "PIT", "pos": "RB", "rank": 88, "tier": "H"}, {"name": "Blake Corum", "team": "LAR", "pos": "RB", "rank": 89, "tier": "H"}, {"name": "J.K. Dobbins", "team": "DEN", "pos": "RB", "rank": 90, "tier": "H"}, {"name": "Jalen Coker", "team": "CAR", "pos": "WR", "rank": 91, "tier": "H"}, {"name": "Kyle Monangai", "team": "CHI", "pos": "RB", "rank": 92, "tier": "H"}, {"name": "Alec Pierce", "team": "IND", "pos": "WR", "rank": 93, "tier": "H"}, {"name": "Jonathon Brooks", "team": "CAR", "pos": "RB", "rank": 94, "tier": "H"}, {"name": "Tony Pollard", "team": "TEN", "pos": "RB", "rank": 95, "tier": "H"}, {"name": "Dak Prescott", "team": "DAL", "pos": "QB", "rank": 96, "tier": "H"}, {"name": "Justin Herbert", "team": "LAC", "pos": "QB", "rank": 97, "tier": "H"}, {"name": "Makai Lemon", "team": "PHI", "pos": "WR", "rank": 98, "tier": "H"}, {"name": "George Kittle", "team": "SF", "pos": "TE", "rank": 99, "tier": "H"}, {"name": "MarShawn Lloyd", "team": "GB", "pos": "RB", "rank": 100, "tier": "H"}, {"name": "Brock Purdy", "team": "SF", "pos": "QB", "rank": 101, "tier": "H"}, {"name": "Aaron Jones", "team": "MIN", "pos": "RB", "rank": 102, "tier": "H"}, {"name": "Jaxson Dart", "team": "NYG", "pos": "QB", "rank": 103, "tier": "H"}, {"name": "Isaiah Likely", "team": "NYG", "pos": "TE", "rank": 104, "tier": "H"}, {"name": "Josh Downs", "team": "IND", "pos": "WR", "rank": 105, "tier": "H"}, {"name": "Rachaad White", "team": "WAS", "pos": "RB", "rank": 106, "tier": "H"}, {"name": "Courtland Sutton", "team": "DEN", "pos": "WR", "rank": 107, "tier": "H"}, {"name": "Jordan Mason", "team": "MIN", "pos": "RB", "rank": 108, "tier": "H"}, {"name": "KC Concepcion", "team": "CLE", "pos": "WR", "rank": 109, "tier": "H"}, {"name": "Josh Jacobs", "team": "GB", "pos": "RB", "rank": 110, "tier": "H"}, {"name": "Wan'Dale Robinson", "team": "TEN", "pos": "WR", "rank": 111, "tier": "I"}, {"name": "Patrick Mahomes", "team": "KC", "pos": "QB", "rank": 112, "tier": "I"}, {"name": "Xavier Worthy", "team": "KC", "pos": "WR", "rank": 113, "tier": "I"}, {"name": "Jayden Reed", "team": "GB", "pos": "WR", "rank": 114, "tier": "I"}, {"name": "Harold Fannin", "team": "CLE", "pos": "TE", "rank": 115, "tier": "I"}, {"name": "Kenneth Gainwell", "team": "TB", "pos": "RB", "rank": 116, "tier": "I"}, {"name": "Jared Goff", "team": "DET", "pos": "QB", "rank": 117, "tier": "I"}, {"name": "Dallas Goedert", "team": "PHI", "pos": "TE", "rank": 118, "tier": "I"}, {"name": "Jordyn Tyson", "team": "NO", "pos": "WR", "rank": 119, "tier": "I"}, {"name": "Bo Nix", "team": "DEN", "pos": "QB", "rank": 120, "tier": "J"}, {"name": "Kyle Pitts", "team": "ATL", "pos": "TE", "rank": 121, "tier": "J"}, {"name": "Kaelon Black", "team": "SF", "pos": "RB", "rank": 122, "tier": "J"}, {"name": "Travis Kelce", "team": "KC", "pos": "TE", "rank": 123, "tier": "J"}, {"name": "Matthew Stafford", "team": "LAR", "pos": "QB", "rank": 124, "tier": "J"}, {"name": "Jakobi Meyers", "team": "JAX", "pos": "WR", "rank": 125, "tier": "J"}, {"name": "Chris Rodriguez", "team": "JAX", "pos": "RB", "rank": 126, "tier": "J"}, {"name": "Denzel Boston", "team": "CLE", "pos": "WR", "rank": 127, "tier": "J"}, {"name": "Khalil Shakir", "team": "BUF", "pos": "WR", "rank": 128, "tier": "J"}, {"name": "Tyler Allgeier", "team": "ARI", "pos": "RB", "rank": 129, "tier": "J"}, {"name": "Woody Marks", "team": "HOU", "pos": "RB", "rank": 130, "tier": "J"}, {"name": "Tyler Shough", "team": "NO", "pos": "QB", "rank": 131, "tier": "J"}, {"name": "Keenan Allen", "team": "IND", "pos": "WR", "rank": 132, "tier": "J"}, {"name": "Romeo Doubs", "team": "NE", "pos": "WR", "rank": 133, "tier": "J"}, {"name": "Caleb Douglas", "team": "MIA", "pos": "WR", "rank": 134, "tier": "J"}, {"name": "Jordan Love", "team": "GB", "pos": "QB", "rank": 135, "tier": "K"}, {"name": "Baker Mayfield", "team": "TB", "pos": "QB", "rank": 136, "tier": "K"}, {"name": "Mike Washington Jr.", "team": "LV", "pos": "RB", "rank": 137, "tier": "K"}, {"name": "Juwan Johnson", "team": "NO", "pos": "TE", "rank": 138, "tier": "K"}, {"name": "Jonah Coleman", "team": "DEN", "pos": "RB", "rank": 139, "tier": "K"}, {"name": "Kyler Murray", "team": "MIN", "pos": "QB", "rank": 140, "tier": "K"}, {"name": "Mark Andrews", "team": "BAL", "pos": "TE", "rank": 141, "tier": "K"}, {"name": "Devin Singletary", "team": "NYG", "pos": "RB", "rank": 142, "tier": "K"}, {"name": "Rashid Shaheed", "team": "SEA", "pos": "WR", "rank": 143, "tier": "K"}, {"name": "Jake Ferguson", "team": "DAL", "pos": "TE", "rank": 144, "tier": "K"}, {"name": "Malik Willis", "team": "MIA", "pos": "QB", "rank": 145, "tier": "K"}, {"name": "Keaton Mitchell", "team": "LAC", "pos": "RB", "rank": 146, "tier": "K"}, {"name": "Emmett Johnson", "team": "KC", "pos": "RB", "rank": 147, "tier": "K"}, {"name": "Tank Bigsby", "team": "PHI", "pos": "RB", "rank": 148, "tier": "K"}, {"name": "Brenton Strange", "team": "JAX", "pos": "TE", "rank": 149, "tier": "K"}, {"name": "Dalton Schultz", "team": "HOU", "pos": "TE", "rank": 150, "tier": "K"}, {"name": "Devaughn Vele", "team": "NO", "pos": "WR", "rank": 151, "tier": "K"}, {"name": "C.J. Stroud", "team": "HOU", "pos": "QB", "rank": 152, "tier": "K"}, {"name": "Chris Brooks", "team": "GB", "pos": "RB", "rank": 153, "tier": "K"}, {"name": "Tre Tucker", "team": "LV", "pos": "WR", "rank": 154, "tier": "L"}, {"name": "Travis Hunter", "team": "JAX", "pos": "WR", "rank": 155, "tier": "L"}, {"name": "Dontayvion Wicks", "team": "PHI", "pos": "WR", "rank": 156, "tier": "L"}, {"name": "Bryce Young", "team": "CAR", "pos": "QB", "rank": 157, "tier": "L"}, {"name": "Hunter Henry", "team": "NE", "pos": "TE", "rank": 158, "tier": "L"}, {"name": "Jalen McMillan", "team": "TB", "pos": "WR", "rank": 159, "tier": "L"}, {"name": "Tyjae Spears", "team": "TEN", "pos": "RB", "rank": 160, "tier": "L"}, {"name": "Brian Robinson", "team": "ATL", "pos": "RB", "rank": 161, "tier": "L"}, {"name": "Chig Okonkwo", "team": "WAS", "pos": "TE", "rank": 162, "tier": "L"}, {"name": "Daniel Jones", "team": "IND", "pos": "QB", "rank": 163, "tier": "L"}, {"name": "T.J. Hockenson", "team": "MIN", "pos": "TE", "rank": 164, "tier": "L"}, {"name": "Kenyon Sadiq", "team": "NYJ", "pos": "TE", "rank": 165, "tier": "L"}, {"name": "Omar Cooper Jr.", "team": "NYJ", "pos": "WR", "rank": 166, "tier": "L"}, {"name": "De'Zhaun Stribling", "team": "SF", "pos": "WR", "rank": 167, "tier": "L"}, {"name": "Kendre Miller", "team": "NO", "pos": "RB", "rank": 168, "tier": "L"}, {"name": "Kayshon Boutte", "team": "HOU", "pos": "WR", "rank": 169, "tier": "L"}, {"name": "Antonio Williams", "team": "WAS", "pos": "WR", "rank": 170, "tier": "L"}, {"name": "DeeJay Dallas", "team": "MIN", "pos": "RB", "rank": 171, "tier": "L"}, {"name": "Alvin Kamara", "team": "NO", "pos": "RB", "rank": 172, "tier": "L"}, {"name": "Cam Ward", "team": "TEN", "pos": "QB", "rank": 173, "tier": "L"}, {"name": "Roschon Johnson", "team": "CHI", "pos": "RB", "rank": 174, "tier": "L"}, {"name": "Braelon Allen", "team": "NYJ", "pos": "RB", "rank": 175, "tier": "L"}, {"name": "Zach Charbonnet", "team": "SEA", "pos": "RB", "rank": 176, "tier": "L"}, {"name": "Tre Harris", "team": "LAC", "pos": "WR", "rank": 177, "tier": "L"}, {"name": "Jacoby Brissett", "team": "ARI", "pos": "QB", "rank": 178, "tier": "L"}, {"name": "AJ Barner", "team": "SEA", "pos": "TE", "rank": 179, "tier": "L"}, {"name": "Jalen Nailor", "team": "LV", "pos": "WR", "rank": 180, "tier": "L"}, {"name": "Keon Coleman", "team": "BUF", "pos": "WR", "rank": 181, "tier": "L"}, {"name": "Adonai Mitchell", "team": "NYJ", "pos": "WR", "rank": 182, "tier": "L"}, {"name": "Ja'Kobi Lane", "team": "BAL", "pos": "WR", "rank": 183, "tier": "L"}, {"name": "Chris Bell", "team": "MIA", "pos": "WR", "rank": 184, "tier": "L"}, {"name": "Aaron Rodgers", "team": "PIT", "pos": "QB", "rank": 185, "tier": "L"}, {"name": "Isiah Pacheco", "team": "DET", "pos": "RB", "rank": 186, "tier": "L"}, {"name": "Kaleb Johnson", "team": "GB", "pos": "RB", "rank": 187, "tier": "L"}, {"name": "Oronde Gadsden", "team": "LAC", "pos": "TE", "rank": 188, "tier": "L"}, {"name": "Pat Freiermuth", "team": "PIT", "pos": "TE", "rank": 189, "tier": "L"}, {"name": "Malik Washington", "team": "MIA", "pos": "WR", "rank": 190, "tier": "L"}, {"name": "Najee Harris", "team": "NYG", "pos": "RB", "rank": 191, "tier": "L"}, {"name": "Nicholas Singleton", "team": "TEN", "pos": "RB", "rank": 192, "tier": "L"}, {"name": "Ray Davis", "team": "BUF", "pos": "RB", "rank": 193, "tier": "L"}, {"name": "Kaytron Allen", "team": "WAS", "pos": "RB", "rank": 194, "tier": "L"}, {"name": "Terrance Ferguson", "team": "LAR", "pos": "TE", "rank": 195, "tier": "L"}, {"name": "Mack Hollins", "team": "NE", "pos": "WR", "rank": 196, "tier": "L"}, {"name": "Darnell Mooney", "team": "NYG", "pos": "WR", "rank": 197, "tier": "L"}, {"name": "Ryan Flournoy", "team": "DAL", "pos": "WR", "rank": 198, "tier": "L"}, {"name": "Sam Darnold", "team": "SEA", "pos": "QB", "rank": 199, "tier": "L"}, {"name": "Dylan Sampson", "team": "CLE", "pos": "RB", "rank": 200, "tier": "L"}, {"name": "Cyrus Allen", "team": "KC", "pos": "WR", "rank": 201, "tier": "L"}, {"name": "Tank Dell", "team": "HOU", "pos": "WR", "rank": 202, "tier": "L"}, {"name": "Michael Mayer", "team": "LV", "pos": "TE", "rank": 203, "tier": "L"}, {"name": "Sean Tucker", "team": "TB", "pos": "RB", "rank": 204, "tier": "L"}, {"name": "Calvin Ridley", "team": "TEN", "pos": "WR", "rank": 205, "tier": "L"}, {"name": "Malachi Fields", "team": "NYG", "pos": "WR", "rank": 206, "tier": "L"}, {"name": "Kimani Vidal", "team": "LAC", "pos": "RB", "rank": 207, "tier": "L"}, {"name": "Pat Bryant", "team": "DEN", "pos": "WR", "rank": 208, "tier": "L"}, {"name": "Gunnar Helm", "team": "TEN", "pos": "TE", "rank": 209, "tier": "L"}, {"name": "Germie Bernard", "team": "PIT", "pos": "WR", "rank": 210, "tier": "L"}, {"name": "Geno Smith", "team": "NYJ", "pos": "QB", "rank": 211, "tier": "L"}, {"name": "Jerry Jeudy", "team": "CLE", "pos": "WR", "rank": 212, "tier": "L"}, {"name": "Cade Otton", "team": "TB", "pos": "TE", "rank": 213, "tier": "L"}, {"name": "David Njoku", "team": "LAC", "pos": "TE", "rank": 214, "tier": "L"}, {"name": "Zachariah Branch", "team": "ATL", "pos": "WR", "rank": 215, "tier": "L"}, {"name": "Tyrone Tracy", "team": "NYG", "pos": "RB", "rank": 216, "tier": "L"}, {"name": "Samaje Perine", "team": "CIN", "pos": "RB", "rank": 217, "tier": "L"}, {"name": "Greg Dulcich", "team": "MIA", "pos": "TE", "rank": 218, "tier": "L"}, {"name": "Jauan Jennings", "team": "MIN", "pos": "WR", "rank": 219, "tier": "L"}, {"name": "Isaac TeSlaa", "team": "DET", "pos": "WR", "rank": 220, "tier": "L"}, {"name": "Troy Franklin", "team": "DEN", "pos": "WR", "rank": 221, "tier": "L"}, {"name": "Brashard Smith", "team": "KC", "pos": "RB", "rank": 222, "tier": "L"}, {"name": "Jack Bech", "team": "LV", "pos": "WR", "rank": 223, "tier": "L"}, {"name": "Demond Claiborne", "team": "MIN", "pos": "RB", "rank": 224, "tier": "L"}, {"name": "George Holani", "team": "SEA", "pos": "RB", "rank": 225, "tier": "L"}, {"name": "Emari Demercado", "team": "DAL", "pos": "RB", "rank": 226, "tier": "L"}, {"name": "Fernando Mendoza", "team": "LV", "pos": "QB", "rank": 227, "tier": "L"}, {"name": "Kalif Raymond", "team": "CHI", "pos": "WR", "rank": 228, "tier": "L"}, {"name": "Elic Ayomanor", "team": "TEN", "pos": "WR", "rank": 229, "tier": "L"}, {"name": "Ted Hurst", "team": "TB", "pos": "WR", "rank": 230, "tier": "L"}, {"name": "Isaac Guerendo", "team": "SF", "pos": "RB", "rank": 231, "tier": "L"}, {"name": "Elijah Sarratt", "team": "BAL", "pos": "WR", "rank": 232, "tier": "L"}, {"name": "Charlie Kolar", "team": "LAC", "pos": "TE", "rank": 233, "tier": "L"}, {"name": "Mike Gesicki", "team": "CIN", "pos": "TE", "rank": 234, "tier": "L"}, {"name": "Drew Lock", "team": "SEA", "pos": "QB", "rank": 235, "tier": "L"}, {"name": "Jaylin Noel", "team": "HOU", "pos": "WR", "rank": 236, "tier": "L"}, {"name": "Eli Raridon", "team": "NE", "pos": "TE", "rank": 237, "tier": "L"}, {"name": "Calvin Austin", "team": "NYG", "pos": "WR", "rank": 238, "tier": "L"}, {"name": "Seth McGowan", "team": "IND", "pos": "RB", "rank": 239, "tier": "L"}, {"name": "Cooper Kupp", "team": "SEA", "pos": "WR", "rank": 240, "tier": "L"}, {"name": "Jordan James", "team": "SF", "pos": "RB", "rank": 241, "tier": "L"}, {"name": "Kyle Williams", "team": "", "pos": "WR", "rank": 242, "tier": "L"}, {"name": "Eli Stowers", "team": "PHI", "pos": "TE", "rank": 243, "tier": "L"}, {"name": "Luke McCaffrey", "team": "WAS", "pos": "WR", "rank": 244, "tier": "L"}, {"name": "Christian Kirk", "team": "SF", "pos": "WR", "rank": 245, "tier": "L"}, {"name": "Ollie Gordon II", "team": "MIA", "pos": "RB", "rank": 246, "tier": "L"}, {"name": "Evan Engram", "team": "DEN", "pos": "TE", "rank": 247, "tier": "L"}, {"name": "Sione Vaki", "team": "DET", "pos": "RB", "rank": 248, "tier": "L"}, {"name": "Chimere Dike", "team": "TEN", "pos": "WR", "rank": 249, "tier": "L"}, {"name": "Justice Hill", "team": "BAL", "pos": "RB", "rank": 250, "tier": "L"}, {"name": "Jaydon Blue", "team": "PHI", "pos": "RB", "rank": 251, "tier": "L"}, {"name": "Skyler Bell", "team": "BUF", "pos": "WR", "rank": 252, "tier": "L"}, {"name": "Tez Johnson", "team": "TB", "pos": "WR", "rank": 253, "tier": "L"}, {"name": "Tua Tagovailoa", "team": "ATL", "pos": "QB", "rank": 254, "tier": "L"}, {"name": "Tory Horton", "team": "SEA", "pos": "WR", "rank": 255, "tier": "L"}, {"name": "Isaiah Davis", "team": "NYJ", "pos": "RB", "rank": 256, "tier": "L"}, {"name": "Darren Waller", "team": "CAR", "pos": "TE", "rank": 257, "tier": "L"}, {"name": "Tyquan Thornton", "team": "KC", "pos": "WR", "rank": 258, "tier": "L"}, {"name": "Adam Randall", "team": "BAL", "pos": "RB", "rank": 259, "tier": "L"}, {"name": "James Conner", "team": "ARI", "pos": "RB", "rank": 260, "tier": "L"}, {"name": "Bryce Lance", "team": "NO", "pos": "WR", "rank": 261, "tier": "L"}, {"name": "Michael Penix", "team": "ATL", "pos": "QB", "rank": 262, "tier": "L"}, {"name": "Cedric Tillman", "team": "NO", "pos": "WR", "rank": 263, "tier": "L"}, {"name": "DeMario Douglas", "team": "NE", "pos": "WR", "rank": 264, "tier": "L"}, {"name": "Kirk Cousins", "team": "LV", "pos": "QB", "rank": 265, "tier": "L"}, {"name": "Rashod Bateman", "team": "BAL", "pos": "WR", "rank": 266, "tier": "M"}, {"name": "Cole Kmet", "team": "CHI", "pos": "TE", "rank": 267, "tier": "M"}, {"name": "Ty Johnson", "team": "BUF", "pos": "RB", "rank": 268, "tier": "M"}, {"name": "Andrei Iosivas", "team": "CIN", "pos": "WR", "rank": 269, "tier": "M"}, {"name": "Demarcus Robinson", "team": "SF", "pos": "WR", "rank": 270, "tier": "M"}, {"name": "Emanuel Wilson", "team": "SEA", "pos": "RB", "rank": 271, "tier": "M"}, {"name": "Shedeur Sanders", "team": "CLE", "pos": "QB", "rank": 272, "tier": "M"}, {"name": "Deshaun Watson", "team": "CLE", "pos": "QB", "rank": 273, "tier": "M"}, {"name": "Colby Parkinson", "team": "LAR", "pos": "TE", "rank": 274, "tier": "M"}, {"name": "Joshua Palmer", "team": "BUF", "pos": "WR", "rank": 275, "tier": "M"}, {"name": "Brandon Aiyuk", "team": "SF", "pos": "WR", "rank": 276, "tier": "M"}, {"name": "Jaylen Wright", "team": "MIA", "pos": "RB", "rank": 277, "tier": "M"}, {"name": "DJ Giddens", "team": "IND", "pos": "RB", "rank": 278, "tier": "M"}, {"name": "Kendrick Bourne", "team": "ARI", "pos": "WR", "rank": 279, "tier": "M"}, {"name": "Carson Beck", "team": "ARI", "pos": "QB", "rank": 280, "tier": "M"}, {"name": "Trey Benson", "team": "ARI", "pos": "RB", "rank": 281, "tier": "M"}, {"name": "Max Klare", "team": "LAR", "pos": "TE", "rank": 282, "tier": "M"}, {"name": "Darius Slayton", "team": "", "pos": "WR", "rank": 283, "tier": "M"}, {"name": "Xavier Legette", "team": "CAR", "pos": "WR", "rank": 284, "tier": "M"}, {"name": "Tyreek Hill", "team": "", "pos": "WR", "rank": 285, "tier": "M"}, {"name": "Darnell Washington", "team": "PIT", "pos": "TE", "rank": 286, "tier": "M"}, {"name": "Anthony Richardson", "team": "IND", "pos": "QB", "rank": 287, "tier": "M"}, {"name": "LeQuint Allen", "team": "JAX", "pos": "RB", "rank": 288, "tier": "M"}, {"name": "Jake Tonges", "team": "SF", "pos": "TE", "rank": 289, "tier": "M"}, {"name": "Theo Johnson", "team": "NYG", "pos": "TE", "rank": 290, "tier": "M"}, {"name": "J.J. McCarthy", "team": "MIN", "pos": "QB", "rank": 291, "tier": "M"}, {"name": "Hollywood Brown", "team": "PHI", "pos": "WR", "rank": 292, "tier": "M"}, {"name": "Mason Taylor", "team": "NYJ", "pos": "TE", "rank": 293, "tier": "M"}, {"name": "Carson Wentz", "team": "MIN", "pos": "QB", "rank": 294, "tier": "M"}, {"name": "Mac Jones", "team": "SF", "pos": "QB", "rank": 295, "tier": "M"}, {"name": "Konata Mumpfield", "team": "LAR", "pos": "WR", "rank": 296, "tier": "M"}, {"name": "Olamide Zaccheaus", "team": "ATL", "pos": "WR", "rank": 297, "tier": "M"}, {"name": "Devin Neal", "team": "", "pos": "RB", "rank": 298, "tier": "M"}, {"name": "Noah Fant", "team": "NO", "pos": "TE", "rank": 299, "tier": "M"}, {"name": "Elijah Arroyo", "team": "SEA", "pos": "TE", "rank": 300, "tier": "M"}, {"name": "Jaylin Lane", "team": "WAS", "pos": "WR", "rank": 301, "tier": "M"}, {"name": "Dawson Knox", "team": "BUF", "pos": "TE", "rank": 302, "tier": "M"}, {"name": "Cooper Rush", "team": "ATL", "pos": "QB", "rank": 303, "tier": "M"}, {"name": "Dont'e Thornton Jr.", "team": "LV", "pos": "WR", "rank": 304, "tier": "M"}, {"name": "Jarquez Hunter", "team": "MIA", "pos": "RB", "rank": 305, "tier": "M"}, {"name": "Ja'Tavion Sanders", "team": "CAR", "pos": "TE", "rank": 306, "tier": "M"}, {"name": "Isaiah Bond", "team": "CLE", "pos": "WR", "rank": 307, "tier": "M"}, {"name": "Zavion Thomas", "team": "CHI", "pos": "WR", "rank": 308, "tier": "M"}, {"name": "Oscar Delp", "team": "NO", "pos": "TE", "rank": 309, "tier": "M"}, {"name": "Justin Fields", "team": "KC", "pos": "QB", "rank": 310, "tier": "M"}, {"name": "Noah Gray", "team": "KC", "pos": "TE", "rank": 311, "tier": "M"}, {"name": "Treylon Burks", "team": "WAS", "pos": "WR", "rank": 312, "tier": "M"}, {"name": "Trevor Etienne", "team": "CAR", "pos": "RB", "rank": 313, "tier": "M"}, {"name": "Jalen Tolbert", "team": "MIA", "pos": "WR", "rank": 314, "tier": "M"}, {"name": "Justin Joly", "team": "MIA", "pos": "TE", "rank": 315, "tier": "M"}, {"name": "Marvin Mims", "team": "DEN", "pos": "WR", "rank": 316, "tier": "M"}, {"name": "Raheim Sanders", "team": "CLE", "pos": "RB", "rank": 317, "tier": "M"}, {"name": "Jerome Ford", "team": "MIN", "pos": "RB", "rank": 318, "tier": "M"}, {"name": "Tahj Brooks", "team": "CIN", "pos": "RB", "rank": 319, "tier": "M"}, {"name": "Drew Allar", "team": "PIT", "pos": "QB", "rank": 320, "tier": "M"}, {"name": "Kyle Williams", "team": "NE", "pos": "WR", "rank": 321, "tier": "M"}, {"name": "Jahan Dotson", "team": "ATL", "pos": "WR", "rank": 322, "tier": "M"}, {"name": "Tutu Atwell", "team": "LAR", "pos": "WR", "rank": 323, "tier": "M"}, {"name": "Luke Musgrave", "team": "GB", "pos": "TE", "rank": 324, "tier": "M"}, {"name": "Cade Klubnik", "team": "NYJ", "pos": "QB", "rank": 325, "tier": "M"}, {"name": "Jaleel McLaughlin", "team": "CLE", "pos": "RB", "rank": 326, "tier": "M"}, {"name": "Ty Simpson", "team": "LAR", "pos": "QB", "rank": 327, "tier": "M"}, {"name": "Tyler Higbee", "team": "LAR", "pos": "TE", "rank": 328, "tier": "M"}, {"name": "Audric Estime", "team": "NO", "pos": "RB", "rank": 329, "tier": "M"}, {"name": "Jameis Winston", "team": "NYG", "pos": "QB", "rank": 330, "tier": "M"}, {"name": "Marcus Mariota", "team": "WAS", "pos": "QB", "rank": 331, "tier": "M"}, {"name": "Luke Schoonmaker", "team": "DAL", "pos": "TE", "rank": 332, "tier": "M"}, {"name": "Dameon Pierce", "team": "PHI", "pos": "RB", "rank": 333, "tier": "N"}, {"name": "Jordan Whittington", "team": "LAR", "pos": "WR", "rank": 334, "tier": "N"}, {"name": "Will Shipley", "team": "PHI", "pos": "RB", "rank": 335, "tier": "N"}, {"name": "Brenen Thompson", "team": "LAC", "pos": "WR", "rank": 336, "tier": "N"}, {"name": "Savion Williams", "team": "GB", "pos": "WR", "rank": 337, "tier": "N"}, {"name": "Xavier Hutchinson", "team": "HOU", "pos": "WR", "rank": 338, "tier": "N"}, {"name": "Kevin Coleman Jr.", "team": "MIA", "pos": "WR", "rank": 339, "tier": "N"}, {"name": "Kareem Hunt", "team": "", "pos": "RB", "rank": 340, "tier": "N"}, {"name": "KaVontae Turpin", "team": "DAL", "pos": "WR", "rank": 341, "tier": "N"}, {"name": "Nick Westbrook-Ikhine", "team": "IND", "pos": "WR", "rank": 342, "tier": "N"}, {"name": "Ashton Dulin", "team": "IND", "pos": "WR", "rank": 343, "tier": "N"}, {"name": "Joe Flacco", "team": "CIN", "pos": "QB", "rank": 344, "tier": "N"}, {"name": "Eli Heidenreich", "team": "PIT", "pos": "RB", "rank": 345, "tier": "N"}, {"name": "Devontez Walker", "team": "BAL", "pos": "WR", "rank": 346, "tier": "N"}, {"name": "Jawhar Jordan", "team": "HOU", "pos": "RB", "rank": 347, "tier": "N"}, {"name": "Roman Wilson", "team": "PIT", "pos": "WR", "rank": 348, "tier": "N"}, {"name": "Dyami Brown", "team": "WAS", "pos": "WR", "rank": 349, "tier": "N"}, {"name": "Greg Dortch", "team": "BUF", "pos": "WR", "rank": 350, "tier": "N"}, {"name": "Theo Wease Jr.", "team": "LAC", "pos": "WR", "rank": 351, "tier": "N"}, {"name": "Mo Alie-Cox", "team": "IND", "pos": "TE", "rank": 352, "tier": "N"}, {"name": "DeAndre Hopkins", "team": "", "pos": "WR", "rank": 353, "tier": "O"}, {"name": "Riley Leonard", "team": "IND", "pos": "QB", "rank": 354, "tier": "O"}, {"name": "Taysom Hill", "team": "", "pos": "TE", "rank": 355, "tier": "O"}, {"name": "JuJu Smith-Schuster", "team": "", "pos": "WR", "rank": 356, "tier": "O"}, {"name": "Gardner Minshew", "team": "ARI", "pos": "QB", "rank": 357, "tier": "O"}, {"name": "Zonovan Knight", "team": "ARI", "pos": "RB", "rank": 358, "tier": "O"}, {"name": "Tyrod Taylor", "team": "GB", "pos": "QB", "rank": 359, "tier": "O"}];
 const RANKINGS_URL = "data/rankings/REDRAFT-rankings.csv";
+const LEAGUE_URL = "data/demo_league.json";
 const BLANK_START = true;
+// Environment-aware live refresh: on GitHub Pages the rankings CSV is served
+// relative to the page (data/...), while a locally-served repo uses ../data.
+// file:// has no server to fetch from, so embedded build data is used as-is.
+const _isFileProtocol = location.protocol === 'file:';
+const _isGitHubPages = location.hostname.endsWith('github.io');
+function _withCacheBust(url){ return url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now(); }
+async function _fetchFirstOk(urls, label){
+  let lastErr = null;
+  for (const url of urls){
+    try{
+      const res = await fetch(_withCacheBust(url), {cache:'no-store'});
+      if (res.ok) return res;
+      lastErr = new Error('HTTP ' + res.status + ' for ' + label + ' at ' + url);
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('Fetch failed for ' + label);
+}
+function rankingsUrlCandidates(){
+  const urls = [RANKINGS_URL];
+  const alt = _isGitHubPages ? 'data/rankings/REDRAFT-rankings.csv' : '../data/rankings/REDRAFT-rankings.csv';
+  if (!urls.includes(alt)) urls.push(alt);
+  return urls;
+}
+function leagueUrlCandidates(){
+  const urls = [LEAGUE_URL];
+  if (LEAGUE_URL.startsWith('../data/') && !urls.includes(LEAGUE_URL.slice(1))) urls.push(LEAGUE_URL.slice(1));
+  if (LEAGUE_URL.startsWith('data/') && !urls.includes('../' + LEAGUE_URL)) urls.push('../' + LEAGUE_URL);
+  return urls;
+}
 let _usingLiveData = false;
 let _lastRankMtime = null;
 </script>
@@ -385,16 +466,16 @@ function leagueTeams(){ return Array.isArray(LEAGUE_DATA)?LEAGUE_DATA:((LEAGUE_D
 function leagueFormat(){
   const f=(!Array.isArray(LEAGUE_DATA)&&LEAGUE_DATA&&LEAGUE_DATA.format)||{}
   const el=f.flex_eligible||f.flexEligible||DEFAULT_FORMAT.flex_eligible
-  return {QB:f.QB??DEFAULT_FORMAT.QB,RB:f.RB??DEFAULT_FORMAT.RB,WR:f.WR??DEFAULT_FORMAT.WR,TE:f.TE??DEFAULT_FORMAT.TE,FLEX:f.FLEX??f.flex??DEFAULT_FORMAT.FLEX,FLEX_ELIGIBLE:el}
+  return {QB:f.QB??DEFAULT_FORMAT.QB,RB:f.RB??DEFAULT_FORMAT.RB,WR:f.WR??DEFAULT_FORMAT.WR,TE:f.TE??DEFAULT_FORMAT.TE,FLEX:f.FLEX??f.flex??DEFAULT_FORMAT.FLEX,FLEX_ELIGIBLE:el,FLEX_SLOTS:f.flex_slots||Array.from({length:f.FLEX??f.flex??DEFAULT_FORMAT.FLEX},()=>el)}
 }
 function formatShort(){ return leagueFormat().FLEX+' FLX' }
 function starterSlotOrder(){ const o=[]; ['QB','RB','WR','TE'].forEach(pos=>{for(let i=0;i<STARTERS[pos];i++)o.push(pos)}); for(let i=0;i<STARTERS.FLEX;i++)o.push(i===0?'FLEX':'FLEX'+(i+1)); return o }
 let STARTERS={QB:1,RB:2,WR:2,TE:1,FLEX:1}
-let FLEX_ELIGIBLE=new Set(['RB','WR','TE'])
-function applyLeagueFormat(){ const f=leagueFormat(); STARTERS={QB:f.QB,RB:f.RB,WR:f.WR,TE:f.TE,FLEX:f.FLEX}; FLEX_ELIGIBLE=new Set(f.FLEX_ELIGIBLE) }
+let FLEX_ELIGIBLE=new Set(['RB','WR','TE']), FLEX_SLOTS=[['RB','WR','TE']]
+function applyLeagueFormat(){ const f=leagueFormat(); STARTERS={QB:f.QB,RB:f.RB,WR:f.WR,TE:f.TE,FLEX:f.FLEX}; FLEX_ELIGIBLE=new Set(f.FLEX_SLOTS.flat()); FLEX_SLOTS=f.FLEX_SLOTS }
 const SUFFIX_RE=/\s+(Jr\.?|Sr\.?|II|III|IV|V)\s*$/i
 function stripSuffix(s){return String(s||'').replace(SUFFIX_RE,'').trim()}
-function normalize(s){let x=stripSuffix(s).toLowerCase();x=x.replace(/[^a-z0-9\s]/g,'');x=x.replace(/\s+/g,' ').trim();return x}
+function normalize(s){let x=stripSuffix(s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();x=x.replace(/[^a-z0-9\s]/g,'');x=x.replace(/\s+/g,' ').trim();return x}
 function fuzzRatio(a,b){
   if(a===b) return 100;
   const bigrams=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const g=s.slice(i,i+2);m.set(g,(m.get(g)||0)+1)}return m}
@@ -402,24 +483,26 @@ function fuzzRatio(a,b){
   const total=(a.length-1)+(b.length-1); return total? Math.round(200*inter/total):0
 }
 function playerValue(rank, position, pos_rank){
-  if(!Number.isFinite(rank) || !Number.isFinite(pos_rank) || rank>350) return 0;
+  if(!['QB','RB','WR','TE'].includes(position) || !Number.isFinite(rank) || !Number.isFinite(pos_rank) || rank<1 || pos_rank<1) return 0;
   const pr=pos_rank;
   let base;
   if(position==='QB'){
-    if(pr<=10) base=450*Math.exp(-(pr-1)/9); else base=450*Math.exp(-9/9)*Math.exp(-(pr-10)/28); base=Math.max(base,5);
+    if(pr<=10) base=500*Math.exp(-0.8075*(pr-1)/9); else base=500*Math.exp(-0.8075*9/9)*Math.exp(-0.8075*(pr-10)/28); base=Math.max(base,5);
   } else if(position==='RB'){
-    // Softer elite-to-mid-tier spread: RB2 ≈700, RB11 ≈400.
-    base=Math.max(750*Math.exp(-(pr-1)/16.5),3);
+    // Steeper elite-to-mid-tier spread: RB2 ≈695, RB11 ≈357 (pre-boost).
+    base=Math.max(750*Math.exp(-(pr-1)/13.5),3);
+    // Top-end bump: RB1-12 +10% (elite workhorses carry lineups).
+    if(pr<=12) base*=1.10;
   } else if(position==='WR'){
-    // Keep the same flatter shape for WRs while preserving positional separation.
-    base=Math.max(750*Math.exp(-(pr-1)/23),3);
+    // Steeper falloff to match: WR2 ≈710, WR11 ≈430.
+    base=Math.max(750*Math.exp(-(pr-1)/18),3);
   } else if(position==='TE'){
-    base=Math.max(390*Math.exp(-(pr-1)/6.5),3);
+    base=Math.max(470*Math.exp(-0.8075*(pr-1)/6.5),3);
   } else {
     base=100*Math.exp(-(rank-1)/33)*9.9;
   }
   // Manual per-position curve multiplier from the Values tab (session-only, defaults to 1).
-  // Default positional adjustment: RBs +3% then +2% (about +5.1% total), WRs -2%.
+  // Default positional adjustment: RBs +3% then +2% (about +5.1% total) plus +10% for top-12 RBs, WRs -2%.
   if(position==='RB') base*=1.03*1.02; else if(position==='WR') base*=0.98;
   const mult=(curveMult[position]||1);
   return Math.round(base*mult*10)/10;
@@ -435,22 +518,45 @@ function starterScore(roster){
     const need=STARTERS[pos]; const arr=byPos[pos]||[]; for(let i=0;i<Math.min(need,arr.length);i++){const p=arr[i]; used.add(p.__id); total+=p.value; starters.push(p)}
   })
   let flexPool=[]; FLEX_ELIGIBLE.forEach(pos=>{(byPos[pos]||[]).forEach(p=>{if(!used.has(p.__id)) flexPool.push(p)})})
-  flexPool.sort((a,b)=>b.value-a.value); for(let i=0;i<Math.min(STARTERS.FLEX,flexPool.length);i++){total+=flexPool[i].value; starters.push(flexPool[i]); used.add(flexPool[i].__id)}
+  flexPool.sort((a,b)=>b.value-a.value);
+  const assignments=Array(FLEX_SLOTS.length).fill(null);
+  // Weighted matching: try the best players first, rerouting existing assignments
+  // when a restricted flex slot needs the player in a more permissive slot.
+  function place(player,seen){
+    for(let i=0;i<FLEX_SLOTS.length;i++){
+      if(seen.has(i)||!FLEX_SLOTS[i].includes(player.position)) continue;
+      seen.add(i);
+      if(!assignments[i]||place(assignments[i],seen)){assignments[i]=player;return true;}
+    }
+    return false;
+  }
+  flexPool.forEach(p=>place(p,new Set()));
+  assignments.filter(Boolean).forEach(p=>{total+=p.value;starters.push(p);used.add(p.__id)});
   const bench=roster.filter(p=>!used.has(p.__id) && !['D/ST','K'].includes(p.position))
   const result={total,starters,bench}; starterCache.set(roster,result); return result;
 }
 function teamScore(roster){ const {total,bench}=starterScore(roster); return total + bench.reduce((s,p)=>s+p.value,0); }
 function rosterValueBreakdown(roster){ const vals={QB:0,RB:0,WR:0,TE:0}; roster.forEach(p=>{if(vals[p.position]!==undefined) vals[p.position]+=p.value}); vals.TOTAL=vals.QB+vals.RB+vals.WR+vals.TE; return vals; }
 function canField(roster){
-  const cnt={}; roster.forEach(p=>{if(['QB','RB','WR','TE'].includes(p.position)) cnt[p.position]=(cnt[p.position]||0)+1})
-  // strict: every starter slot must be filled; FLEX is extra, not a substitute for TE/QB/RB/WR
-  for(const pos of ['QB','RB','WR','TE']){
-    if((cnt[pos]||0) < STARTERS[pos]) return false
-  }
-  const flexTotal=['RB','WR','TE'].reduce((s,k)=>s+(cnt[k]||0),0)
-  const need=['RB','WR','TE'].reduce((s,k)=>s+STARTERS[k],0)+STARTERS.FLEX
-  if(flexTotal < need) return false
-  return true
+  const {starters}=starterScore(roster);
+  return starters.length===Object.values(STARTERS).reduce((sum,n)=>sum+n,0);
+}
+// Trade utility is separate from raw market value and from lineup value.
+// Bench weight is a transparent heuristic, not a projected-points model.
+function rosterUtility(roster){
+  const {total,bench}=starterScore(roster);
+  return total+0.20*bench.reduce((sum,p)=>sum+p.value,0);
+}
+function fitTradeRoster(before, outgoing, incoming, protectedNames=new Set()){
+  let roster=before.filter(p=>!outgoing.includes(p)).concat(incoming);
+  const excess=Math.max(0,roster.length-before.length);
+  const starters=new Set(starterScore(roster).starters.map(p=>p.__id));
+  // Preserve the best lineup, incoming players, locked players, and K/DST slots.
+  const droppable=roster.filter(p=>!starters.has(p.__id)&&!incoming.includes(p)&&
+    !protectedNames.has(p.player_name)&&['QB','RB','WR','TE'].includes(p.position))
+    .sort((a,b)=>a.value-b.value||a.__id.localeCompare(b.__id));
+  const drops=droppable.slice(0,excess), dropped=new Set(drops.map(p=>p.__id));
+  return {roster:roster.filter(p=>!dropped.has(p.__id)),drops,fits:drops.length===excess};
 }
 let rankingMap=new Map()
 function buildRankings(){
@@ -467,6 +573,7 @@ function buildRankings(){
 function isRankedPlayer(p){ return Number.isInteger(p?.rank) && p.rank>0 && Number.isInteger(p?.pos_rank) && p.pos_rank>0 }
 function rankLabel(p){ return isRankedPlayer(p) ? `r${p.rank}` : 'Unranked' }
 function posRankLabel(p){ return isRankedPlayer(p) ? `${p.position}${p.pos_rank}` : p.position }
+function tierTag(p){ return p.tier ? ` <i>·</i> T${safeHTML(p.tier)}` : ''; }
 function resolveRankingCandidates(candidates, team){
   if(!candidates?.length) return null
   if(candidates.length===1) return candidates[0]
@@ -490,6 +597,10 @@ function findRanking(name, team){
 }
 let rosters={}, teamMeta={}, myTeam='', editTeam=null
 let overrides=new Map(), giveSet=new Set(), lockSet=new Set(), targetSet=new Set(), favs=[], selectedTeam=null
+// Staged (uncommitted) per-player value edits in the All-players value index.
+// +/- only updates the staged number in place; nothing re-sorts or regenerates
+// until the row's ✓ is clicked. Keyed by ranking name, never persisted.
+let pendingOverrides=new Map()
 // League source tracking: a Sleeper/upload league lives only in memory, so the
 // embedded-file live refresh must never overwrite it. Every league swap goes
 // through setLeagueData(); every team <select> syncs via syncTeamSelects().
@@ -542,6 +653,7 @@ function validateLeagueShape(parsed){
     for(const key of ['QB','RB','WR','TE','FLEX','flex']){
       if(f[key]!=null&&(!Number.isInteger(f[key])||f[key]<0||f[key]>10)) throw new Error('Starter counts must be integers from 0 to 10');
     }
+    if(f.flex_slots!=null&&(!Array.isArray(f.flex_slots)||f.flex_slots.length!==(f.FLEX??f.flex??1)||f.flex_slots.some(slot=>!Array.isArray(slot)||!slot.length||slot.some(p=>!['QB','RB','WR','TE'].includes(p))))) throw new Error('Invalid per-slot flex eligibility');
     for(const key of ['flex_eligible','flexEligible']){
       if(f[key]!=null&&(!Array.isArray(f[key])||f[key].length>4||f[key].some(p=>!['QB','RB','WR','TE'].includes(p)))) throw new Error('Invalid flex positions');
     }
@@ -564,7 +676,7 @@ function setLeagueData(parsed,source){
   LEAGUE_DATA=parsed;
   leagueSource=source||{kind:'embedded',label:'Embedded league'};
   myTeam=''; editTeam=null; selectedTeam=null;
-  overrides.clear(); giveSet.clear(); lockSet.clear(); targetSet.clear();
+  overrides.clear(); pendingOverrides.clear(); giveSet.clear(); lockSet.clear(); targetSet.clear();
   favs=[]; currentTrades=[]; filteredTrades=[];
   builderGive=[]; builderGet=[];
   applyLeagueFormat(); buildRankings(); buildRosters();
@@ -718,8 +830,8 @@ function renderPersistStatus(){
 }
 // Session-only per-position value-curve multipliers (Values tab sliders). Reset on reload.
 let curveMult={QB:1,RB:1,WR:1,TE:1}, curveTimer=null
-let currentTrades=[], filteredTrades=[], fairnessFloor=50, activeArch='ALL', myPosFilter='ALL', oppPosFilter='ALL', sizeMode='2-2'
-let tradesExpanded=false, powerScope='starters', targetView='roster', allPlayersPos='ALL'
+let currentTrades=[], filteredTrades=[], fairnessFloor=80, activeArch='ALL', myPosFilter='ALL', oppPosFilter='ALL', sizeMode='2-2'
+let tradesExpanded=false, expandedTradeLimit=48, powerScope='starters', targetView='roster', allPlayersPos='ALL'
 let desperationSortPos=null
 function toggleDesperationSort(pos){
   if(desperationSortPos===pos) desperationSortPos=null;
@@ -735,14 +847,11 @@ function toggleDesperationSort(pos){
 }
 let givePosSet=new Set(), wantPosSet=new Set(), posGenTimer=null
 const ARCHS=[
-  {id:'A',name:'Need Filler',desc:'Fix your weakest spot fairly',badge:'need'},
-  {id:'B',name:'Stud Consolidation',desc:'2 -> 1 elite (top-22)',badge:'stud'},
-  {id:'C',name:'Depth Spread',desc:'1 stud -> 2 starters',badge:'need'},
-  {id:'D',name:'Value Snipe',desc:'Biggest value win',badge:'snipe'},
-  {id:'E',name:'Positional Swap',desc:'Same position upgrades',badge:'need'},
-  {id:'F',name:'Win-Win Fair',desc:'Both teams improve',badge:'need'},
-  {id:'G',name:'Lottery Ticket',desc:'Mid -> 2 upside stashes',badge:'snipe'},
-  {id:'H',name:'Desperation Exploit',desc:'Tax needy teams',badge:'stud'},
+  {id:'A',name:'Need Filler',desc:'Improve your weakest starting position',badge:'need'},
+  {id:'B',name:'Stud Consolidation',desc:'Two mid/high tier players for one higher tier player',badge:'stud'},
+  {id:'C',name:'Depth Spread',desc:'One higher tier player for two useful mid/high tier players',badge:'need'},
+  {id:'E',name:'Positional Swap',desc:'Trade within the same position',badge:'need'},
+  {id:'H',name:'Desperation Exploit',desc:'Aggressive value wins that fill an opponent’s weakest position',badge:'snipe'},
 ]
 function buildRosters(){
   invalidateRosterCaches()
@@ -752,12 +861,12 @@ function buildRosters(){
     const roster=[]
     t.roster.forEach((e,idx)=>{
       const m=matchRanking(e.name,e.team)
-      let pos,rank=null,team,pr=null,val=0,display=e.name
-      if(m){ pos=m.pos; rank=m.rank; pr=m.pos_rank; team=m.team; display=m.name; }
+      let pos,rank=null,team,pr=null,val=0,display=e.name,tier=''
+      if(m){ pos=m.pos; rank=m.rank; pr=m.pos_rank; team=m.team; display=m.name; tier=m.tier||''; }
       else { pos=['QB','RB','WR','TE','D/ST','K'].includes(e.position)?e.position:'UNKNOWN'; team=e.team||''; }
       if(m && !['D/ST','K'].includes(pos)) val=playerValue(rank,pos,pr)
       const key=display; if(overrides.has(key)) val=overrides.get(key)
-      roster.push({__id:t.team_name+'|'+e.name+'|'+idx, player_name:e.name, ranked_name:display, position:pos, orig_slot:e.position, rank, pos_rank:pr, team, value:val, ranked:Boolean(m), tier:'', owner:t.owner})
+      roster.push({__id:t.team_name+'|'+e.name+'|'+idx, player_name:e.name, ranked_name:display, position:pos, orig_slot:e.position, rank, pos_rank:pr, team, value:val, ranked:Boolean(m), tier, owner:t.owner})
     })
     rosters[t.team_name]=roster
   })
@@ -770,13 +879,18 @@ function buildRosters(){
   if(!editTeam) editTeam=myTeam
 }
 function setEditTeam(name){ editTeam=name; renderMyRoster(); if(document.getElementById('expandOverlay').classList.contains('show')){ const b=document.getElementById('expandBody'); const t=document.getElementById('expandTitle').textContent; if(t.includes('Edit Values')||t.includes('Roster')) b.innerHTML=renderRosterDetail(); } }
+function positionalStrength(roster,pos){
+  const count=STARTERS[pos]||0;
+  return roster.filter(p=>p.position===pos).sort((a,b)=>b.value-a.value)
+    .slice(0,count).reduce((sum,p)=>sum+p.value,0);
+}
 function detectGaps(){
   if(gapCache) return gapCache;
   // Starter-based positional strength; SD-driven desperation
   const teamVals={}, avgByPos={QB:[],RB:[],WR:[],TE:[],TOTAL:[]}
   Object.entries(rosters).forEach(([name, roster])=>{
     const {starters}=starterScore(roster)
-    const d={}; starters.forEach(p=>{d[p.position]=(d[p.position]||0)+p.value}); d['TOTAL']=starters.reduce((s,p)=>s+p.value,0)
+    const d=Object.fromEntries(['QB','RB','WR','TE'].map(pos=>[pos,positionalStrength(roster,pos)])); d['TOTAL']=starters.reduce((s,p)=>s+p.value,0)
     teamVals[name]=d
   })
   Object.values(teamVals).forEach(d=>{['QB','RB','WR','TE','TOTAL'].forEach(pos=>avgByPos[pos].push(d[pos]||0))})
@@ -814,115 +928,165 @@ function formatGapCell(gap, z, val){
   const sign=gap>0?'+':''
   return `<td class='${cls}' title='val ${val.toFixed(0)}  z=${z>=0?'+':''}${z.toFixed(2)}  gap ${sign}${gap.toFixed(0)}'>${sign}${gap.toFixed(0)}<br><span style='font-size:9px;opacity:.75'>${z>=0?'+':''}${z.toFixed(1)}σ</span></td>`
 }
+function posSpectrumColor(v, a, std){
+  // Continuous green -> yellow -> red spectrum for positional value vs league avg.
+  // z = (value - avg)/sd, clamped to [-2, +2]: +2 = green, 0 = yellow, -2 = red.
+  if(!std) return 'var(--text2)';
+  let z=(v-a)/std;
+  z=Math.max(-2,Math.min(2,z));
+  let h;
+  if(z<0){ const t=(z+2)/2; h=0+t*45; }
+  else { const t=z/2; h=45+t*105; }
+  return `hsl(${h.toFixed(0)},70%,62%)`;
+}
 function weakestPos(team){
-  const {teamVals,avg}=detectGaps(); const d=teamVals[team]||{}; let worst=null,worstGap=-Infinity; ['QB','RB','WR','TE'].forEach(pos=>{const gap=avg[pos]-(d[pos]||0); if(gap>worstGap){worstGap=gap; worst=pos}}); return {worst,gaps: Object.fromEntries(['QB','RB','WR','TE'].map(pos=>[pos, avg[pos]-(d[pos]||0)] )), avg, teamVals}
+  const {teamVals,avg,gaps,sd}=detectGaps();
+  const worst=['QB','RB','WR','TE'].filter(pos=>STARTERS[pos]>0)
+    .sort((a,b)=>(gaps[team]?.[b]||0)/(sd[b]||1)-(gaps[team]?.[a]||0)/(sd[a]||1))[0]||null;
+  return {worst,gaps:gaps[team]||{},avg,teamVals};
 }
-function evaluateTrade(lr,obr, gi, ri, lb, ob){
-  const gp=gi.map(i=>lr[i]), rp=ri.map(i=>obr[i])
-  const gv=gp.reduce((s,p)=>s+p.value,0), rv=rp.reduce((s,p)=>s+p.value,0), vd=rv-gv, ratio= Math.max(gv,rv)? Math.min(gv,rv)/Math.max(gv,rv):1, share=(gv+rv)? rv/(gv+rv):0.5
-  const la= lr.filter((_,idx)=>!gi.includes(idx)).concat(rp)
-  const oa= obr.filter((_,idx)=>!ri.includes(idx)).concat(gp)
-  const laScore=teamScore(la), oaScore=teamScore(oa)
-  const gd=laScore-lb, od=oaScore-ob, valid=canField(la)&&canField(oa)
-  return {give:gp,recv:rp,give_val:gv,recv_val:rv,val_diff:vd,ratio,share,logan_delta:gd,opp_delta:od,valid,la,oa}
+function evaluateTrade(lr,obr,gi,ri){
+  const gp=gi.map(i=>lr[i]),rp=ri.map(i=>obr[i]);
+  const gv=gp.reduce((s,p)=>s+p.value,0),rv=rp.reduce((s,p)=>s+p.value,0);
+  const mine=fitTradeRoster(lr,gp,rp,lockSet),theirs=fitTradeRoster(obr,rp,gp);
+  const la=mine.roster,oa=theirs.roster;
+  const positional=positionalStrength;
+  const your_pos_delta={},their_pos_delta={};
+  for(const pos of ['QB','RB','WR','TE']){
+    your_pos_delta[pos]=positional(la,pos)-positional(lr,pos);
+    their_pos_delta[pos]=positional(oa,pos)-positional(obr,pos);
+  }
+  const gd=starterScore(la).total-starterScore(lr).total;
+  const od=starterScore(oa).total-starterScore(obr).total;
+  return {give:gp,recv:rp,give_val:gv,recv_val:rv,val_diff:rv-gv,
+    ratio:Math.max(gv,rv)?Math.min(gv,rv)/Math.max(gv,rv):1,share:gv+rv?rv/(gv+rv):0.5,
+    logan_delta:gd,opp_delta:od,your_pos_delta,their_pos_delta,your_utility:rosterUtility(la)-rosterUtility(lr),
+    their_utility:rosterUtility(oa)-rosterUtility(obr),your_drops:mine.drops,their_drops:theirs.drops,
+    valid:mine.fits&&theirs.fits&&canField(la)&&canField(oa),la,oa};
 }
-function scoreArchetype(id, ev, weakPos, oppGaps, oppSD){
-  const SCALE=9.356, gd=ev.logan_delta/SCALE, od=ev.opp_delta/SCALE, vd=ev.val_diff/SCALE, ratio=ev.ratio, give=ev.give, recv=ev.recv
-  if(!ev.valid) return null
+// Tier helpers are self-contained (no outer references) so the trade Worker
+// can serialize them alongside the scoring functions.
+function tierRankOf(t){
+  const tier=String(t||'').trim().toUpperCase();
+  return /^[0-9]+$/.test(tier)?Number(tier):(/^[A-Z]$/.test(tier)?'SABCDEFGHIJKLMNOPQRTUVWXYZ'.indexOf(tier):-1);
+}
+function bestKnownTier(list){
+  let best=-1;
+  for(const p of list){
+    if(!['QB','RB','WR','TE'].includes(p.position)) continue;
+    const r=tierRankOf(p.tier);
+    if(r>=0 && (best<0 || r<best)) best=r;
+  }
+  return best;
+}
+function tierOverpayNeeded(give, recv){
+  const g=bestKnownTier(give), r=bestKnownTier(recv);
+  if(g<0 || r<0 || g<=r) return {steps:0, premium:0};
+  let prize=0;
+  for(const p of recv){
+    if(['QB','RB','WR','TE'].includes(p.position) && tierRankOf(p.tier)>=0 && p.value>prize) prize=p.value;
+  }
+  const steps=g-r, premium=steps*0.10*prize;
+  if(prize<50 || premium<1) return {steps:0, premium:0};
+  return {steps, premium};
+}
+function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
+  if(!ev.valid||ev.give_val<=0||ev.recv_val<=0) return null;
+  const give=ev.give,recv=ev.recv;
+  const userClimb=tierOverpayNeeded(give,recv),oppClimb=tierOverpayNeeded(recv,give);
+  const balance=ev.ratio+1e-9>=fairnessFloor/100;
+  const premiumOK=(!userClimb.steps||ev.give_val-ev.recv_val+1e-6>=userClimb.premium)&&
+    (!oppClimb.steps||ev.recv_val-ev.give_val+1e-6>=oppClimb.premium);
+  // Small lineup sacrifices can buy better starters or useful depth; reject major damage.
+  const myBase=starterScore(rosters[myTeam]).total;
+  const theirBase=starterScore(rosters[ev.opponent]).total;
+  const workable=ev.logan_delta>=-0.04*myBase&&ev.opp_delta>=-0.06*theirBase;
+  if(id==='H'){
+    const gaps=oppGaps?.[ev.opponent]||{};
+    const pos=['QB','RB','WR','TE'].filter(p=>STARTERS[p]>0)
+      .sort((a,b)=>(gaps[b]||0)/(oppSD?.[b]||1)-(gaps[a]||0)/(oppSD?.[a]||1))[0];
+    const z=(gaps[pos]||0)/(oppSD?.[pos]||1),gain=ev.their_pos_delta[pos]||0;
+    // Intentionally bypass normal balance and tier tax, with a bounded 10–45% value edge.
+    const edge=ev.val_diff/ev.give_val;
+    if(z<0.5||gain<10||!give.some(p=>p.position===pos)||edge<0.10||edge>0.45||
+      ev.logan_delta<0||ev.your_utility<=1||ev.opp_delta < -0.10*theirBase) return null;
+    ev.exploit_position=pos;ev.exploit_z=z;ev.exploit_gain=gain;
+    return ev.val_diff/10+gain/20+z*8+ev.logan_delta/10;
+  }
+  if(!balance||!premiumOK||!workable) return null;
+  // Do not recommend a sacrifice with no compensating lineup/depth benefit.
+  if(ev.your_utility<=0 || (ev.opp_delta<=0 && ev.their_utility<0)) return null;
   if(id==='A'){
-    if(!recv.some(p=>p.position===weakPos)) return null
-    if(ratio<0.60) return null; if(od<-6) return null; if(gd<=0.5) return null
-    let score=gd*4.0+vd*0.2+(0.70<=ratio && ratio<=0.95?6:0); return score
+    const improvement=ev.your_pos_delta[weakPos]||0;
+    if(improvement<=5||ev.logan_delta<=0||ev.your_utility<=0) return null;
+    return improvement/5+ev.logan_delta/10+ev.opp_delta/30+ev.ratio*5;
   }
-  if(id==='B'){
-    if(!(give.length===2 && recv.length===1)) return null; if(recv[0].rank>22) return null; if(ratio<0.62) return null; if(gd<=0.5) return null; if(od<-8) return null; if(Math.min(...give.map(p=>p.rank))>70) return null
-    let s=gd*5.0+vd*0.15+(recv[0].rank<12?8:0); return s
-  }
-  if(id==='C'){
-    if(!(give.length===1 && recv.length===2)) return null; if(give[0].rank>22) return null; if(recv.some(p=>p.rank>65)) return null; if(gd<-0.5) return null; if(od<-7) return null; if(ratio<0.62) return null; if(Math.max(...recv.map(p=>p.rank))-give[0].rank>45) return null; return gd*4.0+vd*0.1
-  }
-  if(id==='D'){
-    if(ratio<0.68) return null; if(od<-6) return null; if(vd<2) return null; if(gd<=0) return null; return vd*1.2+gd*2.0
+  if(id==='B'||id==='C'){
+    const mid=id==='B'?give:recv,stud=id==='B'?recv:give;
+    if(mid.length!==2||stud.length!==1||stud[0].rank>36||mid.some(p=>p.rank>85)) return null;
+    const known=bestKnownTier(mid),top=bestKnownTier(stud);
+    const tierUp=top>=0&&known>=0?top<known:stud[0].rank<Math.min(...mid.map(p=>p.rank))*0.70;
+    if(!tierUp||stud[0].value<=Math.max(...mid.map(p=>p.value))*1.05) return null;
+    // The stud must start; depth pieces must start or be the best backup at their position.
+    const studRoster=id==='B'?ev.la:ev.oa,depthRoster=id==='B'?ev.oa:ev.la;
+    const starts=(roster,p)=>starterScore(roster).starters.some(x=>x.__id===p.__id);
+    const useful=p=>starts(depthRoster,p)||starterScore(depthRoster).bench.filter(x=>x.position===p.position)
+      .sort((a,b)=>b.value-a.value)[0]?.__id===p.__id;
+    if(!starts(studRoster,stud[0])||!mid.some(p=>starts(depthRoster,p))||!mid.every(useful)) return null;
+    if(id==='B'&&ev.logan_delta<=0) return null;
+    if(id==='C'&&ev.your_utility<=0) return null;
+    return ev.logan_delta/10+ev.opp_delta/20+ev.your_utility/20+ev.ratio*5;
   }
   if(id==='E'){
-    const gp=new Set(give.map(p=>p.position)), rp=new Set(recv.map(p=>p.position)); if(gp.size!==1||rp.size!==1||[...gp][0]!==[...rp][0]) return null; if(ratio<0.58) return null; if(od<-5) return null; if(gd<=0.3) return null; const minRecv=Math.min(...recv.map(p=>p.value)); let pen=0; if(recv.length>give.length && minRecv<4) pen=3; let s=gd*4.0-Math.abs(vd)*0.15-pen+(give.length===recv.length||(give.length===2&&recv.length===1)?2:0); return s
+    if(new Set([...give,...recv].map(p=>p.position)).size!==1||ev.your_utility<=0) return null;
+    return ev.logan_delta/10+ev.your_utility/20+ev.opp_delta/30+ev.ratio*5;
   }
-  if(id==='F'){
-    if(gd<=1.0||od<=1.0) return null; if(ratio<0.68) return null; let s=gd+od+vd*0.1+(0.75<=ratio&&ratio<=0.95?6:0); return s
-  }
-  if(id==='G'){
-    if(!(give.length===1&&recv.length===2)) return null; if(!(30<=give[0].rank&&give[0].rank<=90)) return null; if(!recv.every(p=>45<=p.rank&&p.rank<=110)) return null; if(ratio<0.60) return null; if(od<-6) return null; if(gd<-1.5) return null; return gd*2.0+vd*0.4
-  }
-  if(id==='H'){
-    if(!oppGaps) return null; const gaps=oppGaps[ev.opponent]||{}; if(!Object.keys(gaps).length) return null;
-    // SD-based desperation: pick pos with highest z (gap/SD), not raw gap
-    let desPos, desGap, desZ
-    if(oppSD){
-      const zByPos={}
-      ;['QB','RB','WR','TE'].forEach(pos=>{ const gv=gaps[pos]||0; const sd=oppSD[pos]||1; zByPos[pos]= gv/sd })
-      desPos=Object.keys(zByPos).reduce((a,b)=>zByPos[a]>zByPos[b]?a:b)
-      desGap=gaps[desPos]||0; desZ=zByPos[desPos]||0
-      if(desZ < 0.5) return null
-      if(desZ > 2.0) desGap=25
-    } else {
-      desPos=['QB','RB','WR','TE'].reduce((a,b)=>(gaps[a]||-1e9)>(gaps[b]||-1e9)?a:b); desGap=gaps[desPos]; if(desGap<6) return null; if(desGap>90) desGap=25; desZ= desGap/50
-    }
-    if(!give.some(p=>p.position===desPos)) return null; if(recv.some(p=>p.position===desPos)) return null; const desGive=give.filter(p=>p.position===desPos); if(!desGive.length) return null; if(Math.min(...desGive.map(p=>p.rank))>90||Math.max(...desGive.map(p=>p.value))<3) return null; if(desGive.some(p=>p.rank>130)) return null;
-    // MAX 30% tax: cap win at 30% of give value (ratio >=0.77, share 0.51-0.565)
-    if(ev.val_diff <0 || ev.val_diff > 0.30*ev.give_val) return null;
-    if(ev.ratio <0.77) return null;
-    if(!(0.5<=vd&&vd<=10)) return null; if(!(0<=gd&&gd<=20)) return null; if(od<-7) return null; if(oppSD){ if(od<0 && desZ < 0.8) return null } else { if(od<0&&desGap<8) return null } if(!(0.51<=ev.share&&ev.share<=0.565)) return null; return oppSD ? (vd*1.5+gd*2.5+desZ*6.0) : (vd*1.5+gd*2.5+desGap*0.25)
-  }
-  return null
+  return null;
+}
+function packageSizes(){
+  if(sizeMode==='2-2') return [[1,1],[1,2],[2,1],[2,2]];
+  const [g,r]=sizeMode.split('-').map(Number);
+  return [[g,r]];
+}
+function tradeKey(c){
+  return JSON.stringify([c.opponent,c.give.map(p=>p.__id).sort(),c.recv.map(p=>p.__id).sort()]);
 }
 function generateCombos(arr,k){ if(k===0) return [[]]; if(k>arr.length) return []; const res=[]; (function rec(s,cur){ if(cur.length===k){res.push([...cur]);return} for(let i=s;i<arr.length;i++){cur.push(arr[i]); rec(i+1,cur); cur.pop()}})(0,[]); return res}
-async function findTradesForArch(archId, loganName, weakPos, oppGaps, oppSD, token, opponent='ALL', evaluations=new Map()){
-  const lr=rosters[loganName], lb=teamScore(lr)
-  let maxG=2,maxR=2
-  if(sizeMode==='2-1'){maxG=2; maxR=1} else if(sizeMode==='1-1'){maxG=1;maxR=1} else if(sizeMode==='1-2'){maxG=1;maxR=2}
-  const cands=[]
-  const includeGive = [...giveSet]
-  const includeTargets = [...targetSet]
-  let checked=0, sliceStart=performance.now();
+async function findTradesForArch(archId,loganName,weakPos,oppGaps,oppSD,token,opponent='ALL'){
+  const ids=Array.isArray(archId)?archId:[archId],lr=rosters[loganName];
+  const cands=[],stats={examined:0,eligible:0,rejected:{}};
+  const lpIdx=lr.map((_,i)=>i).filter(i=>isRankedPlayer(lr[i])&&lr[i].value>0&&!lockSet.has(lr[i].player_name));
+  let checked=0,sliceStart=performance.now();
   for(const [opp,obr] of Object.entries(rosters)){
-    if(token && token!==__genToken) return [];
-    if(opp===loganName) continue
-    if(opponent!=='ALL' && opp!==opponent) continue
-    const ob=teamScore(obr)
-    const lpIdx= lr.map((_,i)=>i).filter(i=>isRankedPlayer(lr[i]) && !lockSet.has(lr[i].player_name))
-    const opIdx= obr.map((_,i)=>i).filter(i=>isRankedPlayer(obr[i]))
-    for(let gc=1; gc<=maxG; gc++) for(let rc=1; rc<=maxR; rc++){
-      if(sizeMode!=='2-2' && (gc!==maxG || rc!==maxR)) continue;
-      const giveCombos=generateCombos(lpIdx,gc), recvCombos=generateCombos(opIdx,rc)
-      for(const gi of giveCombos){
-        if(includeGive.length){ const names=gi.map(i=>lr[i].player_name); if(!includeGive.every(n=>names.includes(n))) continue }
-        for(const ri of recvCombos){
-          if((++checked & 127)===0 && performance.now()-sliceStart>8){
-            await yieldToMain();
-            if(token && token!==__genToken) return [];
-            sliceStart=performance.now();
-          }
-          if(includeTargets.length){ const rnames=ri.map(i=>obr[i].player_name); if(!rnames.some(n=>includeTargets.includes(n))) continue }
-          if(givePosSet.size && !gi.some(i=>givePosSet.has(lr[i].position))) continue;
-          if(wantPosSet.size && !ri.some(i=>wantPosSet.has(obr[i].position))) continue;
-          // Strategies share the same evaluation. Keep only the compact result
-          // in this search-local, bounded cache; the builder still gets la/oa.
-          const key=JSON.stringify([opp,gi,ri]);
-          let base=evaluations.get(key);
-          if(!base){
-            const {la,oa,...result}=evaluateTrade(lr,obr,gi,ri,lb,ob);
-            base=result; if(evaluations.size<100000) evaluations.set(key,base);
-          }
-          const ev={...base,opponent:opp,give_idx:gi,recv_idx:ri};
-          if(archId !== 'H' && ev.share*100 < fairnessFloor) continue
-          const s=scoreArchetype(archId, ev, weakPos, oppGaps, oppSD); if(s==null) continue; ev.score=s; ev.arch=archId; cands.push(ev)
-          if(cands.length>3000) break
-        } if(cands.length>3000) break
-      } if(cands.length>3000) break
+    if(opp===loganName||(opponent!=='ALL'&&opp!==opponent)) continue;
+    const opIdx=obr.map((_,i)=>i).filter(i=>isRankedPlayer(obr[i])&&obr[i].value>0);
+    for(const [gc,rc] of packageSizes()){
+      const giveCombos=generateCombos(lpIdx,gc).filter(gi=>[...giveSet].every(n=>gi.some(i=>lr[i].player_name===n))&&
+        (!givePosSet.size||gi.some(i=>givePosSet.has(lr[i].position))));
+      const recvCombos=generateCombos(opIdx,rc).filter(ri=>(!targetSet.size||ri.some(i=>targetSet.has(obr[i].player_name)))&&
+        (!wantPosSet.size||ri.some(i=>wantPosSet.has(obr[i].position))));
+      for(const gi of giveCombos) for(const ri of recvCombos){
+        if((++checked&127)===0&&performance.now()-sliceStart>8){
+          await yieldToMain(); if(token&&token!==__genToken) return []; sliceStart=performance.now();
+        }
+        stats.examined++;
+        // Cheap market check before allocating and optimizing two rosters.
+        const gv=gi.reduce((sum,i)=>sum+lr[i].value,0),rv=ri.reduce((sum,i)=>sum+obr[i].value,0);
+        if(!ids.includes('H')&&Math.min(gv,rv)/Math.max(gv,rv)+1e-9<fairnessFloor/100){stats.rejected.valueBalance=(stats.rejected.valueBalance||0)+1;continue;}
+        const ev=evaluateTrade(lr,obr,gi,ri); ev.opponent=opp;
+        const scores=ids.map(id=>({id,score:scoreArchetype(id,ev,weakPos,oppGaps,oppSD)})).filter(x=>x.score!=null);
+        const archs=scores.map(x=>x.id);
+        if(!archs.length){stats.rejected.strategy=(stats.rejected.strategy||0)+1;continue;}
+        stats.eligible++;
+        const {la,oa,...compact}=ev;
+        cands.push({...compact,arch:archs[0],archs,score:scores[0].score,give_idx:gi,recv_idx:ri});
+      }
     }
-    await yieldToMain();
+    await yieldToMain(); if(token&&token!==__genToken) return [];
   }
-  cands.sort((a,b)=>b.score-a.score); return cands
+  cands.sort((a,b)=>Number(a.arch==='H')-Number(b.arch==='H')||b.score-a.score||tradeKey(a).localeCompare(tradeKey(b)));
+  cands.diagnostics=stats;
+  return cands;
 }
 function diversify(cands, perPlayer=2, perOpp=3, top=12){
   const picked=[], pc=new Map(), oc=new Map(), seen=new Set()
@@ -937,11 +1101,6 @@ function diversify(cands, perPlayer=2, perOpp=3, top=12){
   } return picked
 }
 function togglePowerScope(scope){ powerScope=scope; renderHero(); toast(scope==='starters'?'Ranking starters':'Ranking full rosters') }
-function shuffleTop(cands, width=80){
-  const out=cands.slice(), limit=Math.min(width,out.length);
-  for(let i=limit-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [out[i],out[j]]=[out[j],out[i]]; }
-  return out;
-}
 function toast(msg){const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200)}
 function renderHero(){
   const {gaps,avg,sd,zScores,teamVals}=detectGaps();
@@ -1016,24 +1175,46 @@ function quickFilter(kind){
 }
 function queueGenerate(){ if(posGenTimer) clearTimeout(posGenTimer); posGenTimer=setTimeout(()=>{posGenTimer=null; generate()},180); }
 function toggleGive(name){ if(giveSet.has(name)) giveSet.delete(name); else giveSet.add(name); renderMyRoster(); renderBuilder(); if(document.getElementById('expandOverlay').classList.contains('show')) {const b=document.getElementById('expandBody'); if(b) b.innerHTML=renderRosterDetail();} queueGenerate(); }
-function toggleLock(name){ if(lockSet.has(name)) lockSet.delete(name); else lockSet.add(name); renderMyRoster(); if(document.getElementById('expandOverlay').classList.contains('show')) {const b=document.getElementById('expandBody'); if(b) b.innerHTML=renderRosterDetail();} toast(lockSet.has(name)? name+' locked':'Unlocked '+name) }
+function toggleLock(name){ queueGenerate(); if(lockSet.has(name)) lockSet.delete(name); else lockSet.add(name); renderMyRoster(); if(document.getElementById('expandOverlay').classList.contains('show')) {const b=document.getElementById('expandBody'); if(b) b.innerHTML=renderRosterDetail();} toast(lockSet.has(name)? name+' locked':'Unlocked '+name) }
 function setOverride(rankedName, val, playerName){
+  val=Number(val); if(!Number.isFinite(val)||val<0) return;
   invalidateRosterCaches()
-  overrides.set(rankedName, Number(val))
+  overrides.set(rankedName, val)
   Object.values(rosters).forEach(ro=>{ro.forEach(p=>{ if(p.ranked_name===rankedName || p.player_name===playerName) p.value=Number(val) })})
   persistValueState();
-  renderMyRoster(); renderHero(); renderTeamGrid(); renderBuilderMetrics(); if(document.getElementById('expandOverlay').classList.contains('show')) {const b=document.getElementById('expandBody'); const t=document.getElementById('expandTitle').textContent; if(t.includes('Roster')) b.innerHTML=renderRosterDetail();}
+  renderMyRoster(); renderHero(); renderTeamGrid(); renderBuilder(); if(document.getElementById('expandOverlay').classList.contains('show')) {const b=document.getElementById('expandBody'); const t=document.getElementById('expandTitle').textContent; if(t.includes('Roster')) b.innerHTML=renderRosterDetail();}
 }
-function bumpOverride(rankedName, delta){
+function bumpOverride(rankedName, delta, btn){
   const rec=RANKINGS.find(r=>r.name===rankedName);
   if(!rec) return;
-  const base=playerValue(rec.rank,rec.pos,rec.pos_rank);
-  const cur=overrides.has(rankedName)?overrides.get(rankedName):base;
-  setOverride(rankedName, Math.max(0, Math.round(cur+delta)), rankedName);
+  const committed=overrides.has(rankedName)?overrides.get(rankedName):Math.round(playerValue(rec.rank,rec.pos,rec.pos_rank));
+  const base=pendingOverrides.has(rankedName)?pendingOverrides.get(rankedName):committed;
+  const staged=Math.max(0, base+delta);
+  if(staged===committed) pendingOverrides.delete(rankedName);
+  else pendingOverrides.set(rankedName, staged);
+  // Stage only: touch this row in place. No re-sort, no regenerate, no persist.
+  const row=btn?btn.closest('.all-player-row'):null;
+  if(!row) return;
+  const dirty=pendingOverrides.has(rankedName);
+  const valEl=row.querySelector('.all-player-value');
+  if(valEl){
+    valEl.textContent=staged;
+    valEl.style.color=dirty?'var(--accent)':'';
+    valEl.title=dirty?'Staged change — click ✓ to apply':(overrides.has(rankedName)?'Custom value — reset via Data → Reset values':'Rank value');
+  }
+  const check=row.querySelector('.commit-btn');
+  if(check) check.style.visibility=dirty?'visible':'hidden';
+}
+function commitOverride(rankedName){
+  if(!pendingOverrides.has(rankedName)) return;
+  const val=pendingOverrides.get(rankedName);
+  pendingOverrides.delete(rankedName);
+  setOverride(rankedName, val, rankedName);
   refreshOpenValuesDetail();
   queueGenerate();
+  toast(`${rankedName} set to ${val}`);
 }
-function resetValues(){ curveMult={QB:1,RB:1,WR:1,TE:1}; if(curveTimer){clearTimeout(curveTimer);curveTimer=null;} overrides.clear(); clearValueState(); __genToken++; buildRosters(); renderAll(); refreshOpenValuesDetail(); generate(); toast('Personal values reset') }
+function resetValues(){ curveMult={QB:1,RB:1,WR:1,TE:1}; if(curveTimer){clearTimeout(curveTimer);curveTimer=null;} overrides.clear(); pendingOverrides.clear(); clearValueState(); __genToken++; buildRosters(); renderAll(); refreshOpenValuesDetail(); generate(); toast('Personal values reset') }
 function curveLabel(){ return ['QB','RB','WR','TE'].map(pos=>`${pos} ${Math.round((curveMult[pos]||1)*100)}%`).join(' · ') }
 function onCurveInput(pos, el){
   curveMult[pos]=Number(el.value);
@@ -1079,7 +1260,7 @@ function renderTargets(){
     <div class='pos-badge pos-${safeHTML(p.position)}' style='width:24px;height:24px;font-size:9px'>${safeHTML(p.position)}</div>
     <div class='p-name'><b style='font-size:11px'>${safeHTML(p.player_name)}</b><span>${safeHTML(p.oppTeam)} &middot; ${safeHTML(p.team||'')} ${rankLabel(p)} v${p.value.toFixed(0)}</span></div>
     <button class='icon-btn ${targetSet.has(p.player_name)?'active':''}' onclick='toggleTarget("${inlineName(p.player_name)}")' title='Want'>W</button>
-    <button class='icon-btn ${targetSet.has(p.player_name)?'active':''}' onclick='handleTargetPlus("${inlineName(p.player_name)}")' title='Target — show 5 trades'>+</button>
+    <button class='icon-btn ${targetSet.has(p.player_name)?'active':''}' onclick='handleTargetPlus("${inlineName(p.player_name)}")' title='Target — find matching trades'>+</button>
   </div>`).join('')
   const tabs=document.getElementById('oppPosTabs')
   if(!tabs.dataset.init){ tabs.innerHTML=['ALL','QB','RB','WR','TE'].map(o=>`<button class='pos-tab ${oppPosFilter===o?'active':''}' onclick='setOppPos("${o}")'>${o}</button>`).join(''); tabs.dataset.init=1 } else { [...tabs.children].forEach(b=>{b.classList.toggle('active', b.textContent===oppPosFilter)}) }
@@ -1107,90 +1288,16 @@ function renderAllPlayersDetail(){
   const rows=RANKINGS.map(r=>({...r, value:overrides.has(r.name)?overrides.get(r.name):playerValue(r.rank,r.pos,r.pos_rank)})).filter(r=>allPlayersPos==='ALL'||r.pos===allPlayersPos).sort((a,b)=>b.value-a.value||a.rank-b.rank);
   const filters=['ALL','QB','RB','WR','TE'].map(pos=>`<button class='pos-tab ${allPlayersPos===pos?'active':''}' onclick='setAllPlayersPos("${pos}")'>${pos==='ALL'?'All':pos}</button>`).join('');
   const curves=['QB','RB','WR','TE'].map(pos=>`<div class='curve-row'><button aria-label='Reset ${pos} curve to 100%' class='pos-badge pos-${pos} curve-reset-badge' onclick="resetCurvePos('${pos}')" style='width:24px;height:24px;font-size:9px' title='Reset ${pos} to 100%'>${pos}</button><input aria-label='${pos} value curve' class='value-slider curve-slider' max='2' min='0.5' oninput="onCurveInput('${pos}',this)" step='0.05' type='range' value='${curveMult[pos]||1}'/><span class='curve-val' data-curve-val='${pos}'>${Math.round((curveMult[pos]||1)*100)}%</span></div>`).join('');
-  return `<div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>`<div class='player-row all-player-row'><span class='player-index'>${i+1}</span><div class='pos-badge pos-${safeHTML(r.pos)}'>${safeHTML(r.pos)}</div><div class='p-name'><b>${safeHTML(r.name)}</b><span>${safeHTML(r.team||'')} · ${safeHTML(r.pos)}${r.pos_rank} · overall ${r.rank}</span></div><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",-5)' title='Lower value by 5 (saved in this browser)'>−</button><span class='all-player-value' title='${overrides.has(r.name)?'Custom value — reset via Data → Reset values':'Rank value'}'>${r.value.toFixed(0)}</span><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",5)' title='Raise value by 5 (saved in this browser)'>+</button></div>`).join('')}</div>`;
+  return `<div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>{
+  const staged=pendingOverrides.has(r.name)?pendingOverrides.get(r.name):null;
+  const dirty=staged!==null&&staged!==Math.round(r.value);
+  const shown=dirty?staged:r.value;
+  const tip=dirty?'Staged change — click ✓ to apply':(overrides.has(r.name)?'Custom value — reset via Data → Reset values':'Rank value');
+  return `<div class='player-row all-player-row'><span class='player-index'>${i+1}</span><div class='pos-badge pos-${safeHTML(r.pos)}'>${safeHTML(r.pos)}</div><div class='p-name'><b>${safeHTML(r.name)}</b><span>${safeHTML(r.team||'')} · ${safeHTML(r.pos)}${r.pos_rank} · overall ${r.rank}</span></div><button class='icon-btn commit-btn' onclick='commitOverride("${inlineName(r.name)}")' title='Apply staged value' style='visibility:${dirty?'visible':'hidden'};color:var(--success)'>✓</button><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",-5,this)' title='Stage -5 (click ✓ to apply)'>−</button><span class='all-player-value' title='${tip}'${dirty?" style='color:var(--accent)'":''}>${shown.toFixed(0)}</span><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",5,this)' title='Stage +5 (click ✓ to apply)'>+</button></div>`;
+}).join('')}</div>`;
 }
 function clearSearch(id, refresh){ const input=document.getElementById(id); if(input) input.value=''; if(refresh) refresh(); }
 function clearTargets(){ targetSet.clear(); clearSearch('oppSearch'); renderTargets(); renderTrades(); renderTargetedPanel(); queueGenerate(); toast('Targets cleared') }
-// --- TARGETED 5-TRADE GENERATOR (SD-aware, fairness spectrum + desperation) ---
-function getTargetedCandidates(targetName){
-  const entry = Object.entries(rosters).find(([team,ro])=> team!==myTeam && ro.some(p=>p.player_name===targetName));
-  if(!entry) return [];
-  const oppTeam = entry[0], obr = entry[1];
-  const lr = rosters[myTeam]; if(!lr) return [];
-  const lb = teamScore(lr), ob = teamScore(obr);
-  const {sd,gaps} = detectGaps();
-  const oppGaps = gaps[oppTeam]||{};
-  const oppZ = {};
-  ;['QB','RB','WR','TE'].forEach(pos=>{ const gv=oppGaps[pos]||0; const s=sd[pos]||1; oppZ[pos]= gv/s; });
-  const desperatePos = Object.keys(oppZ).filter(k=>['QB','RB','WR','TE'].includes(k)).reduce((a,b)=> oppZ[a]>oppZ[b]?a:b, null);
-  const targetIdx = obr.findIndex(p=>p.player_name===targetName);
-  if(targetIdx<0 || !isRankedPlayer(obr[targetIdx])) return [];
-  const lrIdx = lr.map((_,i)=>i).filter(i=>isRankedPlayer(lr[i]) && !lockSet.has(lr[i].player_name));
-  const obrIdx = obr.map((_,i)=>i).filter(i=>isRankedPlayer(obr[i]));
-  const cands=[];
-  for(let gc=1; gc<=2; gc++) for(let rc=1; rc<=2; rc++){
-    const giveCombos = generateCombos(lrIdx, gc);
-    let recvCombos=[];
-    if(rc===1) recvCombos=[[targetIdx]];
-    else {
-      const others = obrIdx.filter(i=> i!==targetIdx);
-      recvCombos = others.map(o=> [targetIdx,o]);
-      if(others.length===0) recvCombos=[[targetIdx]];
-    }
-    for(const gi of giveCombos){
-      for(const ri of recvCombos){
-        const ev = evaluateTrade(lr,obr,gi,ri,lb,ob);
-        ev.opponent=oppTeam;
-        if(!ev.valid) continue;
-        if(givePosSet.size && !ev.give.some(p=>givePosSet.has(p.position))) continue;
-        if(wantPosSet.size && !ev.recv.some(p=>wantPosSet.has(p.position))) continue;
-        // MAX 30% tax: you can win at most 30% more value than you give
-        if(ev.val_diff < 0 || ev.val_diff > 0.30 * ev.give_val) continue;
-        if(ev.ratio < 0.77) continue;
-        if(ev.logan_delta < -30) continue;
-        ev.desperatePos = desperatePos;
-        ev.desperateZ = oppZ[desperatePos]||0;
-        ev.isDesperationFill = ev.give.some(p=>p.position===desperatePos) && !ev.recv.some(p=>p.position===desperatePos);
-        // label for trade card
-        ev.targetName = targetName;
-        cands.push(ev);
-      }
-    }
-  }
-  return cands;
-}
-function pickFiveForTarget(cands){
-  if(!cands.length) return [];
-  const viable = cands.filter(c=> c.logan_delta > -20);
-  if(!viable.length) return cands.slice(0,5);
-  const byFair = shuffleTop([...viable].sort((a,b)=> b.ratio - a.ratio || b.logan_delta - a.logan_delta), 12);
-  const byValue = shuffleTop([...viable].sort((a,b)=> b.val_diff - a.val_diff), 12);
-  const byStarter = shuffleTop([...viable].sort((a,b)=> b.logan_delta - a.logan_delta), 12);
-  const desperation = shuffleTop([...viable].filter(c=> c.isDesperationFill).sort((a,b)=> (b.desperateZ*80 + b.logan_delta) - (a.desperateZ*80 + a.logan_delta)), 12);
-  // MAX 30% tax: ratio 0.77-0.95 (~5-30% win), balanced keeps both teams viable
-  const balanced = shuffleTop([...viable].filter(c=> c.ratio>=0.77 && c.ratio<=0.95 && c.logan_delta>0 && c.opp_delta > -10).sort((a,b)=> (b.logan_delta*2 + b.ratio*80) - (a.logan_delta*2 + a.ratio*80)), 12);
-  const fairMid = shuffleTop([...viable].filter(c=> c.ratio>=0.77 && c.ratio<=0.92).sort((a,b)=> b.logan_delta - a.logan_delta), 12);
-  const picks=[]; const seen=new Set();
-  function addFrom(list){
-    for(const c of list){
-      const key = c.give.map(p=>p.player_name).sort().join(',')+'->'+c.recv.map(p=>p.player_name).sort().join(',')+'|'+c.opponent;
-      if(!seen.has(key)){ picks.push(c); seen.add(key); return true; }
-    }
-    return false;
-  }
-  addFrom(byFair);
-  addFrom(byStarter);
-  addFrom(byValue);
-  if(desperation.length) addFrom(desperation);
-  if(balanced.length) addFrom(balanced); else addFrom(fairMid);
-  let i=0;
-  while(picks.length<5 && i<byStarter.length){
-    const c=byStarter[i++];
-    const key = c.give.map(p=>p.player_name).sort().join(',')+'->'+c.recv.map(p=>p.player_name).sort().join(',')+'|'+c.opponent;
-    if(!seen.has(key)){ picks.push(c); seen.add(key); }
-  }
-  return picks.slice(0,5);
-}
 function renderTargetedPanel(){
   const panel=document.getElementById('targetedPanel');
   if(!panel) return;
@@ -1199,32 +1306,66 @@ function renderTargetedPanel(){
   panel.innerHTML='';
 }
 let builderGive=[], builderGet=[]
+let builderReturnPos='ANY', builderReturnCount=1, builderMatches=[], builderMatchIndex=-1
+function resetBuilderMatches(clearStatus=true){
+  builderMatches=[]; builderMatchIndex=-1;
+  const options=document.getElementById('builderMatchOptions'); if(options){ options.hidden=true; options.innerHTML=''; }
+  if(clearStatus){ const status=document.getElementById('builderFinderStatus'); if(status) status.textContent=builderGive.length?'Choose a position and find a balanced return.':'Add the players you want to send, then find a return.'; }
+}
+function renderBuilderFinder(){
+  const shape=document.getElementById('builderShape'); if(shape) shape.textContent=`${builderGive.length} for ${builderReturnCount}`;
+  document.querySelectorAll('[data-builder-pos]').forEach(btn=>{ const active=btn.dataset.builderPos===builderReturnPos; btn.classList.toggle('active',active); btn.setAttribute('aria-pressed',String(active)); });
+  const count=document.getElementById('builderReturnCount'); if(count) count.value=String(builderReturnCount);
+}
+function setBuilderReturnPos(pos){
+  builderReturnPos=['QB','RB','WR','TE'].includes(pos)?pos:'ANY'; resetBuilderMatches(); renderBuilderFinder();
+}
+function setBuilderReturnCount(value){
+  builderReturnCount=Math.max(1,Math.min(3,Number(value)||1)); resetBuilderMatches(); renderBuilderFinder();
+}
 function addToBuilder(playerName, side){
   let obj=null, team=null
   for(const [t,ro] of Object.entries(rosters)){ const f=ro.find(p=>p.player_name===playerName); if(f){obj=f; team=t; break} }
+  if((side==='give'&&team!==myTeam)||(side==='get'&&team===myTeam)) return toast('Choose players from the correct team');
   if(!obj || !isRankedPlayer(obj)) return toast('That player has no canonical Rank')
   const arr=side==='give'?builderGive:builderGet
   if(side==='get' && arr.length && arr[0]._team!==team){ toast('Builder can only use one opponent'); return; }
   if(arr.some(p=>p.player_name===playerName)) return
   arr.push({...obj, _team:team})
+  resetBuilderMatches()
   renderBuilder()
 }
+function syncBuilderPlayers(){
+  let valid=true;
+  const sync=(list,give)=>list.map(p=>{
+    const team=p._team, live=rosters[team]?.find(x=>x.player_name===p.player_name);
+    if(!live||(give?team!==myTeam:team===myTeam)){valid=false;return p;}
+    return {...live,_team:team};
+  });
+  builderGive=sync(builderGive,true);builderGet=sync(builderGet,false);
+  return valid;
+}
 function renderBuilder(){
+  syncBuilderPlayers();
   document.getElementById('builderCount').textContent=builderGive.length+builderGet.length;
   const gList=document.getElementById('giveList'), getList=document.getElementById('getList')
-  gList.innerHTML=builderGive.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small style='color:var(--text3)'>v${p.value.toFixed(0)}</small> <button onclick='removeFromBuilder("${inlineName(p.player_name)}", "give")' style='border:none;background:transparent;cursor:pointer'>x</button></span>`).join('')
-  getList.innerHTML=builderGet.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small style='color:var(--text3)'>v${p.value.toFixed(0)}</small> <button onclick='removeFromBuilder("${inlineName(p.player_name)}", "get")' style='border:none;background:transparent;cursor:pointer'>x</button></span>`).join('')
+  gList.innerHTML=builderGive.map(p=>`<span class='chip builder-chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i><span class='chip-name'>${safeHTML(p.player_name)}</span><small class='chip-val'>v${p.value.toFixed(0)}</small><button class='chip-x' onclick='removeFromBuilder("${inlineName(p.player_name)}", "give")' aria-label='Remove ${safeHTML(p.player_name)}'>×</button></span>`).join('')
+  getList.innerHTML=builderGet.map(p=>`<span class='chip builder-chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i><span class='chip-name'>${safeHTML(p.player_name)}</span><small class='chip-val'>v${p.value.toFixed(0)}</small><button class='chip-x' onclick='removeFromBuilder("${inlineName(p.player_name)}", "get")' aria-label='Remove ${safeHTML(p.player_name)}'>×</button></span>`).join('')
   document.getElementById('giveEmpty').style.display=builderGive.length?'none':'block'
   document.getElementById('getEmpty').style.display=builderGet.length?'none':'block'
   const gv=builderGive.reduce((s,p)=>s+p.value,0), rv=builderGet.reduce((s,p)=>s+p.value,0)
   document.getElementById('giveVal').textContent=gv.toFixed(0)
   document.getElementById('getVal').textContent=rv.toFixed(0)
+  renderBuilderFinder()
   renderBuilderMetrics()
 }
 function renderBuilderMetrics(){
+  if(!syncBuilderPlayers()){document.getElementById('builderMetrics').textContent='A selected player is no longer on the expected roster. Remove that selection.';return;}
   if(!builderGive.length || !builderGet.length){document.getElementById('builderMetrics').innerHTML='<div class="empty">Add players to both sides to compare.</div>'; return}
   const gv=builderGive.reduce((s,p)=>s+p.value,0), rv=builderGet.reduce((s,p)=>s+p.value,0), share=(gv+rv)? rv/(gv+rv):0.5, ratio= Math.max(gv,rv)? Math.min(gv,rv)/Math.max(gv,rv):1
-  const oppTeams=[...new Set(builderGet.map(p=>p._team))]; const opp=oppTeams[0]||Object.keys(rosters).find(t=>t!==myTeam)
+  const oppTeams=[...new Set(builderGet.map(p=>p._team))];
+  if(oppTeams.length!==1){document.getElementById('builderMetrics').textContent='Choose players from one opponent to evaluate a trade.';return;}
+  const opp=oppTeams[0]||Object.keys(rosters).find(t=>t!==myTeam)
   let gd=0,od=0
   let myBeforePos=null,myAfterPos=null,oppBeforePos=null,oppAfterPos=null,myBeforeStarter=0,myAfterStarter=0,oppBeforeStarter=0,oppAfterStarter=0,myBeforeTotal=0,myAfterTotal=0,oppBeforeTotal=0,oppAfterTotal=0
   if(opp && rosters[opp]){
@@ -1234,6 +1375,7 @@ function renderBuilderMetrics(){
     if(gi.length||ri.length){
       const lb=teamScore(lr), ob=teamScore(obr)
       const ev=evaluateTrade(lr,obr,gi,ri,lb,ob)
+      if(!ev.valid){document.getElementById('builderMetrics').textContent='This trade cannot fit both rosters while preserving required starters and locked players.';return;}
       gd=ev.logan_delta; od=ev.opp_delta
       myBeforePos=rosterValueBreakdown(lr); myAfterPos=rosterValueBreakdown(ev.la)
       oppBeforePos=rosterValueBreakdown(obr); oppAfterPos=rosterValueBreakdown(ev.oa)
@@ -1257,24 +1399,67 @@ function renderBuilderMetrics(){
   const barYouPct = (share*100).toFixed(1);
   const barOppPct = (100 - share*100).toFixed(1);
   document.getElementById('builderMetrics').innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 6px"><b style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)">Trade impact</b><span style="font-size:11px">${fairLabel}</span></div>
-    <div style="position:relative;height:22px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;overflow:hidden;display:flex;margin-bottom:8px">
-      <div style="width:${barOppPct}%;background:linear-gradient(90deg,#7c3aed,#3b82f6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">${barOppPct}% give</div>
-      <div style="width:${barYouPct}%;background:linear-gradient(90deg,#10b981,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">${barYouPct}% get</div>
-      <div style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--text);opacity:.9;transform:translateX(-50%)"></div>
-      <div style="position:absolute;left:50%;top:-6px;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:1px 5px;font-size:9px;font-weight:900;white-space:nowrap">50% even</div>
+    <div class="trade-impact-head"><b>Trade impact</b><span>${fairLabel}</span></div>
+    <div class="share-bar">
+      <div class="share-give" style="width:${barOppPct}%">${Number(barOppPct)>=20?`${barOppPct}% give`:''}</div>
+      <div class="share-get" style="width:${barYouPct}%">${Number(barYouPct)>=20?`${barYouPct}% get`:''}</div>
+      <div class="share-mid"></div>
     </div>
-    <div class='small' style="display:flex;justify-content:space-between;margin:2px 2px 10px;opacity:.8"><span>You give ${gv.toFixed(0)}</span><span>You get ${rv.toFixed(0)} — ${rv>gv?'+':''}${(rv-gv).toFixed(0)} (${winPctGive>0?'+':''}${winPctGive}%)</span></div>
+    <div class="share-summary"><span>You give ${gv.toFixed(0)}</span><span>You get ${rv.toFixed(0)} — ${rv>gv?'+':''}${(rv-gv).toFixed(0)} (${winPctGive>0?'+':''}${winPctGive}%)</span></div>
     <div class='impact-grid'>
       <div class='impact-card'><h4>You</h4><div class='impact-row'><span>Value received</span><span class='impact-delta ${deltaClass(rv-gv)}'>${delta(rv-gv)}${pctDelta(rv-gv, gv)}</span></div><div class='impact-row'><span>Starting lineup</span><span class='impact-delta ${deltaClass(myAfterStarter-myBeforeStarter)}'>${delta(myAfterStarter-myBeforeStarter)}${pctDelta(myAfterStarter-myBeforeStarter, myBeforeStarter)}</span></div><div class='impact-row'><span>Overall team value</span><span class='impact-delta ${deltaClass(myAfterTotal-myBeforeTotal)}'>${delta(myAfterTotal-myBeforeTotal)}${pctDelta(myAfterTotal-myBeforeTotal, myBeforeTotal)}</span></div></div>
       <div class='impact-card'><h4>${safeHTML(opp||'Opponent')}</h4><div class='impact-row'><span>Value received</span><span class='impact-delta ${deltaClass(gv-rv)}'>${delta(gv-rv)}${pctDelta(gv-rv, rv||gv)}</span></div><div class='impact-row'><span>Starting lineup</span><span class='impact-delta ${deltaClass(oppAfterStarter-oppBeforeStarter)}'>${delta(oppAfterStarter-oppBeforeStarter)}${pctDelta(oppAfterStarter-oppBeforeStarter, oppBeforeStarter)}</span></div><div class='impact-row'><span>Overall team value</span><span class='impact-delta ${deltaClass(oppAfterTotal-oppBeforeTotal)}'>${delta(oppAfterTotal-oppBeforeTotal)}${pctDelta(oppAfterTotal-oppBeforeTotal, oppBeforeTotal)}</span></div></div>
     </div>
-    ${myBeforePos?`<div class="impact-card" style="margin-top:8px"><h4>Positional impact <span style="float:right;font-weight:600;color:var(--text3);text-transform:none;letter-spacing:0">You / Opponent</span></h4><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">${['QB','RB','WR','TE'].map(pos=>{const md=myAfterPos[pos]-myBeforePos[pos], od2=oppAfterPos[pos]-oppBeforePos[pos]; const mdPct=myBeforePos[pos]?` ${ (md/myBeforePos[pos]*100).toFixed(0)}%`:''; const odPct=oppBeforePos[pos]?` ${ (od2/oppBeforePos[pos]*100).toFixed(0)}%`:''; return `<div style="padding:7px 5px;text-align:center;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-size:10px"><b>${pos}</b><br><span class="impact-delta ${deltaClass(md)}">${delta(md)}<span style="opacity:.6">${mdPct}</span></span><span style="color:var(--text3)"> / </span><span class="impact-delta ${deltaClass(od2)}">${delta(od2)}<span style="opacity:.6">${odPct}</span></span></div>`}).join('')}</div></div>`:''}
+    ${myBeforePos?`<div class="impact-card pos-impact-card"><h4>Positional impact <span style="float:right;font-weight:600;color:var(--text3);text-transform:none;letter-spacing:0">You / Opponent</span></h4><div class="pos-impact-grid">${['QB','RB','WR','TE'].map(pos=>{const md=myAfterPos[pos]-myBeforePos[pos], od2=oppAfterPos[pos]-oppBeforePos[pos]; const mdPct=myBeforePos[pos]?` ${ (md/myBeforePos[pos]*100).toFixed(0)}%`:''; const odPct=oppBeforePos[pos]?` ${ (od2/oppBeforePos[pos]*100).toFixed(0)}%`:''; return `<div class="pos-impact-cell"><b>${pos}</b><span class="impact-delta ${deltaClass(md)}">${delta(md)}<span class="pct">${mdPct}</span></span><span class="impact-delta ${deltaClass(od2)}">${delta(od2)}<span class="pct">${odPct}</span></span></div>`}).join('')}</div></div>`:''}
   `
 }
-function removeFromBuilder(name, side){ const arr=side==='give'?builderGive:builderGet; const i=arr.findIndex(p=>p.player_name===name); if(i>=0) arr.splice(i,1); renderBuilder() }
-function clearBuilder(){ builderGive=[]; builderGet=[]; clearSearch('giveInput'); clearSearch('getInput'); document.getElementById('giveSuggest').classList.remove('show'); document.getElementById('getSuggest').classList.remove('show'); renderBuilder(); toast('Builder cleared') }
+function removeFromBuilder(name, side){ const arr=side==='give'?builderGive:builderGet; const i=arr.findIndex(p=>p.player_name===name); if(i>=0) arr.splice(i,1); resetBuilderMatches(); renderBuilder() }
+function clearBuilder(){ builderGive=[]; builderGet=[]; resetBuilderMatches(); clearSearch('giveInput'); clearSearch('getInput'); document.getElementById('giveSuggest').classList.remove('show'); document.getElementById('getSuggest').classList.remove('show'); renderBuilder(); toast('Builder cleared') }
+function findBuilderReturns(){
+  if(!syncBuilderPlayers()) return toast('Remove players no longer on your roster');
+  if(!builderGive.length) return toast('Add at least one player to send');
+  const lr=rosters[myTeam]||[], gi=builderGive.map(p=>lr.findIndex(x=>x.player_name===p.player_name));
+  if(gi.some(i=>i<0)) return toast('Could not match every outgoing player');
+  const gv=builderGive.reduce((sum,p)=>sum+p.value,0), minRatio=fairnessFloor/100, matches=[];
+  for(const [opp,obr] of Object.entries(rosters)){
+    if(opp===myTeam) continue;
+    const opIdx=obr.map((p,i)=>({p,i})).filter(x=>isRankedPlayer(x.p)&&x.p.value>0).map(x=>x.i);
+    for(const ri of generateCombos(opIdx,builderReturnCount)){
+      const incoming=ri.map(i=>obr[i]);
+      if(builderReturnPos!=='ANY'&&!incoming.some(p=>p.position===builderReturnPos)) continue;
+      const rv=incoming.reduce((sum,p)=>sum+p.value,0), ratio=Math.max(gv,rv)?Math.min(gv,rv)/Math.max(gv,rv):0;
+      if(ratio+1e-9<minRatio) continue;
+      const ev=evaluateTrade(lr,obr,gi,ri);
+      matches.push({opp, incoming:incoming.map(p=>({...p,_team:opp})), ratio, value:rv, valueGap:Math.abs(rv-gv), starterDelta:ev.logan_delta, rosterFit:ev.valid});
+    }
+  }
+  matches.sort((a,b)=>a.valueGap-b.valueGap||b.value-a.value||b.starterDelta-a.starterDelta||a.opp.localeCompare(b.opp));
+  builderMatches=matches; builderMatchIndex=-1;
+  if(!builderMatches.length){
+    const status=document.getElementById('builderFinderStatus'); status.textContent=`No ${builderGive.length}-for-${builderReturnCount} value match found at ${fairnessFloor}%+ balance. Try ANY, another package size, or a lower balance filter.`;
+    const options=document.getElementById('builderMatchOptions'); options.hidden=true; options.innerHTML=''; toast('No balanced return found'); return;
+  }
+  applyBuilderReturn(0);
+}
+function renderBuilderMatchOptions(){
+  const options=document.getElementById('builderMatchOptions');
+  if(!builderMatches.length){ options.hidden=true; options.innerHTML=''; return; }
+  options.hidden=false;
+  options.innerHTML=builderMatches.slice(0,8).map((match,index)=>{
+    const names=match.incoming.map(p=>p.player_name).join(' + '), positions=match.incoming.map(p=>p.position).join(' + '), gap=match.value-builderGive.reduce((sum,p)=>sum+p.value,0);
+    return `<button class="builder-match-option ${index===builderMatchIndex?'active':''}" onclick="applyBuilderReturn(${index})"><span><b>${safeHTML(names)}</b><small>${safeHTML(match.opp)} · ${safeHTML(positions)}</small></span><span><b>v${match.value.toFixed(0)}</b><small>${gap>=0?'+':''}${gap.toFixed(0)} · ${Math.round(match.ratio*100)}%</small></span></button>`;
+  }).join('');
+}
+function applyBuilderReturn(index){
+  if(!builderMatches.length) return;
+  builderMatchIndex=(index+builderMatches.length)%builderMatches.length;
+  const match=builderMatches[builderMatchIndex]; builderGet=match.incoming.map(p=>({...p})); renderBuilder();
+  document.getElementById('builderFinderStatus').innerHTML=`Showing the <b>${Math.min(8,builderMatches.length)}</b> closest of <b>${builderMatches.length}</b> fair-value matches. Select any option below.`;
+  renderBuilderMatchOptions();
+  toast(`Filled return from ${match.opp}`);
+}
 function evaluateBuilder(){
+  if(!syncBuilderPlayers()) return toast('Remove players no longer on the expected roster');
   if(!builderGive.length||!builderGet.length) return toast('Add players to both sides')
   const oppTeams=[...new Set(builderGet.map(p=>p._team))]
   if(oppTeams.length>1) return toast('Pick players from one opponent')
@@ -1284,12 +1469,14 @@ function evaluateBuilder(){
   const gi=builderGive.map(p=>lr.findIndex(x=>x.player_name===p.player_name)).filter(i=>i>=0)
   const ri=builderGet.map(p=>obr.findIndex(x=>x.player_name===p.player_name)).filter(i=>i>=0)
   const ev=evaluateTrade(lr,obr,gi,ri, teamScore(lr), teamScore(obr))
+  if(!ev.valid) return toast('Trade cannot fit both rosters and required starters');
   ev.opponent=opp; ev.score= (ev.val_diff/9.356)*0.5 + (ev.logan_delta/9.356)
   const grid=document.getElementById('tradeGrid')
   ev.arch='Manual'; showExactTrade(ev,'Trade evaluation');
   toast('Builder evaluated vs '+opp)
 }
 function previewBuilder(){
+  if(!syncBuilderPlayers()) return toast('Remove players no longer on the expected roster');
   if(!builderGive.length||!builderGet.length) return toast('Add players to both sides')
   const oppTeams=[...new Set(builderGet.map(p=>p._team))]
   if(oppTeams.length>1) return toast('Pick players from one opponent')
@@ -1300,6 +1487,7 @@ function previewBuilder(){
   const ri=builderGet.map(p=>obr.findIndex(x=>x.player_name===p.player_name)).filter(i=>i>=0)
   if(!gi.length||!ri.length) return toast('Could not match both sides to rosters')
   const ev=evaluateTrade(lr,obr,gi,ri,teamScore(lr),teamScore(obr)); ev.opponent=opp; ev.score=(ev.val_diff/9.356)*0.5+(ev.logan_delta/9.356); ev.arch='MANUAL'
+  if(!ev.valid) return toast('Trade cannot fit both rosters and required starters');
   document.getElementById('expandTitle').textContent=`Projected Rosters — ${myTeam} ↔ ${opp}`
   document.getElementById('expandBody').innerHTML=renderTradeDetail(ev)
   document.getElementById('expandOverlay').classList.add('show'); document.body.style.overflow='hidden'
@@ -1342,42 +1530,34 @@ function onDrop(e, side){
 }
 let __genToken=0;
 function yieldToMain(){ return new Promise(resolve=>setTimeout(resolve,0)); }
-async function collectTrades(archsToRun, opponent, token=0){
-    const {gaps,sd}=detectGaps(); const {worst}=weakestPos(myTeam)
-    let all=[]; const evaluations=new Map();
-    for(const id of archsToRun){
-      if(token && token!==__genToken) return [];
-      const cands=await findTradesForArch(id, myTeam, worst, gaps, sd, token, opponent, evaluations)
-      const picks=diversify(shuffleTop(cands, 80), 2, 3, id==='D'||id==='A'?10:8)
-      picks.forEach(p=>{p.arch=id;})
-      all=all.concat(picks)
-      await yieldToMain();
-    }
-    const seen=new Map()
-    all.forEach(c=>{ const key=c.opponent+'|'+[...c.give].map(p=>p.player_name).sort().join(',')+'->'+[...c.recv].map(p=>p.player_name).sort().join(','); if(!seen.has(key) || seen.get(key).score < c.score) seen.set(key,c) })
-    const trades=diversify(shuffleTop([...seen.values()].sort((a,b)=>b.score-a.score), 48), 3, 6, 48);
-    // Retain the complete candidate shape for saved trades and other consumers.
-    for(const trade of trades){
-      const lr=rosters[myTeam], obr=rosters[trade.opponent];
-      trade.la=lr.filter((_,i)=>!trade.give_idx.includes(i)).concat(trade.recv);
-      trade.oa=obr.filter((_,i)=>!trade.recv_idx.includes(i)).concat(trade.give);
-    }
-    return trades;
+async function collectTrades(archsToRun,opponent,token=0){
+  const {gaps,sd}=detectGaps(); const {worst}=weakestPos(myTeam);
+  const cands=await findTradesForArch(archsToRun,myTeam,worst,gaps,sd,token,opponent);
+  // Diversity is a presentation preference, never a reason to discard offers.
+  const first=diversify(cands,1,2,6),seen=new Set(first.map(tradeKey));
+  const trades=first.concat(cands.filter(c=>!seen.has(tradeKey(c))));
+  for(const [index,trade] of trades.entries()){
+    trade.display_order=index;
+    const ev=evaluateTrade(rosters[myTeam],rosters[trade.opponent],trade.give_idx,trade.recv_idx);
+    trade.la=ev.la; trade.oa=ev.oa;
+  }
+  trades.diagnostics=cands.diagnostics;
+  return trades;
 }
 let activeSearch=null, workerSourceURL=null;
 function tradeWorkerSource(){
   // Build from the same functions as the fallback: one scoring implementation,
   // embedded in the standalone HTML so file:// needs no server or extra asset.
-  const functions=[starterScore,teamScore,canField,detectGaps,weakestPos,
-    isRankedPlayer,evaluateTrade,scoreArchetype,generateCombos,
-    findTradesForArch,diversify,shuffleTop,collectTrades];
-  return `let rosters,myTeam,STARTERS,FLEX_ELIGIBLE,sizeMode,fairnessFloor,
+  const functions=[starterScore,teamScore,canField,rosterUtility,fitTradeRoster,positionalStrength,detectGaps,weakestPos,
+    isRankedPlayer,evaluateTrade,tierRankOf,bestKnownTier,tierOverpayNeeded,scoreArchetype,packageSizes,tradeKey,generateCombos,
+    findTradesForArch,diversify,collectTrades];
+  return `let rosters,myTeam,STARTERS,FLEX_ELIGIBLE,FLEX_SLOTS,sizeMode,fairnessFloor,
     giveSet,lockSet,targetSet,givePosSet,wantPosSet;
     let starterCache=new WeakMap(),gapCache=null,__genToken=0;
     const yieldToMain=async()=>{};
     ${functions.map(fn=>fn.toString()).join('\n')}
     self.onmessage=async({data})=>{
-      ({rosters,myTeam,STARTERS,FLEX_ELIGIBLE,sizeMode,fairnessFloor,
+      ({rosters,myTeam,STARTERS,FLEX_ELIGIBLE,FLEX_SLOTS,sizeMode,fairnessFloor,
         giveSet,lockSet,targetSet,givePosSet,wantPosSet}=data);
       try{ self.postMessage({trades:await collectTrades(data.archs,data.opponent)}); }
       catch(error){ self.postMessage({error:String(error)}); }
@@ -1398,7 +1578,7 @@ function searchInWorker(archs,opponent){
     worker.onmessage=({data})=>finish(data.trades,data.error);
     worker.onerror=event=>{event.preventDefault();finish(null,new Error(event.message));};
     worker.onmessageerror=()=>finish(null,new Error('Could not read trade search results'));
-    try{worker.postMessage({rosters,myTeam,STARTERS,FLEX_ELIGIBLE,sizeMode,fairnessFloor,
+    try{worker.postMessage({rosters,myTeam,STARTERS,FLEX_ELIGIBLE,FLEX_SLOTS,sizeMode,fairnessFloor,
       giveSet,lockSet,targetSet,givePosSet,wantPosSet,archs,opponent});}
     catch(error){finish(null,error);}
   });
@@ -1423,7 +1603,7 @@ async function generate(){
       trades=await collectTrades(archs,opponent,token);
     }
     if(token!==__genToken || !trades) return;
-    currentTrades=trades; tradesExpanded=false; renderTrades();
+    currentTrades=trades; tradesExpanded=false; expandedTradeLimit=48; renderTrades(); renderTargetedPanel();
     toast(`Found ${currentTrades.length} trades`);
   } finally {
     if(token===__genToken && btn){btn.disabled=false;btn.textContent='Generate trades';}
@@ -1436,7 +1616,7 @@ function renderTrades(){
   const sort=document.getElementById('sortSel').value
   filteredTrades=currentTrades.filter(c=>{
     if(q){ const hay=(c.opponent+' '+c.give.map(p=>p.player_name).join(' ')+' '+c.recv.map(p=>p.player_name).join(' ')+' '+c.arch).toLowerCase(); if(!hay.includes(q)) return false }
-    if(activeArch!=='ALL' && c.arch!==activeArch) return false
+    if(activeArch!=='ALL' && !(c.archs||[c.arch]).includes(activeArch)) return false
     if(givePosSet.size && !c.give.some(p=>givePosSet.has(p.position))) return false
     if(wantPosSet.size && !c.recv.some(p=>wantPosSet.has(p.position))) return false
     if(targetSet.size && ![...c.give, ...c.recv].some(p=>targetSet.has(p.player_name))) return false
@@ -1446,21 +1626,26 @@ function renderTrades(){
   else if(sort==='starter') filteredTrades.sort((a,b)=>b.logan_delta-a.logan_delta)
   else if(sort==='value') filteredTrades.sort((a,b)=>b.val_diff-a.val_diff)
   else if(sort==='fair') filteredTrades.sort((a,b)=>b.ratio-a.ratio)
-  else filteredTrades.sort((a,b)=>b.score-a.score)
-  stats.textContent = filteredTrades.length ? `${Math.min(tradesExpanded?48:6,filteredTrades.length)} / ${filteredTrades.length} results` : ''; document.getElementById('resultCount').textContent=filteredTrades.length
-  const limit = tradesExpanded ? 48 : 6
+  else filteredTrades.sort((a,b)=>(a.display_order??0)-(b.display_order??0)||b.score-a.score)
+  stats.textContent = filteredTrades.length ? `${Math.min(tradesExpanded?expandedTradeLimit:6,filteredTrades.length)} / ${filteredTrades.length} results` : ''; if(currentTrades.diagnostics) stats.textContent+=` · ${currentTrades.diagnostics.examined.toLocaleString()} packages checked`; document.getElementById('resultCount').textContent=filteredTrades.length
+  const limit = tradesExpanded ? expandedTradeLimit : 6
   const showing = Math.min(limit, filteredTrades.length)
   if(label) label.textContent = ''
   if(hint){
     if(filteredTrades.length>6){
       hint.style.display='block'
-      hint.innerHTML = tradesExpanded ? `<button class="btn btn-sm btn-ghost" style="width:100%">Show top 6</button>` : `<button class="btn btn-sm" style="width:100%">Show all ${filteredTrades.length} trades</button>`
+      hint.innerHTML = showing>=filteredTrades.length ? `<button class="btn btn-sm btn-ghost" style="width:100%">Show top 6</button>` : `<button class="btn btn-sm" style="width:100%">Show more · ${filteredTrades.length-showing} remaining</button>`
     } else hint.style.display='none'
   }
   if(!filteredTrades.length){ grid.innerHTML=''; empty.style.display='block'; if(hint) hint.style.display='none'; if(label) label.textContent=''; return } else empty.style.display='none'
   grid.innerHTML=filteredTrades.slice(0,limit).map((c,i)=>renderCard(c,i)).join('')
 }
-function toggleTradesExpand(){ tradesExpanded=!tradesExpanded; renderTrades(); if(tradesExpanded) document.getElementById('tradesPanel')?.scrollIntoView({behavior:'smooth', block:'start'}); }
+function toggleTradesExpand(){
+  if(!tradesExpanded){tradesExpanded=true;expandedTradeLimit=48;}
+  else if(expandedTradeLimit<filteredTrades.length) expandedTradeLimit+=48;
+  else tradesExpanded=false;
+  renderTrades();
+}
 function handleTradesBoxClick(e){
   if(!filteredTrades.length) return
   if(e.target.closest('.trade-card') || e.target.closest('button') || e.target.closest('input') || e.target.closest('select') || e.target.closest('.pill')) return
@@ -1525,8 +1710,8 @@ function renderTradeDetail(c){
   const oppBefore=rosters[c.opponent]||[];
   const gvNames=new Set(c.give.map(x=>x.player_name));
   const rvNames=new Set(c.recv.map(x=>x.player_name));
-  const myAfter=[...myBefore.filter(p=>!gvNames.has(p.player_name)), ...c.recv];
-  const oppAfter=[...oppBefore.filter(p=>!rvNames.has(p.player_name)), ...c.give];
+  const myAfter=c.la||fitTradeRoster(myBefore,myBefore.filter(p=>gvNames.has(p.player_name)),c.recv,lockSet).roster;
+  const oppAfter=c.oa||fitTradeRoster(oppBefore,oppBefore.filter(p=>rvNames.has(p.player_name)),c.give).roster;
   const myBeforeTotals=getPosTotals(myBefore);
   const myAfterTotals=getPosTotals(myAfter);
   const oppBeforeTotals=getPosTotals(oppBefore);
@@ -1543,14 +1728,15 @@ function renderTradeDetail(c){
       <span class='badge ${arch.badge}'>${arch.name}</span>
       <span class='fair' style='color:${(c.share||c.ratio)>0.50?'var(--success)':(c.share||c.ratio)<0.50?'var(--danger)':'var(--text2)'}'>${fairPct}% to you</span>
       <span class='kbd'>Score ${c.score.toFixed(1)}</span>
-      <span class='small'>You ${c.logan_delta>=0?'+':''}${c.logan_delta.toFixed(0)} · Them ${c.opp_delta>=0?'+':''}${c.opp_delta.toFixed(0)} · Value ${c.val_diff>=0?'+':''}${c.val_diff.toFixed(0)}</span>
+      <span class='small'>Your lineup ${c.logan_delta>=0?'+':''}${c.logan_delta.toFixed(0)} · Their lineup ${c.opp_delta>=0?'+':''}${c.opp_delta.toFixed(0)} · Value ${c.val_diff>=0?'+':''}${c.val_diff.toFixed(0)}</span>
       <span class='small' style='margin-left:auto'>${c.give.length}-for-${c.recv.length} vs ${safeHTML(c.opponent)}</span>
     </div>
     <div style='display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px'>
-      <div class='side-box' style='margin:0'><h4>You give <span>${c.give_val.toFixed(0)}</span></h4><div>${c.give.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')}</div></div>
+      <div class='side-box' style='margin:0'><h4>You give <span>${c.give_val.toFixed(0)}</span></h4><div>${c.give.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}${p.tier?' · T'+safeHTML(p.tier):''}</small></span>`).join('')}</div></div>
       <div class='swap'>↔</div>
-      <div class='side-box' style='margin:0'><h4>You get <span>${c.recv_val.toFixed(0)}</span></h4><div>${c.recv.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')}</div></div>
+      <div class='side-box' style='margin:0'><h4>You get <span>${c.recv_val.toFixed(0)}</span></h4><div>${c.recv.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}${p.tier?' · T'+safeHTML(p.tier):''}</small></span>`).join('')}</div></div>
     </div>
+    <p class='small'>${tradeCutsLabel(c)}. Lineup changes use ranking-based value, not projected fantasy points. Depth counts at 20% in the recommendation score.</p>
     <div class='trade-detail-grid'>
       <div class='roster-panel'>
         <h4>${safeHTML(myTeam)} <span class='kbd'>${myBeforeTotals.TOTAL.toFixed(0)} → ${myAfterTotals.TOTAL.toFixed(0)} <span style='color:${myDelta>=0?'var(--success)':'var(--danger)'}'>${myDelta>=0?'+':''}${myDelta.toFixed(0)}</span></span></h4>
@@ -1572,18 +1758,25 @@ function renderTradeDetail(c){
     </div>
   `;
 }
+function tradeCutsLabel(c){
+  const parts=[];
+  if(c.your_drops?.length) parts.push('You cut: '+c.your_drops.map(p=>p.player_name).join(', '));
+  if(c.their_drops?.length) parts.push('They cut: '+c.their_drops.map(p=>p.player_name).join(', '));
+  if(c.arch==='H')parts.unshift('Aggressive offer: fills their '+c.exploit_position+' need; you gain '+Math.round(c.val_diff/c.give_val*100)+'% value'); return safeHTML(parts.join(' · ')||'No roster cuts required');
+}
 function renderCard(c, i){
   const arch=ARCHS.find(a=>a.id===c.arch) || {name:c.arch||'', badge:''}
   const gv=c.give_val, rv=c.recv_val, ratio=c.ratio, share=c.share!=null?c.share:(ratio>0? (rv/(gv+rv)||0.5):0.5)
   const gd=c.logan_delta, od=c.opp_delta, vd=c.val_diff
   const isFav=favs.some(f=>f.opponent===c.opponent && f.give.map(p=>p.player_name).join(',')===c.give.map(p=>p.player_name).join(',') && f.recv.map(p=>p.player_name).join(',')===c.recv.map(p=>p.player_name).join(','))
-  const playerBlock=(list,owner)=>list.map(p=>`<div class="deal-player" draggable="true" ondragstart='onDragStart(event,"${inlineName(p.player_name)}","${inlineName(owner)}")' title="Drag to builder"><span class="pos-badge pos-${p.position}">${p.position}</span><div class="deal-name"><b>${safeHTML(p.player_name)}</b><span>${safeHTML(p.team||'')} <i>·</i> ${posRankLabel(p)} <i>·</i> ${rankLabel(p)}</span></div><span class="deal-player-value">${p.value.toFixed(0)}</span></div>`).join('');
+  const playerBlock=(list,owner)=>list.map(p=>`<div class="deal-player" draggable="true" ondragstart='onDragStart(event,"${inlineName(p.player_name)}","${inlineName(owner)}")' title="Drag to builder"><span class="pos-badge pos-${p.position}">${p.position}</span><div class="deal-name"><b>${safeHTML(p.player_name)}</b><span>${safeHTML(p.team||'')} <i>·</i> ${posRankLabel(p)} <i>·</i> ${rankLabel(p)}${tierTag(p)}</span></div><span class="deal-player-value">${p.value.toFixed(0)}</span></div>`).join('');
   return `<article class="trade-card">
     <div class="deal-top"><span class="deal-number">${String(i+1).padStart(2,'0')}</span><span class="badge ${arch.badge}">${arch.name}</span><span class="deal-format">${c.give.length} : ${c.recv.length}</span><button class="save-icon ${isFav?'active':''}" onclick="toggleFav(${i})" aria-label="${isFav?'Unsave':'Save'} trade ${i+1}" title="${isFav?'Unsave':'Save'}">${isFav?'◆':'◇'}</button></div>
     <div class="deal-partner"><span class="partner-dot"></span>${safeHTML(c.opponent)}<span>SCORE <b>${c.score.toFixed(1)}</b></span></div>
     <div class="deal-exchange"><section class="receive-group"><h3><span class="flow-marker">↙</span> RECEIVE <span>${rv.toFixed(0)} VAL</span></h3>${playerBlock(c.recv,c.opponent)}</section><section class="send-group"><h3><span class="flow-marker">↗</span> SEND <span>${gv.toFixed(0)} VAL</span></h3>${playerBlock(c.give,myTeam)}</section></div>
     <div class="deal-split" aria-label="${(share*100).toFixed(0)} percent of value received"><i style="width:${share*100}%"></i><i style="width:${100-share*100}%"></i></div>
-    <div class="deal-metrics"><div><span>VALUE GAIN</span><b class="${vd>=0?'pos':'neg'}">${vd>=0?'+':''}${vd.toFixed(0)}</b></div><div><span>THEIR ROSTER</span><b class="${od>=0?'pos':'neg'}">${od>=0?'+':''}${od.toFixed(0)}</b></div><div><span>YOUR SHARE</span><b>${(share*100).toFixed(0)}<small>%</small></b></div></div>
+    <div class="deal-metrics"><div><span>YOUR LINEUP</span><b class="${gd>=0?'pos':'neg'}">${gd>=0?'+':''}${gd.toFixed(0)}</b></div><div><span>THEIR LINEUP</span><b class="${od>=0?'pos':'neg'}">${od>=0?'+':''}${od.toFixed(0)}</b></div><div><span>VALUE BALANCE</span><b>${(ratio*100).toFixed(0)}<small>%</small></b></div></div>
+    <div class="small" style="padding:0 14px 8px">${tradeCutsLabel(c)}</div>
     <div class="card-actions"><button class="btn review-btn" onclick="openTradeDetail(${i})">Analyze <span>↗</span></button><button class="btn btn-ghost" onclick="addCardToBuilder(${i})">Build</button><button class="btn btn-ghost" onclick="copyTrade(${i})">Copy</button></div>
   </article>`
 }
@@ -1591,7 +1784,7 @@ function addCardToBuilder(i){
   const c=filteredTrades[i]; if(!c) return; builderGive=c.give.map(p=>({...p, _team:myTeam})); builderGet=c.recv.map(p=>({...p, _team:c.opponent})); renderBuilder(); setDock('builder'); toast('Loaded into builder')
 }
 function copyTrade(i){
-  const c=filteredTrades[i]; if(!c) return; const archName=(ARCHS.find(a=>a.id===c.arch)||{}).name||c.arch;   const txt=`GIVE: ${c.give.map(p=>p.player_name).join(' + ')} (${c.give_val.toFixed(0)}) -> GET: ${c.recv.map(p=>p.player_name).join(' + ')} (${c.recv_val.toFixed(0)}) vs ${c.opponent} | Fair ${((c.share!=null?c.share:c.ratio)*100).toFixed(0)}% | You ${c.logan_delta>=0?'+':''}${c.logan_delta.toFixed(0)} | Them ${c.opp_delta>=0?'+':''}${c.opp_delta.toFixed(0)} [${archName}]`
+  const c=filteredTrades[i]; if(!c) return; const archName=(ARCHS.find(a=>a.id===c.arch)||{}).name||c.arch;   const txt=`GIVE: ${c.give.map(p=>p.player_name).join(' + ')} (${c.give_val.toFixed(0)}) -> GET: ${c.recv.map(p=>p.player_name).join(' + ')} (${c.recv_val.toFixed(0)}) vs ${c.opponent} | Balance ${(c.ratio*100).toFixed(0)}% | You ${c.logan_delta>=0?'+':''}${c.logan_delta.toFixed(0)} | Them ${c.opp_delta>=0?'+':''}${c.opp_delta.toFixed(0)} [${archName}]`
   navigator.clipboard.writeText(txt).then(()=>toast('Copied'),()=>toast(txt))
 }
 function toggleFav(i){
@@ -1605,14 +1798,14 @@ function updateFavs(){
 function removeFav(i){ favs.splice(i,1); updateFavs() }
 function toggleFavs(){ document.getElementById('favDrawer').classList.toggle('show') }
 function csvCell(v){ const s=String(v??'').replace(/"/g,'""'); return /^\s*[=+\-@]/.test(s)?`"'${s}"`:`"${s}"`; }
-function exportFavs(){ if(!favs.length) return toast('No favorites'); let csv='opponent,arch,give,recv,give_val,recv_val,val_diff,fairness,your_delta,their_delta\n'; favs.forEach(c=>{ csv+=`${csvCell(c.opponent)},${c.arch},${csvCell(c.give.map(p=>p.player_name).join(' + '))},${csvCell(c.recv.map(p=>p.player_name).join(' + '))},${c.give_val.toFixed(1)},${c.recv_val.toFixed(1)},${c.val_diff.toFixed(1)},${((c.share!=null?c.share:c.ratio)*100).toFixed(0)}%,${c.logan_delta.toFixed(1)},${c.opp_delta.toFixed(1)}\n` }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trade_favorites.csv'; a.click(); toast('Exported CSV') }
+function exportFavs(){ if(!favs.length) return toast('No favorites'); let csv='opponent,arch,give,recv,give_val,recv_val,val_diff,value_balance,your_lineup_delta,their_lineup_delta\n'; favs.forEach(c=>{ csv+=`${csvCell(c.opponent)},${c.arch},${csvCell(c.give.map(p=>p.player_name).join(' + '))},${csvCell(c.recv.map(p=>p.player_name).join(' + '))},${c.give_val.toFixed(1)},${c.recv_val.toFixed(1)},${c.val_diff.toFixed(1)},${(c.ratio*100).toFixed(0)}%,${c.logan_delta.toFixed(1)},${c.opp_delta.toFixed(1)}\n` }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trade_favorites.csv'; a.click(); toast('Exported CSV') }
 function clearFavs(){ favs=[]; updateFavs(); toast('Favorites cleared') }
-function clearAllFilters(){ __genToken++; giveSet.clear(); targetSet.clear(); givePosSet.clear(); wantPosSet.clear(); if(posGenTimer) clearTimeout(posGenTimer); posGenTimer=null; document.getElementById('tradeSearch').value=''; document.getElementById('oppSearch').value=''; activeArch='ALL'; fairnessFloor=50; document.getElementById('fairRange').value=50; document.getElementById('fairVal').textContent='50%'; document.getElementById('oppSel').value='ALL'; renderArchPills(); renderPosFilters(); renderMyRoster(); renderTargets(); renderTrades(); renderTargetedPanel(); generate(); toast('Filters reset') }
+function clearAllFilters(){ __genToken++; giveSet.clear(); targetSet.clear(); givePosSet.clear(); wantPosSet.clear(); if(posGenTimer) clearTimeout(posGenTimer); posGenTimer=null; document.getElementById('tradeSearch').value=''; document.getElementById('oppSearch').value=''; activeArch='ALL'; fairnessFloor=80; document.getElementById('fairRange').value=80; document.getElementById('fairVal').textContent='80%'; document.getElementById('oppSel').value='ALL'; renderArchPills(); renderPosFilters(); renderMyRoster(); renderTargets(); renderTrades(); renderTargetedPanel(); generate(); toast('Filters reset') }
 function renderArchPills(){
   const el=document.getElementById('archPills')
   el.innerHTML=`<button class='pill ${activeArch==='ALL'?'active':''}' onclick='setArch("ALL")'>All archetypes</button>` + ARCHS.map(a=>`<button class='pill ${activeArch===a.id?'active':''}' onclick='setArch("${a.id}")' title='${a.desc}'>${a.name}</button>`).join('')
 }
-function setArch(id){ activeArch=id; renderArchPills(); renderTrades() }
+function setArch(id){ activeArch=id; if(id==='B'||id==='C'){sizeMode=id==='B'?'2-1':'1-2';document.getElementById('sizeSel').value=sizeMode;} else {sizeMode='2-2';document.getElementById('sizeSel').value=sizeMode;} currentTrades=[];renderArchPills();renderTrades();generate() }
 function renderPosFilters(){
   const gEl=document.getElementById('givePosPills');
   const wEl=document.getElementById('wantPosPills');
@@ -1667,7 +1860,7 @@ function parseRankingsCSV(csvText){
   if(lines.length>5001) throw new Error('Too many ranking rows (max 5000)');
   const header=parseCSVLine(lines[0])
   const column=name=>header.findIndex(h=>h.toLowerCase()===name.toLowerCase())
-  const idxName=column('Name'), idxTeam=column('Team'), idxPos=column('Position'), idxRank=column('Rank')
+  const idxName=column('Name'), idxTeam=column('Team'), idxPos=column('Position'), idxRank=column('Rank'), idxTier=column('Tier')
   if(idxName<0 || idxTeam<0 || idxPos<0 || idxRank<0) throw new Error('CSV must contain Name, Team, Position, and Rank columns')
   const parsed=[], invalid=[]
   for(let i=1;i<lines.length;i++){
@@ -1675,24 +1868,28 @@ function parseRankingsCSV(csvText){
     const cols=parseCSVLine(lines[i])
     const name=(cols[idxName]||'').trim(), team=(cols[idxTeam]||'').trim(), pos=(cols[idxPos]||'').trim().toUpperCase()
     const rawRank=(cols[idxRank]||'').trim(), rank=Number(rawRank), key=normalize(name)
+    const rawTier=idxTier>=0 ? String(cols[idxTier]||'').trim().toUpperCase() : ''
+    const tier=/^[A-Z0-9]{1,2}$/.test(rawTier) ? rawTier : ''
     if(!name || !['QB','RB','WR','TE','K','D/ST','DST','DEF'].includes(pos) || !/^\d+$/.test(rawRank) || !Number.isSafeInteger(rank) || rank<1 || rank>100000 || name.length>80 || team.length>12){ invalid.push(i+1); continue }
-    parsed.push({name,team,pos,rank})
+    parsed.push({name,team,pos,rank,tier})
   }
   if(invalid.length) throw new Error(`Invalid canonical Rank data on row${invalid.length===1?'':'s'} ${invalid.slice(0,10).join(', ')}${invalid.length>10?'…':''}`)
   if(!parsed.length) throw new Error('Rankings CSV contains no valid ranked players')
   return parsed
 }
 function rankingSignature(rows){
-  return rows.map(r=>`${normalize(r.name)}|${r.team}|${r.pos}|${r.rank}`).sort().join('\n')
+  return rows.map(r=>`${normalize(r.name)}|${r.team}|${r.pos}|${r.rank}|${r.tier||''}`).sort().join('\n')
 }
 function countRankChanges(before, after){
   const oldRanks=new Map(before.map(r=>[normalize(r.name),r.rank]))
   return after.reduce((count,r)=>count+(oldRanks.get(normalize(r.name))!==r.rank),0)
 }
 async function refreshRankingsOnly(showToast=true){
-  const rankUrl=RANKINGS_URL+'?cb='+Date.now();
-  const rRes=await fetch(rankUrl,{cache:'no-store'});
-  if(!rRes.ok) throw new Error('HTTP '+rRes.status+' for rankings CSV');
+  if(_isFileProtocol){
+    if(showToast) toast('Local file mode — rankings are embedded. Rebuild with: python "fantasy lab/build_lab.py"');
+    return 0;
+  }
+  const rRes=await _fetchFirstOk(rankingsUrlCandidates(),'rankings CSV');
   const newRanks=parseRankingsCSV(await rRes.text());
   const changed=rankingSignature(RANKINGS)!==rankingSignature(newRanks);
   if(!changed&&_usingLiveData){ if(!showToast) return 0; }
@@ -1712,6 +1909,7 @@ async function refreshRankingsOnly(showToast=true){
 }
 async function refreshLiveData(showToast=true){
   if(BLANK_START && !leagueTeams().length) return;
+  if(_isFileProtocol){ if(showToast) toast('Local file mode — using embedded data. Rebuild with: python "fantasy lab/build_lab.py"'); return; }
   if(__refreshInFlight){ if(showToast) toast('Refresh already running'); return; }
   __refreshInFlight=true;
   try{
@@ -1728,13 +1926,10 @@ async function refreshLiveData(showToast=true){
       await refreshRankingsOnly(showToast);
       return;
     }
-    const leagueUrl = "data/demo_league.json"+'?cb='+Date.now();
-    const rankUrl = RANKINGS_URL+'?cb='+Date.now();
     const [lRes, rRes] = await Promise.all([
-      fetch(leagueUrl, {cache:'no-store'}),
-      fetch(rankUrl, {cache:'no-store'})
+      _fetchFirstOk(leagueUrlCandidates(), 'league JSON'),
+      _fetchFirstOk(rankingsUrlCandidates(), 'rankings CSV')
     ]);
-    if(!lRes.ok || !rRes.ok) throw new Error('HTTP '+lRes.status+'/'+rRes.status);
     const newLeague = await lRes.json();
     validateLeagueShape(newLeague);
     const newRanks=parseRankingsCSV(await rRes.text())
@@ -1806,15 +2001,16 @@ function sleeperPlayerName(pid, info){
   return ((info.first_name||'')+' '+(info.last_name||'')).trim()||String(pid);
 }
 function deriveSleeperFormat(positions){
-  const fmt={QB:0,RB:0,WR:0,TE:0,FLEX:0,flex_eligible:['RB','WR','TE']};
-  const elig=new Set(['RB','WR','TE']);
-  (positions||[]).forEach(slot=>{
-    if(slot==='QB'||slot==='RB'||slot==='WR'||slot==='TE') fmt[slot]++;
-    else if(slot==='FLEX'||slot==='WRRB_FLEX'||slot==='REC_FLEX') fmt.FLEX++;
-    else if(slot==='SUPER_FLEX'){ fmt.FLEX++; elig.add('QB'); }
+  if(!Array.isArray(positions)) throw new Error('Sleeper league has no roster format');
+  const fmt={QB:0,RB:0,WR:0,TE:0,FLEX:0,flex_slots:[]};
+  const flex={FLEX:['RB','WR','TE'],WRRB_FLEX:['WR','RB'],REC_FLEX:['WR','TE'],SUPER_FLEX:['QB','RB','WR','TE']};
+  positions.forEach(slot=>{
+    if(['QB','RB','WR','TE'].includes(slot)) fmt[slot]++;
+    else if(flex[slot]) fmt.flex_slots.push(flex[slot]);
+    else if(!['BN','K','DEF','IR'].includes(slot)) throw new Error('Unsupported roster slot: '+slot);
   });
-  if(!fmt.FLEX) fmt.FLEX=1;
-  fmt.flex_eligible=[...elig];
+  fmt.FLEX=fmt.flex_slots.length;
+  fmt.flex_eligible=[...new Set(fmt.flex_slots.flat())];
   return fmt;
 }
 async function loadSleeperLeague(opts={}){
@@ -1875,7 +2071,7 @@ async function loadSleeperLeague(opts={}){
     leagueSource={kind:'sleeper',leagueId:lid,label:'Sleeper '+lid};
     if(!keepSession){
       myTeam=''; editTeam=null; selectedTeam=null;
-      overrides.clear(); giveSet.clear(); lockSet.clear(); targetSet.clear();
+      overrides.clear(); pendingOverrides.clear(); giveSet.clear(); lockSet.clear(); targetSet.clear();
       favs=[]; currentTrades=[]; filteredTrades=[];
       builderGive=[]; builderGet=[];
     }else{
@@ -1969,8 +2165,9 @@ function handleCSVUpload(event){
   };
   reader.readAsText(file);
 }
-// auto-try live fetch on load (no toast unless changed), then every 60s if served via http
-setTimeout(()=> refreshLiveData(false), 800);
+// auto-try live fetch on load (no toast unless changed), then every 60s if served via http.
+// file:// has no server to fetch from — embedded data is current as of the last build.
+if(!_isFileProtocol) setTimeout(()=> refreshLiveData(false), 800);
 if(location.protocol.startsWith('http')) setInterval(()=> refreshLiveData(false), 60000);
 
 function openExpand(section){
@@ -1990,7 +2187,7 @@ function openExpand(section){
 function closeExpand(){ document.getElementById('expandOverlay').classList.remove('show'); document.body.style.overflow=''; }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeExpand(); });
 function renderPowerDetail(){
-  const {avg,gaps}=detectGaps();
+  const {avg,sd,gaps}=detectGaps();
   const rows=Object.entries(rosters).map(([name,ro])=>{ const sc=starterScore(ro); const vals=rosterValueBreakdown(ro); const total=powerScope==='starters'?sc.total:teamScore(ro); return {name,total,starters:sc.starters,bench:sc.bench,vals,ro}; }).sort((a,b)=>b.total-a.total);
   const maxTot=Math.max(...rows.map(r=>r.total));
   return `<div class="small" style="margin-bottom:12px">${powerScope==='starters'?('Starter lineup value · '+formatShort()):'Full roster value'}</div>
@@ -2000,7 +2197,7 @@ function renderPowerDetail(){
       <h4><span>#${i+1} ${safeHTML(r.name)}${r.name===myTeam?' — YOU':''}</span><span class="kbd" style="font-size:11px">${r.total.toFixed(1)}</span></h4>
       <div class="mini-bar" style="height:8px;display:flex;background:var(--surface2);border-radius:999px;overflow:hidden"><div style="display:flex;height:100%;width:${(r.total/maxTot*100).toFixed(1)}%">${(()=>{const order=['QB','RB','WR','TE']; const colors={QB:'#818cf8',RB:'#60a5fa',WR:'#34d399',TE:'#f59e0b'}; return order.filter(k=>displayVals[k]).map(pos=>`<i style='width:${(displayVals[pos]/r.total*100).toFixed(1)}%;background:${colors[pos]}' title='${pos} ${displayVals[pos].toFixed(0)}'></i>`).join('')})()}</div></div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px">
-        ${['QB','RB','WR','TE'].map(pos=>{const v=displayVals[pos]||0; const a=avg[pos]||0; const delta=v-a; return `<div style="text-align:center;padding:6px;border-radius:8px;background:var(--surface);border:1px solid var(--border)"><div style="font-size:9px;font-weight:800;color:var(--text3)">${pos}</div><div style="font-family:monospace;font-weight:900;font-size:12px;color:${delta>=0?'var(--success)':'var(--danger)'}">${v.toFixed(0)}</div><div style="font-size:10px;color:var(--text3)">${delta>=0?'+':''}${delta.toFixed(0)} vs avg</div></div>`}).join('')}
+        ${['QB','RB','WR','TE'].map(pos=>{const v=displayVals[pos]||0; const a=avg[pos]||0; const delta=v-a; const pvColor=posSpectrumColor(v,a,sd[pos]); return `<div style="text-align:center;padding:6px;border-radius:8px;background:var(--surface);border:1px solid var(--border)"><div style="font-size:9px;font-weight:800;color:var(--text3)">${pos}</div><div style="font-family:monospace;font-weight:900;font-size:12px;color:${pvColor}">${v.toFixed(0)}</div><div style="font-size:10px;color:var(--text3)">${delta>=0?'+':''}${delta.toFixed(0)} vs avg</div></div>`}).join('')}
       </div>
       <div class="small" style="margin-top:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase">Starters</div>
       <div class="starter-line">${r.starters.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small style="color:var(--text3)">${posRankLabel(p)} · ${rankLabel(p)} · v${p.value.toFixed(0)}</small></span>`).join('')}</div>
@@ -2048,8 +2245,8 @@ function renderTeamsDetail(){
   ${teams.map(name=>{
     const ro=rosters[name]; const {total,starters,bench}=starterScore(ro);
     return `<div class="detail-team"><h4>${safeHTML(name)}${name===myTeam?' — YOU':''} <span class="kbd">${total.toFixed(0)}</span></h4>
-    <div class="starter-line">${starters.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')}</div>
-    <div class="starter-line" style="margin-top:8px">${bench.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}</small></span>`).join('')||'<span class="small">No bench</span>'}</div>
+    <div class="starter-line">${starters.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}${p.tier?' · T'+safeHTML(p.tier):''}</small></span>`).join('')}</div>
+    <div class="starter-line" style="margin-top:8px">${bench.map(p=>`<span class="chip"><i style="background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}">${safeHTML(p.position)}</i>${safeHTML(p.player_name)} <small>v${p.value.toFixed(0)}${p.tier?' · T'+safeHTML(p.tier):''}</small></span>`).join('')||'<span class="small">No bench</span>'}</div>
     <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-sm" onclick="viewTargetsTeam('${encodeURIComponent(name).replace(/'/g,'%27')}')">View targets</button><button class="btn btn-sm btn-ghost" onclick="switchToTeam('${encodeURIComponent(name).replace(/'/g,'%27')}')">Switch</button></div>
     </div>`
   }).join('')}
