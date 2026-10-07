@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-b7ee7DJsw11GdLqsfb/seP3USKlBcAEAsbEQyoUSPGY='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-edgSwkWQFQTiHoITzUAFzBi+4tZA52ZoavxAE8SoD7I='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -485,7 +485,9 @@ function fuzzRatio(a,b){
 // Calibrated RB/WR plus user-tuned QB/TE curves. Values are marginal contributions; the baseline
 // belongs to occupied roster positions, never individual players or packages.
 const RB_WR_CURVE={"amplitude":942.1795968901441,"decay":22.87212142985922,"boost":1};
-const FLOCK_CURVE={QB:{amplitude:400,decay:6,boost:1.2,rankBasis:'position'},RB:RB_WR_CURVE,WR:RB_WR_CURVE,TE:{amplitude:470/1.2,decay:10,boost:1.2,rankBasis:'position'}};
+// Anchors include the existing boost; interpolate geometrically, then decay
+// from the final anchor. QB has an elite cliff and gentler tail; TE has a top-two tier.
+const FLOCK_CURVE={QB:{anchors:[[1,437],[2,290],[5,180]],decay:14,boost:1.2,rankBasis:'position'},RB:RB_WR_CURVE,WR:RB_WR_CURVE,TE:{anchors:[[1,470],[2,425],[3,200]],decay:6,boost:1.2,rankBasis:'position'}};
 function positionBaseline(position){
   const curve=FLOCK_CURVE[position];
   return curve ? 100*curve.boost*(curveMult[position]??1) : 0;
@@ -497,6 +499,15 @@ function playerValue(rank, position, pos_rank){
   if(!['QB','RB','WR','TE'].includes(position) || !Number.isFinite(rank) || !Number.isFinite(pos_rank) || rank<1 || pos_rank<1) return 0;
   const curve=FLOCK_CURVE[position];
   const curveRank=curve.rankBasis==='position'?pos_rank:rank;
+  if(curve.anchors){
+    const anchors=curve.anchors;
+    for(let i=1;i<anchors.length;i++){
+      const [r0,v0]=anchors[i-1],[r1,v1]=anchors[i];
+      if(curveRank<=r1) return v0*Math.pow(v1/v0,(curveRank-r0)/(r1-r0))*(curveMult[position]??1);
+    }
+    const [r,v]=anchors[anchors.length-1];
+    return v*Math.exp(-(curveRank-r)/curve.decay)*(curveMult[position]??1);
+  }
   return curve.amplitude*Math.exp(-(curveRank-1)/curve.decay)*curve.boost*(curveMult[position]??1);
 }
 let starterCache=new WeakMap(), gapCache=null, rankingMatchCache=new Map();
