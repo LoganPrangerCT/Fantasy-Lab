@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-622EfKfeDrOOpjv4kG2BRlTbx6fTKxbpguz53jf3dt4='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-H2XlOQRMB5jUOCHZE0v4o/PpjkYoO8IU56Cy1oUmIZg='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -484,7 +484,8 @@ function fuzzRatio(a,b){
 }
 // Accepted frozen calibration. Values are marginal contributions; the baseline
 // belongs to occupied roster positions, never individual players or packages.
-const FLOCK_CURVE={QB:{amplitude:150.5514280261004,decay:34.63866769882355,boost:1.2},RB:{amplitude:930.3202219049258,decay:22.8384635507305,boost:1},WR:{amplitude:1241.2372830157594,decay:19.54715234909531,boost:1},TE:{amplitude:903.5072601705058,decay:17.95480317325091,boost:1.2}};
+const RB_WR_CURVE={"amplitude":942.1795968901441,"decay":22.87212142985922,"boost":1};
+const FLOCK_CURVE={QB:{amplitude:150.5514280261004,decay:34.63866769882355,boost:1.2},RB:RB_WR_CURVE,WR:RB_WR_CURVE,TE:{amplitude:903.5072601705058,decay:17.95480317325091,boost:1.2}};
 function positionBaseline(position){
   const curve=FLOCK_CURVE[position];
   return curve ? 100*curve.boost*(curveMult[position]??1) : 0;
@@ -1281,7 +1282,7 @@ function renderAllPlayersDetail(){
   const rows=RANKINGS.map(r=>({...r, value:overrides.has(r.name)?overrides.get(r.name):playerValue(r.rank,r.pos,r.pos_rank)})).filter(r=>allPlayersPos==='ALL'||r.pos===allPlayersPos).sort((a,b)=>b.value-a.value||a.rank-b.rank);
   const filters=['ALL','QB','RB','WR','TE'].map(pos=>`<button class='pos-tab ${allPlayersPos===pos?'active':''}' onclick='setAllPlayersPos("${pos}")'>${pos==='ALL'?'All':pos}</button>`).join('');
   const curves=['QB','RB','WR','TE'].map(pos=>`<div class='curve-row'><button aria-label='Reset ${pos} curve to 100%' class='pos-badge pos-${pos} curve-reset-badge' onclick="resetCurvePos('${pos}')" style='width:24px;height:24px;font-size:9px' title='Reset ${pos} to 100%'>${pos}</button><input aria-label='${pos} value curve' class='value-slider curve-slider' max='2' min='0.5' oninput="onCurveInput('${pos}',this)" step='0.05' type='range' value='${curveMult[pos]||1}'/><span class='curve-val' data-curve-val='${pos}'>${Math.round((curveMult[pos]||1)*100)}%</span></div>`).join('');
-  return `<div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><p class='small'>Calibrated rank values · QB and TE include +20%. Roster scores add one position baseline (QB/TE 120, RB/WR 100); trades compare player contributions. Personal curves scale both.</p><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>{
+  return `<div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><p class='small'>RB and WR share one overall-rank curve · QB and TE include +20%. Roster scores add one position baseline (QB/TE 120, RB/WR 100); trades compare player contributions. Personal curves scale both.</p><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>{
   const staged=pendingOverrides.has(r.name)?pendingOverrides.get(r.name):null;
   const dirty=staged!==null&&staged!==Math.round(r.value);
   const shown=dirty?staged:r.value;
