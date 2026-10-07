@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-H2XlOQRMB5jUOCHZE0v4o/PpjkYoO8IU56Cy1oUmIZg='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-b7ee7DJsw11GdLqsfb/seP3USKlBcAEAsbEQyoUSPGY='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -482,10 +482,10 @@ function fuzzRatio(a,b){
   const ma=bigrams(a), mb=bigrams(b); let inter=0; for(const [k,v] of ma){if(mb.has(k)) inter+=Math.min(v,mb.get(k))}
   const total=(a.length-1)+(b.length-1); return total? Math.round(200*inter/total):0
 }
-// Accepted frozen calibration. Values are marginal contributions; the baseline
+// Calibrated RB/WR plus user-tuned QB/TE curves. Values are marginal contributions; the baseline
 // belongs to occupied roster positions, never individual players or packages.
 const RB_WR_CURVE={"amplitude":942.1795968901441,"decay":22.87212142985922,"boost":1};
-const FLOCK_CURVE={QB:{amplitude:150.5514280261004,decay:34.63866769882355,boost:1.2},RB:RB_WR_CURVE,WR:RB_WR_CURVE,TE:{amplitude:903.5072601705058,decay:17.95480317325091,boost:1.2}};
+const FLOCK_CURVE={QB:{amplitude:400,decay:6,boost:1.2,rankBasis:'position'},RB:RB_WR_CURVE,WR:RB_WR_CURVE,TE:{amplitude:470/1.2,decay:10,boost:1.2,rankBasis:'position'}};
 function positionBaseline(position){
   const curve=FLOCK_CURVE[position];
   return curve ? 100*curve.boost*(curveMult[position]??1) : 0;
@@ -496,7 +496,8 @@ function rosterBaseline(roster){
 function playerValue(rank, position, pos_rank){
   if(!['QB','RB','WR','TE'].includes(position) || !Number.isFinite(rank) || !Number.isFinite(pos_rank) || rank<1 || pos_rank<1) return 0;
   const curve=FLOCK_CURVE[position];
-  return curve.amplitude*Math.exp(-(rank-1)/curve.decay)*curve.boost*(curveMult[position]??1);
+  const curveRank=curve.rankBasis==='position'?pos_rank:rank;
+  return curve.amplitude*Math.exp(-(curveRank-1)/curve.decay)*curve.boost*(curveMult[position]??1);
 }
 let starterCache=new WeakMap(), gapCache=null, rankingMatchCache=new Map();
 function invalidateRosterCaches(){ starterCache=new WeakMap(); gapCache=null; }
@@ -504,9 +505,9 @@ function starterScore(roster){
   const cached=starterCache.get(roster); if(cached) return cached;
   const byPos={}; roster.forEach(p=>{if(['D/ST','K','DEF'].includes(p.position)) return; (byPos[p.position]=byPos[p.position]||[]).push(p)})
   Object.values(byPos).forEach(arr=>arr.sort((a,b)=>b.value-a.value))
-  let used=new Set(), total=0, starters=[]
+  let used=new Set(), total=0, starters=[], slots=[]
   ;['QB','RB','WR','TE'].forEach(pos=>{
-    const need=STARTERS[pos]; const arr=byPos[pos]||[]; for(let i=0;i<Math.min(need,arr.length);i++){const p=arr[i]; used.add(p.__id); total+=p.value; starters.push(p)}
+    const need=STARTERS[pos]; const arr=byPos[pos]||[]; for(let i=0;i<Math.min(need,arr.length);i++){const p=arr[i]; used.add(p.__id); total+=p.value; starters.push(p);slots.push({slot:pos,p})}
   })
   let flexPool=[]; FLEX_ELIGIBLE.forEach(pos=>{(byPos[pos]||[]).forEach(p=>{if(!used.has(p.__id)) flexPool.push(p)})})
   flexPool.sort((a,b)=>b.value-a.value);
@@ -522,10 +523,10 @@ function starterScore(roster){
     return false;
   }
   flexPool.forEach(p=>place(p,new Set()));
-  assignments.filter(Boolean).forEach(p=>{total+=p.value;starters.push(p);used.add(p.__id)});
+  assignments.forEach((p,i)=>{if(p){total+=p.value;starters.push(p);used.add(p.__id);slots.push({slot:i===0?'FLEX':'FLEX'+(i+1),p})}});
   const bench=roster.filter(p=>!used.has(p.__id) && !['D/ST','K'].includes(p.position))
   total+=rosterBaseline(starters);
-  const result={total,starters,bench}; starterCache.set(roster,result); return result;
+  const result={total,starters,bench,slots}; starterCache.set(roster,result); return result;
 }
 function teamScore(roster){ return rosterValueBreakdown(roster).TOTAL; }
 function rosterValueBreakdown(roster){ const vals={QB:0,RB:0,WR:0,TE:0},seen=new Set(); roster.forEach(p=>{if(vals[p.position]!==undefined){vals[p.position]+=p.value;seen.add(p.position)}}); seen.forEach(pos=>{vals[pos]+=positionBaseline(pos)}); vals.TOTAL=vals.QB+vals.RB+vals.WR+vals.TE; return vals; }
@@ -597,7 +598,7 @@ let pendingOverrides=new Map()
 // embedded-file live refresh must never overwrite it. Every league swap goes
 // through setLeagueData(); every team <select> syncs via syncTeamSelects().
 let leagueSource={kind:'embedded',label:'Embedded league'};
-let __sleeperToken=0, __refreshInFlight=false;
+let __sleeperToken=0, __refreshInFlight=false, __dataRevision=0, __uploadedRankings=false, __savedDataCleared=false;
 function escAttr(value){ return String(value??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function teamOptions(names,selected){
   return names.map(t=>`<option value="${escAttr(t)}"${t===selected?' selected':''}>${safeHTML(t)}</option>`).join('');
@@ -664,6 +665,9 @@ function validateLeagueShape(parsed){
 }
 function setLeagueData(parsed,source){
   validateLeagueShape(parsed);
+  __savedDataCleared=false;
+  __sleeperToken++; __dataRevision++;
+  const sleeperButton=document.getElementById('sleeperLoadBtn'); if(sleeperButton) sleeperButton.disabled=false;
   __genToken++;
   LEAGUE_DATA=parsed;
   leagueSource=source||{kind:'embedded',label:'Embedded league'};
@@ -688,7 +692,14 @@ function markLeagueSource(){
 function switchToTeam(encoded){
   const name=decodeURIComponent(encoded);
   if(!rosters[name]) return toast('Team not found');
-  myTeam=name; giveSet.clear(); buildRosters(); syncTeamSelects(); renderAll(); generate(); closeExpand();
+  setTradingTeam(name); closeExpand();
+}
+function setTradingTeam(name){
+  if(!rosters[name]) return;
+  myTeam=name; editTeam=name; selectedTeam=null;
+  giveSet.clear(); lockSet.clear(); targetSet.clear();
+  builderGive=[]; builderGet=[]; currentTrades=[]; filteredTrades=[];
+  buildRosters(); syncTeamSelects(); renderAll(); generate();
 }
 function viewTargetsTeam(encoded){
   selectedTeam=decodeURIComponent(encoded); renderTargets(); openExpand('targets');
@@ -722,7 +733,7 @@ function restoreValueState(){
     if(!raw) return false;
     const v=JSON.parse(raw);
     if(v&&v.curves) ['QB','RB','WR','TE'].forEach(p=>{ const n=Number(v.curves[p]); if(Number.isFinite(n)&&n>=0.5&&n<=2) curveMult[p]=n; });
-    if(v&&v.overrides&&typeof v.overrides==='object') Object.entries(v.overrides).forEach(([k,val])=>{ const n=Number(val); if(k&&Number.isFinite(n)) overrides.set(k,n); });
+    if(v&&v.overrides&&typeof v.overrides==='object') Object.entries(v.overrides).forEach(([k,val])=>{ const n=Number(val); if(k&&Number.isFinite(n)&&n>=0) overrides.set(k,n); });
     return true;
   }catch(e){ return false; }
 }
@@ -793,6 +804,9 @@ function renderLeagueLibrary(){
   }).join('');
 }
 function clearSavedLabData(){
+  if(curveTimer){clearTimeout(curveTimer);curveTimer=null;applyCurve();}
+  __sleeperToken++; __dataRevision++; __savedDataCleared=true;
+  const btn=document.getElementById('sleeperLoadBtn');if(btn)btn.disabled=false;
   if(__persistTimer){clearTimeout(__persistTimer);__persistTimer=null;}
   try{ ['fantasyLab.league','fantasyLab.sleeperLeague','fantasyLab.values','fantasyLab.sleeperId','sleeperLeagueId','fantasyLab.welcomed','fantasyLab.leagues'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
   const box=document.getElementById('sleeperLeagueId'); if(box) box.value='';
@@ -890,8 +904,8 @@ function detectGaps(){
   const avg={}, sd={}
   Object.keys(avgByPos).forEach(pos=>{
     const vals=avgByPos[pos]
-    const mean=vals.reduce((a,b)=>a+b,0)/vals.length
-    const variance=vals.reduce((a,b)=>a+(b-mean)*(b-mean),0)/vals.length
+    const mean=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0
+    const variance=vals.length?vals.reduce((a,b)=>a+(b-mean)*(b-mean),0)/vals.length:0
     const std=Math.sqrt(variance)
     avg[pos]=mean; sd[pos]=std
   })
@@ -1317,11 +1331,11 @@ function setBuilderReturnPos(pos){
 function setBuilderReturnCount(value){
   builderReturnCount=Math.max(1,Math.min(3,Number(value)||1)); resetBuilderMatches(); renderBuilderFinder();
 }
-function addToBuilder(playerName, side){
+function addToBuilder(playerName, side, owner=null){
   let obj=null, team=null
-  for(const [t,ro] of Object.entries(rosters)){ const f=ro.find(p=>p.player_name===playerName); if(f){obj=f; team=t; break} }
+  for(const [t,ro] of Object.entries(rosters)){ if(owner&&t!==owner)continue;if(side==='give'&&t!==myTeam)continue;if(side==='get'&&t===myTeam)continue;const f=ro.find(p=>p.player_name===playerName); if(f){obj=f; team=t; break} }
   if((side==='give'&&team!==myTeam)||(side==='get'&&team===myTeam)) return toast('Choose players from the correct team');
-  if(!obj || !isRankedPlayer(obj)) return toast('That player has no canonical Rank')
+  if(!obj || !isRankedPlayer(obj)||!['QB','RB','WR','TE'].includes(obj.position)) return toast('Choose a ranked QB, RB, WR or TE')
   const arr=side==='give'?builderGive:builderGet
   if(side==='get' && arr.length && arr[0]._team!==team){ toast('Builder can only use one opponent'); return; }
   if(arr.some(p=>p.player_name===playerName)) return
@@ -1482,6 +1496,7 @@ function previewBuilder(){
   if(!gi.length||!ri.length) return toast('Could not match both sides to rosters')
   const ev=evaluateTrade(lr,obr,gi,ri,teamScore(lr),teamScore(obr)); ev.opponent=opp; ev.score=(ev.val_diff/9.356)*0.5+(ev.logan_delta/9.356); ev.arch='MANUAL'
   if(!ev.valid) return toast('Trade cannot fit both rosters and required starters');
+  window._detailTrade=ev;
   document.getElementById('expandTitle').textContent=`Projected Rosters — ${myTeam} ↔ ${opp}`
   document.getElementById('expandBody').innerHTML=renderTradeDetail(ev)
   document.getElementById('expandOverlay').classList.add('show'); document.body.style.overflow='hidden'
@@ -1520,7 +1535,7 @@ function onDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-
 function onDragLeave(e){ e.currentTarget.classList.remove('drag-over') }
 function onDrop(e, side){
   e.preventDefault(); e.currentTarget.classList.remove('drag-over')
-  try{ const d=JSON.parse(e.dataTransfer.getData('text/plain')); addToBuilder(d.playerName, side) }catch{}
+  try{ const d=JSON.parse(e.dataTransfer.getData('text/plain')); addToBuilder(d.playerName, side, d.team) }catch{}
 }
 let __genToken=0;
 function yieldToMain(){ return new Promise(resolve=>setTimeout(resolve,0)); }
@@ -1668,22 +1683,11 @@ function openTradeDetail(idx){
 }
 function getPosTotals(roster){ return rosterValueBreakdown(roster); }
 function renderRosterChips(roster){
-  const {starters,bench}=starterScore(roster);
-  const slotOrder=starterSlotOrder();
-  const slots=[];
-  starters.forEach((p,i)=>{ const slot=slotOrder[i]||p.position; slots.push({slot,p}); });
-  bench.slice().sort((a,b)=>b.value-a.value).forEach((p,i)=>{ slots.push({slot:`BN${i+1}`,p}); });
-  if(!slots.length){
-    const sorted=[...roster].filter(p=>!['D/ST','K'].includes(p.position)).sort((a,b)=>b.value-a.value);
-    return sorted.map(p=>`<span class='chip'><i style='background:${p.position==='QB'?'#6366f1':p.position==='RB'?'#3b82f6':p.position==='WR'?'#10b981':'#f59e0b'}'>${p.position}</i>${p.player_name}<small style='color:var(--text3)'>${posRankLabel(p)} · ${rankLabel(p)} · v${p.value.toFixed(0)}</small></span>`).join('') || '<span class="small">No skill players</span>';
-  }
-  return slots.map(({slot,p})=>`<div style='display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--border);margin-bottom:4px'><span style='font-size:9px;font-weight:900;color:var(--text3);width:36px;flex-shrink:0'>${slot}</span><span class='pos-badge pos-${p.position}' style='width:22px;height:22px;font-size:8px'>${p.position}</span><span style='flex:1;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>${p.player_name}</span><span style='font-size:10px;color:var(--text3);min-width:28px;text-align:right'>${p.team||''}</span><span class='kbd' style='font-size:10px;min-width:32px;text-align:right'>${p.value.toFixed(0)}</span></div>`).join('');
+  return renderRosterChipsHighlight(roster,new Set());
 }
 function renderRosterChipsHighlight(roster, highlightSet){
-  const {starters,bench}=starterScore(roster);
-  const slotOrder=starterSlotOrder();
-  const slots=[];
-  starters.forEach((p,i)=>{ const slot=slotOrder[i]||p.position; slots.push({slot,p}); });
+  const {bench,slots:starterSlots}=starterScore(roster);
+  const slots=[...starterSlots];
   bench.slice().sort((a,b)=>b.value-a.value).forEach((p,i)=>{ slots.push({slot:`BN${i+1}`,p}); });
   if(!slots.length){
     const sorted=[...roster].filter(p=>!['D/ST','K'].includes(p.position)).sort((a,b)=>b.value-a.value);
@@ -1701,8 +1705,9 @@ function renderRosterChipsHighlight(roster, highlightSet){
 }
 
 function renderTradeDetail(c){
-  const myBefore=rosters[myTeam]||[];
-  const oppBefore=rosters[c.opponent]||[];
+  const yourTeam=c.your_team||myTeam;
+  const myBefore=c.before_yours||rosters[yourTeam]||[];
+  const oppBefore=c.before_theirs||rosters[c.opponent]||[];
   const gvNames=new Set(c.give.map(x=>x.player_name));
   const rvNames=new Set(c.recv.map(x=>x.player_name));
   const myAfter=c.la||fitTradeRoster(myBefore,myBefore.filter(p=>gvNames.has(p.player_name)),c.recv,lockSet).roster;
@@ -1734,7 +1739,7 @@ function renderTradeDetail(c){
     <p class='small'>${tradeCutsLabel(c)}. Lineup changes use ranking-based value, not projected fantasy points. Depth counts at 20% in the recommendation score.</p>
     <div class='trade-detail-grid'>
       <div class='roster-panel'>
-        <h4>${safeHTML(myTeam)} <span class='kbd'>${myBeforeTotals.TOTAL.toFixed(0)} → ${myAfterTotals.TOTAL.toFixed(0)} <span style='color:${myDelta>=0?'var(--success)':'var(--danger)'}'>${myDelta>=0?'+':''}${myDelta.toFixed(0)}</span></span></h4>
+        <h4>${safeHTML(yourTeam)} <span class='kbd'>${myBeforeTotals.TOTAL.toFixed(0)} → ${myAfterTotals.TOTAL.toFixed(0)} <span style='color:${myDelta>=0?'var(--success)':'var(--danger)'}'>${myDelta>=0?'+':''}${myDelta.toFixed(0)}</span></span></h4>
         <div><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)'>After — highlighted = new</span><div class='roster-list' style='margin-top:6px'>${renderRosterChipsHighlight(myAfter, new Set(c.recv.map(x=>x.player_name)))}</div>
           <div class='pos-delta'>${myPosDeltas.map(({pos,d})=>`<span class='delta-chip ${d>0?'pos':d<0?'neg':'neutral'}'>${pos} ${d>0?'+':''}${d.toFixed(0)}</span>`).join('')}</div>
         </div>
@@ -1747,8 +1752,8 @@ function renderTradeDetail(c){
       </div>
     </div>
     <div style='display:flex;gap:8px;margin-top:14px;flex-wrap:wrap'>
-      <button class='btn btn-primary' onclick='event.stopPropagation(); const _c=window._detailTrade; if(_c){ builderGive=_c.give.map(p=>({...p,_team:myTeam})); builderGet=_c.recv.map(p=>({...p,_team:_c.opponent})); renderBuilder(); closeExpand(); setDock("builder"); toast("Sent to Builder"); }'>Send to Builder</button>
-      <button class='btn' onclick='event.stopPropagation(); const _c2=window._detailTrade; const idx=_c2?filteredTrades.indexOf(_c2):-1; if(idx>=0) toggleFav(idx); else if(_c2){ favs.push(_c2); updateFavs(); toast("Saved"); }'>Toggle Favorite</button>
+      <button class='btn btn-primary' onclick='event.stopPropagation(); loadTradeIntoBuilder(window._detailTrade)'>Send to Builder</button>
+      <button class='btn' onclick='event.stopPropagation(); toggleFavoriteTrade(window._detailTrade)'>Toggle Favorite</button>
       <button class='btn btn-ghost' onclick='closeExpand()'>Close</button>
     </div>
   `;
@@ -1776,14 +1781,32 @@ function renderCard(c, i){
   </article>`
 }
 function addCardToBuilder(i){
-  const c=filteredTrades[i]; if(!c) return; builderGive=c.give.map(p=>({...p, _team:myTeam})); builderGet=c.recv.map(p=>({...p, _team:c.opponent})); renderBuilder(); setDock('builder'); toast('Loaded into builder')
+  loadTradeIntoBuilder(filteredTrades[i]);
+}
+function loadTradeIntoBuilder(c){
+  if(!c) return;
+  if(c.your_team&&c.your_team!==myTeam) return toast('Switch to '+c.your_team+' to build this saved trade');
+  const resolve=(players,team)=>players.map(p=>rosters[team]?.find(q=>q.player_name===p.player_name));
+  const give=resolve(c.give,myTeam),recv=resolve(c.recv,c.opponent);
+  if([...give,...recv].some(p=>!p)) return toast('This trade contains players no longer on these rosters');
+  builderGive=give.map(p=>({...p,_team:myTeam}));builderGet=recv.map(p=>({...p,_team:c.opponent}));
+  resetBuilderMatches();renderBuilder();closeExpand();setDock('builder');toast('Loaded into builder');
 }
 function copyTrade(i){
   const c=filteredTrades[i]; if(!c) return; const archName=(ARCHS.find(a=>a.id===c.arch)||{}).name||c.arch;   const txt=`GIVE: ${c.give.map(p=>p.player_name).join(' + ')} (${c.give_val.toFixed(0)}) -> GET: ${c.recv.map(p=>p.player_name).join(' + ')} (${c.recv_val.toFixed(0)}) vs ${c.opponent} | Balance ${(c.ratio*100).toFixed(0)}% | You ${c.logan_delta>=0?'+':''}${c.logan_delta.toFixed(0)} | Them ${c.opp_delta>=0?'+':''}${c.opp_delta.toFixed(0)} [${archName}]`
+  if(!navigator.clipboard?.writeText) return toast(txt);
   navigator.clipboard.writeText(txt).then(()=>toast('Copied'),()=>toast(txt))
 }
 function toggleFav(i){
-  const c=filteredTrades[i]; if(!c) return; const key=c.opponent+'|'+c.give.map(p=>p.player_name).join(',')+'->'+c.recv.map(p=>p.player_name).join(','); const idx=favs.findIndex(f=> (f.opponent+'|'+f.give.map(p=>p.player_name).join(',')+'->'+f.recv.map(p=>p.player_name).join(',') )===key ); if(idx>=0){ favs.splice(idx,1); toast('Removed') } else { favs.push(c); toast('Saved') } updateFavs()
+  toggleFavoriteTrade(filteredTrades[i]);
+}
+function favoriteKey(c){ return JSON.stringify([c.your_team||myTeam,c.opponent,c.give.map(p=>p.player_name).sort(),c.recv.map(p=>p.player_name).sort()]); }
+function toggleFavoriteTrade(c){
+  if(!c) return;
+  const key=favoriteKey(c), idx=favs.findIndex(f=>favoriteKey(f)===key);
+  if(idx>=0){favs.splice(idx,1);toast('Removed');}
+  else{const snapshot=structuredClone(c);snapshot.your_team=c.your_team||myTeam;snapshot.before_yours=structuredClone(rosters[snapshot.your_team]||[]);snapshot.before_theirs=structuredClone(rosters[c.opponent]||[]);favs.push(snapshot);toast('Saved');}
+  updateFavs();
 }
 function updateFavs(){
   document.getElementById('favCount').textContent=favs.length;
@@ -1795,7 +1818,7 @@ function toggleFavs(){ document.getElementById('favDrawer').classList.toggle('sh
 function csvCell(v){ const s=String(v??'').replace(/"/g,'""'); return /^\s*[=+\-@]/.test(s)?`"'${s}"`:`"${s}"`; }
 function exportFavs(){ if(!favs.length) return toast('No favorites'); let csv='opponent,arch,give,recv,give_val,recv_val,val_diff,value_balance,your_lineup_delta,their_lineup_delta\n'; favs.forEach(c=>{ csv+=`${csvCell(c.opponent)},${c.arch},${csvCell(c.give.map(p=>p.player_name).join(' + '))},${csvCell(c.recv.map(p=>p.player_name).join(' + '))},${c.give_val.toFixed(1)},${c.recv_val.toFixed(1)},${c.val_diff.toFixed(1)},${(c.ratio*100).toFixed(0)}%,${c.logan_delta.toFixed(1)},${c.opp_delta.toFixed(1)}\n` }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trade_favorites.csv'; a.click(); toast('Exported CSV') }
 function clearFavs(){ favs=[]; updateFavs(); toast('Favorites cleared') }
-function clearAllFilters(){ __genToken++; giveSet.clear(); targetSet.clear(); givePosSet.clear(); wantPosSet.clear(); if(posGenTimer) clearTimeout(posGenTimer); posGenTimer=null; document.getElementById('tradeSearch').value=''; document.getElementById('oppSearch').value=''; activeArch='ALL'; fairnessFloor=80; document.getElementById('fairRange').value=80; document.getElementById('fairVal').textContent='80%'; document.getElementById('oppSel').value='ALL'; renderArchPills(); renderPosFilters(); renderMyRoster(); renderTargets(); renderTrades(); renderTargetedPanel(); generate(); toast('Filters reset') }
+function clearAllFilters(){ __genToken++; selectedTeam=null; giveSet.clear(); targetSet.clear(); givePosSet.clear(); wantPosSet.clear(); if(posGenTimer) clearTimeout(posGenTimer); posGenTimer=null; document.getElementById('tradeSearch').value=''; document.getElementById('oppSearch').value=''; activeArch='ALL'; fairnessFloor=80; document.getElementById('fairRange').value=80; document.getElementById('fairVal').textContent='80%'; document.getElementById('oppSel').value='ALL'; renderArchPills(); renderPosFilters(); renderMyRoster(); renderTargets(); renderTrades(); renderTargetedPanel(); generate(); toast('Filters reset') }
 function renderArchPills(){
   const el=document.getElementById('archPills')
   el.innerHTML=`<button class='pill ${activeArch==='ALL'?'active':''}' onclick='setArch("ALL")'>All archetypes</button>` + ARCHS.map(a=>`<button class='pill ${activeArch===a.id?'active':''}' onclick='setArch("${a.id}")' title='${a.desc}'>${a.name}</button>`).join('')
@@ -1828,7 +1851,7 @@ function renderAll(){ renderTerminalSummary(); renderHero(); renderTeamGrid(); r
 restoreValueState();
 applyLeagueFormat(); buildRankings(); buildRosters()
 syncTeamSelects(); markLeagueSource();
-document.getElementById('myTeamSel').addEventListener('change',e=>{ myTeam=e.target.value; giveSet.clear(); buildRosters(); syncTeamSelects(); renderAll(); generate() })
+document.getElementById('myTeamSel').addEventListener('change',e=>setTradingTeam(e.target.value))
 restoreLeagueSnapshot();
 importActiveToLibrary();
 maybeShowWelcome();
@@ -1845,6 +1868,7 @@ function parseCSVLine(line){
     else if(c===',' && !inQ){ out.push(cur); cur=''; }
     else cur+=c;
   }
+  if(inQ) throw new Error('Unclosed quote in rankings CSV');
   out.push(cur);
   return out.map(s=>s.trim().replace(/^"|"$/g,''));
 }
@@ -1865,7 +1889,7 @@ function parseRankingsCSV(csvText){
     const rawRank=(cols[idxRank]||'').trim(), rank=Number(rawRank), key=normalize(name)
     const rawTier=idxTier>=0 ? String(cols[idxTier]||'').trim().toUpperCase() : ''
     const tier=/^[A-Z0-9]{1,2}$/.test(rawTier) ? rawTier : ''
-    if(!name || !['QB','RB','WR','TE','K','D/ST','DST','DEF'].includes(pos) || !/^\d+$/.test(rawRank) || !Number.isSafeInteger(rank) || rank<1 || rank>100000 || name.length>80 || team.length>12){ invalid.push(i+1); continue }
+    if(!key || !['QB','RB','WR','TE','K','D/ST','DST','DEF'].includes(pos) || !/^\d+$/.test(rawRank) || !Number.isSafeInteger(rank) || rank<1 || rank>100000 || name.length>80 || team.length>12){ invalid.push(i+1); continue }
     parsed.push({name,team,pos,rank,tier})
   }
   if(invalid.length) throw new Error(`Invalid canonical Rank data on row${invalid.length===1?'':'s'} ${invalid.slice(0,10).join(', ')}${invalid.length>10?'…':''}`)
@@ -1880,16 +1904,20 @@ function countRankChanges(before, after){
   return after.reduce((count,r)=>count+(oldRanks.get(normalize(r.name))!==r.rank),0)
 }
 async function refreshRankingsOnly(showToast=true){
+  if(__uploadedRankings&&!showToast) return 0;
+  const revision=__dataRevision;
   if(_isFileProtocol){
     if(showToast) toast('Local file mode — rankings are embedded. Rebuild with: python "fantasy lab/build_lab.py"');
     return 0;
   }
   const rRes=await _fetchFirstOk(rankingsUrlCandidates(),'rankings CSV');
   const newRanks=parseRankingsCSV(await rRes.text());
+  if(revision!==__dataRevision) return 0;
   const changed=rankingSignature(RANKINGS)!==rankingSignature(newRanks);
   if(!changed&&_usingLiveData){ if(!showToast) return 0; }
   const rankChanges=countRankChanges(RANKINGS,newRanks);
   RANKINGS=newRanks;
+  __uploadedRankings=false;
   _usingLiveData=true;
   buildRankings(); buildRosters();
   syncTeamSelects(); markLeagueSource();
@@ -1903,16 +1931,19 @@ async function refreshRankingsOnly(showToast=true){
   return rankChanges;
 }
 async function refreshLiveData(showToast=true){
+  if(__savedDataCleared&&!showToast) return;
+  if(__uploadedRankings&&!showToast) return;
   if(BLANK_START && !leagueTeams().length) return;
   if(_isFileProtocol){ if(showToast) toast('Local file mode — using embedded data. Rebuild with: python "fantasy lab/build_lab.py"'); return; }
   if(__refreshInFlight){ if(showToast) toast('Refresh already running'); return; }
   __refreshInFlight=true;
+  const revision=__dataRevision;
   try{
     // A Sleeper/upload league lives only in memory: never overwrite its teams
     // with the embedded league file. Re-pull Sleeper rosters instead.
     if(leagueSource.kind==='sleeper'&&leagueSource.leagueId){
       const ok=await loadSleeperLeague({leagueId:leagueSource.leagueId,fromRefresh:true,preserveSession:true,showToast});
-      if(ok) return;
+      if(revision!==__dataRevision) return;
       // Sleeper re-pull failed (offline?) — keep current teams, still try rankings.
       await refreshRankingsOnly(showToast);
       return;
@@ -1928,6 +1959,7 @@ async function refreshLiveData(showToast=true){
     const newLeague = await lRes.json();
     validateLeagueShape(newLeague);
     const newRanks=parseRankingsCSV(await rRes.text())
+    if(revision!==__dataRevision) return;
     const changed=JSON.stringify(LEAGUE_DATA)!==JSON.stringify(newLeague) || rankingSignature(RANKINGS)!==rankingSignature(newRanks)
     // for auto-refresh (showToast false) we can bow out early; for manual refresh always re-apply so UI reflects latest CSV
     if(!changed && _usingLiveData){
@@ -1938,6 +1970,7 @@ async function refreshLiveData(showToast=true){
     LEAGUE_DATA = newLeague;
     applyLeagueFormat();
     RANKINGS = newRanks;
+    __uploadedRankings=false;
     _usingLiveData = true;
     buildRankings(); buildRosters();
     syncTeamSelects(); markLeagueSource();
@@ -2009,6 +2042,7 @@ function deriveSleeperFormat(positions){
   return fmt;
 }
 async function loadSleeperLeague(opts={}){
+  if(!opts.fromRefresh) __savedDataCleared=false;
   const input=document.getElementById('sleeperLeagueId');
   const status=document.getElementById('sleeperLoadStatus');
   const btn=document.getElementById('sleeperLoadBtn');
@@ -2020,7 +2054,8 @@ async function loadSleeperLeague(opts={}){
   if(input&&input.value!==lid) input.value=lid;
   const say=msg=>{ if(status) status.textContent=msg; };
   const token=++__sleeperToken;
-  const stale=()=>token!==__sleeperToken;
+  const revision=__dataRevision;
+  const stale=()=>token!==__sleeperToken||revision!==__dataRevision;
   const keepSession=!!opts.preserveSession;
   const prevTeam=keepSession?myTeam:'';
   const announce=!opts.fromRefresh||opts.showToast;
@@ -2094,7 +2129,7 @@ async function loadSleeperLeague(opts={}){
     if(announce){ say('Failed: '+err.message); toast('Sleeper load failed: '+err.message); }
     return false;
   }
-  finally{ if(btn) btn.disabled=false; }
+  finally{ if(btn&&token===__sleeperToken) btn.disabled=false; }
 }
 function restoreLeagueSnapshot(){
   const box=document.getElementById('sleeperLeagueId');
@@ -2143,6 +2178,7 @@ function handleCSVUpload(event){
     try{
       const newRanks=parseRankingsCSV(e.target.result)
       const rankChanges=countRankChanges(RANKINGS,newRanks)
+      __dataRevision++; __uploadedRankings=true;
       RANKINGS = newRanks;
       _usingLiveData = true;
       buildRankings(); buildRosters();
@@ -2298,7 +2334,7 @@ function renderRosterPeek(){
   el.innerHTML=(rosters[owner]||[]).filter(p=>isRankedPlayer(p)).sort((a,b)=>b.value-a.value).map(p=>`<div class="peek-player ${giveSet.has(p.player_name)?'selected':''}" draggable="true" ondragstart='onDragStart(event,"${inlineName(p.player_name)}","${inlineName(owner)}")'><span class="pos-badge pos-${p.position}">${p.position}</span><div><b>${safeHTML(p.player_name)}</b><span>${safeHTML(p.team||'')} · ${rankLabel(p)}</span></div><strong>${p.value.toFixed(0)}</strong><button class="icon-btn ${lockSet.has(p.player_name)?'active':''}" onclick='toggleLock("${inlineName(p.player_name)}");queueGenerate()' title="Lock player" aria-label='Lock ${safeHTML(p.player_name)}'>${lockSet.has(p.player_name)?'●':'○'}</button><button class="icon-btn" onclick='addToBuilder("${inlineName(p.player_name)}","${owner===myTeam?'give':'get'}");setDock("builder")' aria-label='Add ${safeHTML(p.player_name)} to builder'>+</button></div>`).join('');
 }
 function showExactTrade(c,title){if(!c)return;window._detailTrade=c;document.getElementById('expandTitle').textContent=title+' · '+c.opponent;document.getElementById('expandBody').innerHTML=renderTradeDetail(c);document.getElementById('expandOverlay').classList.add('show');document.body.style.overflow='hidden';}
-function buildSaved(i){const c=favs[i];if(!c)return;builderGive=c.give.map(p=>({...p,_team:myTeam}));builderGet=c.recv.map(p=>({...p,_team:c.opponent}));renderBuilder();document.getElementById('favDrawer').classList.remove('show');setDock('builder');}
+function buildSaved(i){loadTradeIntoBuilder(favs[i]);document.getElementById('favDrawer').classList.remove('show');}
 function copySaved(i){const previous=filteredTrades;filteredTrades=[favs[i]];try{copyTrade(0)}finally{filteredTrades=previous}}
 document.getElementById('oppSel').addEventListener('change',e=>{selectedTeam=e.target.value==='ALL'?null:e.target.value;renderTargets();generate();});
 document.getElementById('fairRange').addEventListener('change',()=>queueGenerate());
