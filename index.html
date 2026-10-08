@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-pzC7C0EnWdPLd26juiMCFWOTjrL4qtdWCvghYCwrOH8='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-fZVvMQfBQl6xw6JqLfG/5rdbghPP2kE7GLO11E3VtQ0='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -230,6 +230,18 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 .data-menu-body .btn.sleeper-load-btn:hover{filter:brightness(1.07);background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .data-menu-body .btn.sleeper-load-btn:disabled{opacity:.6;cursor:wait;filter:none}
 #sleeperLoadStatus:empty{display:none}
+.league-menu>summary{display:flex;align-items:center;gap:8px;border-radius:9px;padding:10px 13px;background:linear-gradient(135deg,#1d2a3d,#182231)}
+.league-menu>summary span{margin-left:0}.league-menu[open]>summary{border-color:var(--accent);color:var(--accent)}
+.league-menu .data-menu-body{width:min(370px,calc(100vw - 32px));padding:18px;border-radius:16px;background:linear-gradient(145deg,#192638,#101925);border-color:#35465e;box-shadow:0 24px 70px #0009;gap:16px;max-height:calc(100dvh - 160px);overflow:auto}
+.league-menu-heading p,.values-toolbar p{color:var(--text3);font-size:12px;margin:6px 0 0;line-height:1.5}
+.league-import-actions{display:grid;gap:10px}
+.league-menu .btn.league-import-button{display:flex;width:100%;align-items:center;gap:12px;white-space:normal;text-align:left;padding:15px 12px;border-radius:11px;border:1px solid #657dc54d;background:linear-gradient(120deg,#276d78,#554599);box-shadow:0 5px 18px #0003;color:#fff}
+.league-menu .btn.league-import-button:hover{background:linear-gradient(120deg,#318491,#6856b3);border-color:#96b1e2;transform:translateY(-1px)}
+.league-import-button>span:nth-child(2){flex:1}.league-import-button b{display:block;font-size:12px;line-height:1.4}.league-import-button small{display:block;font-size:10px;font-weight:400;color:#d3dfef;margin-top:5px;line-height:1.5}.import-icon{display:grid;place-items:center;width:32px;height:32px;flex-shrink:0;border:1px solid #ffffff30;border-radius:9px;background:#ffffff10;font:600 14px 'JetBrains Mono',monospace}
+.league-sleeper-form{display:grid;gap:9px;padding:14px;background:#0c1421;border:1px solid #35465e;border-radius:11px}.league-sleeper-form[hidden]{display:none}.league-sleeper-form label{font-size:12px;font-weight:700}.league-sleeper-form p{font-size:11px;color:var(--text3);line-height:1.5;margin:0}.league-sleeper-form .sleeper-load-btn{width:100%}
+.league-saved-section{border-top:1px solid var(--border2);padding-top:16px;display:grid;gap:10px}.league-saved-card{border:1px solid var(--border2);border-radius:10px;background:#152031;padding:10px;margin-bottom:8px}.league-saved-card.is-active{border-color:#62e5d170;background:#1a323a}.league-saved-card .btn{width:100%;padding:3px 0;font-size:12px}.league-saved-card .small{font-size:10px;margin-top:7px;line-height:1.6}.league-saved-card a{color:var(--text3)}.league-menu .league-clear{justify-content:center;border-top:1px solid var(--border);border-radius:0;color:var(--text3);padding-top:12px}
+.values-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.values-toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:600px){.values-toolbar{align-items:flex-start;flex-direction:column}.values-toolbar-actions{width:100%}.values-toolbar-actions .btn{flex:1;justify-content:center}.league-menu .data-menu-body{padding:14px}}
 
 /* Values tab: per-position curve sliders. */
 .curve-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:10px;display:grid;gap:8px}
@@ -318,8 +330,17 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 
 
 <button aria-label="Open saved trades" class="btn btn-icon" onclick="toggleFavs()">Saved <span class="kbd" id="favCount">0</span></button>
-<details class="data-menu" id="leagueMenu"><summary onclick="renderLeagueLibrary()">Leagues <span class="kbd" id="leagueCount">0</span> <span>⌄</span></summary><div class="data-menu-body" id="leagueLibraryBody" style="width:250px"><div class="data-section"><span class="data-section-title">Saved leagues</span><div id="leagueLibraryList"></div></div><div class="data-section"><button class="btn btn-icon" onclick="document.getElementById('leagueMenu').open=false;openLeagueUpload()" title="Upload another league JSON"><span aria-hidden="true">↑</span><span class="desktop-label">Upload another league</span></button></div></div></details>
-<details class="data-menu"><summary>Data <span>⌄</span></summary><div class="data-menu-body" id="dataMenuBody"><div class="data-section"><span class="data-section-title">League file</span><button class="btn btn-icon" onclick="openLeagueUpload()" title="Upload league JSON"><span aria-hidden="true">↑</span><span class="desktop-label">Upload league</span></button></div><div class="data-section"><span class="data-section-title">Rankings</span><button class="btn" onclick="document.getElementById('csvUpload').click()">Upload rankings CSV</button></div><div class="data-section"><span class="data-section-title">Sleeper league</span><input aria-label="Sleeper league ID" class="sleeper-input" id="sleeperLeagueId" inputmode="numeric" placeholder="Sleeper league ID"/><button class="btn sleeper-load-btn" id="sleeperLoadBtn" onclick="loadSleeperLeague()">Load Sleeper ID</button><span class="small" id="sleeperLoadStatus"></span></div><div class="data-section"><span class="data-section-title">Values</span><button class="btn btn-icon" onclick="resetValues()" title="Reset personal values"><span class="desktop-label">Reset values</span><span class="mobile-label">Reset</span></button></div><div class="data-section"><button class="btn btn-ghost btn-sm" onclick="clearSavedLabData()">Clear saved data</button></div></div></details></div>
+<details class="data-menu league-menu" id="leagueMenu"><summary onclick="renderLeagueLibrary()">Leagues <span class="kbd" id="leagueCount">0</span> <span aria-hidden="true">⌄</span></summary>
+<div class="data-menu-body" id="leagueLibraryBody">
+<div class="league-menu-heading"><span class="control-label">YOUR LEAGUES</span><p>Add a league to start exploring trades.</p></div>
+<div class="league-import-actions">
+<button class="btn league-import-button" onclick="document.getElementById('leagueMenu').open=false;openLeagueUpload()"><span class="import-icon" aria-hidden="true">{ }</span><span><b>Add league through a JSON</b><small>See the format, then upload your file</small></span><span aria-hidden="true">↗</span></button>
+<button class="btn league-import-button" aria-expanded="false" aria-controls="leagueSleeperForm" id="leagueSleeperToggle" onclick="toggleLeagueSleeper()"><span class="import-icon" aria-hidden="true">↗</span><span><b>Add league through Sleeper ID</b><small>Connect your league and its rosters</small></span><span aria-hidden="true">⌄</span></button>
+</div>
+<div class="league-sleeper-form" id="leagueSleeperForm" hidden><label for="sleeperLeagueId">Sleeper league ID</label><p>Copy the numeric ID from your Sleeper league URL.</p><input class="sleeper-input" id="sleeperLeagueId" inputmode="numeric" placeholder="e.g. 1391859959213359104" onkeydown="if(event.key==='Enter')loadSleeperLeague()"/><button class="btn sleeper-load-btn" id="sleeperLoadBtn" onclick="loadSleeperLeague()">Load Sleeper ID</button><span class="small" id="sleeperLoadStatus" aria-live="polite"></span></div>
+<div class="league-saved-section"><span class="control-label">SAVED LEAGUES</span><div id="leagueLibraryList"></div></div>
+<button class="btn btn-ghost btn-sm league-clear" onclick="clearSavedLabData()">Clear saved data</button>
+</div></details></div>
 </div>
 <span aria-hidden="true" id="liveIndicator" style="display:none"></span>
 </header></div><main id="terminalMain"><div aria-live="polite" class="terminal-summary" id="terminalSummary"></div><div class="trading-workspace" id="tradingWorkspace"><div id="resultsMount"><section aria-labelledby="resultsTitle" class="results-stage" id="tradesPanel"><div class="toolbar"><h2>Trade results <span id="resultCount">0</span></h2>
@@ -354,7 +375,7 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 <div class="panel-heading"><div class="panel-heading-copy"><h2 class="section-title">Trade builder</h2></div><div style="display:flex;gap:6px;align-items:center"><button class="btn btn-sm btn-ghost" onclick="clearBuilder()">Clear</button><button class="btn btn-sm" onclick="openExpand('builder')">Expand</button></div></div>
 <div class="builder-shell">
 <div class="builder-searches">
-<div style="position:relative"><input aria-label="Players to send" autocomplete="off" class="search" id="giveInput" maxlength="64" onfocus="onBuilderType(this,'give')" oninput="onBuilderType(this,'give')" placeholder="Type to add — your players" style="width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px"/><div class="suggest-box" id="giveSuggest"></div></div>
+<div style="position:relative"><input aria-label="Players to send" autocomplete="off" class="search" id="giveInput" maxlength="64" onfocus="onBuilderType(this,'give')" oninput="onBuilderType(this,'give')" placeholder="Type to add — any player" style="width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px"/><div class="suggest-box" id="giveSuggest"></div></div>
 <div style="position:relative"><input aria-label="Players to receive" autocomplete="off" class="search" id="getInput" maxlength="64" onfocus="onBuilderType(this,'get')" oninput="onBuilderType(this,'get')" placeholder="Type to add — any player" style="width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px"/><div class="suggest-box" id="getSuggest"></div></div>
 </div>
 <section class="builder-finder" aria-labelledby="builderFinderTitle">
@@ -799,6 +820,11 @@ function removeLibraryIndex(i,ev){
   delete lib[key]; saveLeagueLibrary(lib); renderPersistStatus();
   toast('Removed from saved leagues — current session unchanged');
 }
+function toggleLeagueSleeper(){
+  const form=document.getElementById('leagueSleeperForm'),button=document.getElementById('leagueSleeperToggle');
+  form.hidden=!form.hidden;button.setAttribute('aria-expanded',String(!form.hidden));
+  if(!form.hidden)document.getElementById('sleeperLeagueId').focus();
+}
 function renderLeagueLibrary(){
   const lib=getLeagueLibrary();
   __libOrder=Object.keys(lib).sort((a,b)=>(((lib[b]||{}).savedAt||0))-(((lib[a]||{}).savedAt||0)));
@@ -811,7 +837,7 @@ function renderLeagueLibrary(){
   box.innerHTML=__libOrder.map((k,i)=>{
     const e=lib[k]||{}; const isActive=k===activeKey;
     const when=e.savedAt?new Date(e.savedAt).toLocaleDateString():'';
-    return '<div class="data-section" style="padding:6px 0"><button class="btn" onclick="switchLibraryIndex('+i+')" title="Switch to this league" style="'+(isActive?'border-color:var(--accent);':'')+'"><span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+safeHTML(e.name||'League')+(isActive?' ✓':'')+'</span></button><div class="small">'+safeHTML(libraryLabel(e))+' · '+safeHTML(e.teams||0)+' teams'+(when?' · '+when:'')+' <a href="#" onclick="removeLibraryIndex('+i+',event);return false" style="float:right">remove</a></div></div>';
+    return '<div class="league-saved-card '+(isActive?'is-active':'')+'"><button class="btn" onclick="switchLibraryIndex('+i+')" title="Switch to this league" style="'+(isActive?'border-color:var(--accent);':'')+'"><span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+safeHTML(e.name||'League')+(isActive?' ✓':'')+'</span></button><div class="small">'+safeHTML(libraryLabel(e))+' · '+safeHTML(e.teams||0)+' teams'+(when?' · '+when:'')+' <a href="#" onclick="removeLibraryIndex('+i+',event);return false" style="float:right">remove</a></div></div>';
   }).join('');
 }
 function clearSavedLabData(){
@@ -1219,7 +1245,7 @@ function bumpOverride(rankedName, delta, btn){
   if(valEl){
     valEl.textContent=staged;
     valEl.style.color=dirty?'var(--accent)':'';
-    valEl.title=dirty?'Staged change — click ✓ to apply':(overrides.has(rankedName)?'Custom value — reset via Data → Reset values':'Rank value');
+    valEl.title=dirty?'Staged change — click ✓ to apply':(overrides.has(rankedName)?'Custom value — reset via Values → Reset values':'Rank value');
   }
   const check=row.querySelector('.commit-btn');
   if(check) check.style.visibility=dirty?'visible':'hidden';
@@ -1307,11 +1333,11 @@ function renderAllPlayersDetail(){
   const rows=RANKINGS.map(r=>({...r, value:overrides.has(r.name)?overrides.get(r.name):playerValue(r.rank,r.pos,r.pos_rank)})).filter(r=>allPlayersPos==='ALL'||r.pos===allPlayersPos).sort((a,b)=>b.value-a.value||a.rank-b.rank);
   const filters=['ALL','QB','RB','WR','TE'].map(pos=>`<button class='pos-tab ${allPlayersPos===pos?'active':''}' onclick='setAllPlayersPos("${pos}")'>${pos==='ALL'?'All':pos}</button>`).join('');
   const curves=['QB','RB','WR','TE'].map(pos=>`<div class='curve-row'><button aria-label='Reset ${pos} curve to 100%' class='pos-badge pos-${pos} curve-reset-badge' onclick="resetCurvePos('${pos}')" style='width:24px;height:24px;font-size:9px' title='Reset ${pos} to 100%'>${pos}</button><input aria-label='${pos} value curve' class='value-slider curve-slider' max='2' min='0.5' oninput="onCurveInput('${pos}',this)" step='0.05' type='range' value='${curveMult[pos]||1}'/><span class='curve-val' data-curve-val='${pos}'>${Math.round((curveMult[pos]||1)*100)}%</span></div>`).join('');
-  return `<div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><p class='small'>RB and WR share one overall-rank curve · QB and TE include +20%. Roster scores add one position baseline (QB/TE 120, RB/WR 100); trades compare player contributions. Personal curves scale both.</p><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>{
+  return `<div class='values-toolbar'><div><span class='control-label'>PLAYER VALUES</span><p>Adjust your rankings and personal values.</p></div><div class='values-toolbar-actions'><button class='btn btn-sm' onclick="document.getElementById('csvUpload').click()">Upload rankings CSV</button><button class='btn btn-sm btn-ghost' onclick='resetValues()'>↺ Reset values</button></div></div><div class='curve-panel'><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><span class='small' style='font-weight:900;letter-spacing:.06em;text-transform:uppercase'>Position curves</span><span class='small' id='curveReadout'>${curveLabel()}</span><button class='btn btn-sm btn-ghost' onclick='resetCurves()' style='margin-left:auto'>Reset curves</button></div><div class='curve-sliders'>${curves}</div></div><p class='small'>RB and WR share one overall-rank curve · QB and TE include +20%. Roster scores add one position baseline (QB/TE 120, RB/WR 100); trades compare player contributions. Personal curves scale both.</p><div class='all-player-toolbar'><div class='pos-tabs' style='margin:0'>${filters}</div></div><div class='all-player-list'>${rows.map((r,i)=>{
   const staged=pendingOverrides.has(r.name)?pendingOverrides.get(r.name):null;
   const dirty=staged!==null&&staged!==Math.round(r.value);
   const shown=dirty?staged:r.value;
-  const tip=dirty?'Staged change — click ✓ to apply':(overrides.has(r.name)?'Custom value — reset via Data → Reset values':'Rank value');
+  const tip=dirty?'Staged change — click ✓ to apply':(overrides.has(r.name)?'Custom value — reset via Values → Reset values':'Rank value');
   return `<div class='player-row all-player-row'><span class='player-index'>${i+1}</span><div class='pos-badge pos-${safeHTML(r.pos)}'>${safeHTML(r.pos)}</div><div class='p-name'><b>${safeHTML(r.name)}</b><span>${safeHTML(r.team||'')} · ${safeHTML(r.pos)}${r.pos_rank} · overall ${r.rank}</span></div><button class='icon-btn commit-btn' onclick='commitOverride("${inlineName(r.name)}")' title='Apply staged value' style='visibility:${dirty?'visible':'hidden'};color:var(--success)'>✓</button><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",-5,this)' title='Stage -5 (click ✓ to apply)'>−</button><span class='all-player-value' title='${tip}'${dirty?" style='color:var(--accent)'":''}>${shown.toFixed(0)}</span><button class='icon-btn' onclick='bumpOverride("${inlineName(r.name)}",5,this)' title='Stage +5 (click ✓ to apply)'>+</button></div>`;
 }).join('')}</div>`;
 }
@@ -1345,10 +1371,14 @@ function setBuilderReturnCount(value){
 function addToBuilder(playerName, side, owner=null){
   let obj=null, team=null
   for(const [t,ro] of Object.entries(rosters)){ if(owner&&t!==owner)continue;if(side==='give'&&t!==myTeam)continue;if(side==='get'&&t===myTeam)continue;const f=ro.find(p=>p.player_name===playerName); if(f){obj=f; team=t; break} }
-  if((side==='give'&&team!==myTeam)||(side==='get'&&team===myTeam)) return toast('Choose players from the correct team');
+  if(!obj && !owner){
+    obj=builderCatalog().find(p=>p.player_name===playerName); team=null;
+  }
+  if(obj && !obj._catalog && ((side==='give'&&team!==myTeam)||(side==='get'&&team===myTeam))) return toast('Choose players from the correct team');
   if(!obj || !isRankedPlayer(obj)||!['QB','RB','WR','TE'].includes(obj.position)) return toast('Choose a ranked QB, RB, WR or TE')
   const arr=side==='give'?builderGive:builderGet
-  if(side==='get' && arr.length && arr[0]._team!==team){ toast('Builder can only use one opponent'); return; }
+  if(side==='get' && team && arr.some(p=>p._team&&p._team!==team)){ toast('Builder can only use one opponent'); return; }
+  if([...builderGive,...builderGet].some(p=>normalize(p.ranked_name||p.player_name)===normalize(obj.ranked_name||obj.player_name))) return;
   if(arr.some(p=>p.player_name===playerName)) return
   arr.push({...obj, _team:team})
   resetBuilderMatches()
@@ -1357,6 +1387,7 @@ function addToBuilder(playerName, side, owner=null){
 function syncBuilderPlayers(){
   let valid=true;
   const sync=(list,give)=>list.map(p=>{
+    if(p._catalog){const live=builderCatalog().find(x=>x.player_name===p.player_name);if(!live){valid=false;return p;}return live;}
     const team=p._team, live=rosters[team]?.find(x=>x.player_name===p.player_name);
     if(!live||(give?team!==myTeam:team===myTeam)){valid=false;return p;}
     return {...live,_team:team};
@@ -1382,6 +1413,9 @@ function renderBuilderMetrics(){
   if(!syncBuilderPlayers()){document.getElementById('builderMetrics').textContent='A selected player is no longer on the expected roster. Remove that selection.';return;}
   if(!builderGive.length || !builderGet.length){document.getElementById('builderMetrics').innerHTML='<div class="empty">Add players to both sides to compare.</div>'; return}
   const gv=builderGive.reduce((s,p)=>s+p.value,0), rv=builderGet.reduce((s,p)=>s+p.value,0), share=(gv+rv)? rv/(gv+rv):0.5, ratio= Math.max(gv,rv)? Math.min(gv,rv)/Math.max(gv,rv):1
+  if([...builderGive,...builderGet].some(p=>p._catalog)){
+    document.getElementById('builderMetrics').innerHTML=`<div class="trade-impact-head"><b>Player value comparison</b></div><div class="share-summary"><span>You give ${gv.toFixed(0)}</span><span>You get ${rv.toFixed(0)} · ${rv>=gv?'+':''}${(rv-gv).toFixed(0)}</span></div><p class="small">Includes players outside the selected rosters. Roster projections require players on the actual teams.</p>`;return;
+  }
   const oppTeams=[...new Set(builderGet.map(p=>p._team))];
   if(oppTeams.length!==1){document.getElementById('builderMetrics').textContent='Choose players from one opponent to evaluate a trade.';return;}
   const opp=oppTeams[0]||Object.keys(rosters).find(t=>t!==myTeam)
@@ -1480,6 +1514,7 @@ function applyBuilderReturn(index){
 function evaluateBuilder(){
   if(!syncBuilderPlayers()) return toast('Remove players no longer on the expected roster');
   if(!builderGive.length||!builderGet.length) return toast('Add players to both sides')
+  if([...builderGive,...builderGet].some(p=>p._catalog)){renderBuilderMetrics();return toast('Player values compared below; roster projections require rostered players');}
   const oppTeams=[...new Set(builderGet.map(p=>p._team))]
   if(oppTeams.length>1) return toast('Pick players from one opponent')
   const opp=oppTeams[0]
@@ -1497,6 +1532,7 @@ function evaluateBuilder(){
 function previewBuilder(){
   if(!syncBuilderPlayers()) return toast('Remove players no longer on the expected roster');
   if(!builderGive.length||!builderGet.length) return toast('Add players to both sides')
+  if([...builderGive,...builderGet].some(p=>p._catalog)) return toast('Roster projections require players on the actual teams');
   const oppTeams=[...new Set(builderGet.map(p=>p._team))]
   if(oppTeams.length>1) return toast('Pick players from one opponent')
   const opp=oppTeams[0]
@@ -1512,6 +1548,9 @@ function previewBuilder(){
   document.getElementById('expandBody').innerHTML=renderTradeDetail(ev)
   document.getElementById('expandOverlay').classList.add('show'); document.body.style.overflow='hidden'
 }
+function builderCatalog(){
+  return RANKINGS.filter(r=>['QB','RB','WR','TE'].includes(r.pos)).map(r=>({__id:'catalog|'+r.name,player_name:r.name,ranked_name:r.name,position:r.pos,team:r.team,rank:r.rank,pos_rank:r.pos_rank,tier:r.tier||'',ranked:true,value:overrides.has(r.name)?overrides.get(r.name):playerValue(r.rank,r.pos,r.pos_rank),_catalog:true,_team:null}));
+}
 function onBuilderType(inp, side){
   const q = normalize(inp.value.trim());
   const box = document.getElementById(side==='give'?'giveSuggest':'getSuggest');
@@ -1526,6 +1565,8 @@ function onBuilderType(inp, side){
       ro.forEach(p=>{ if(!isRankedPlayer(p)) return; if(builderGet.some(b=>b.player_name===p.player_name)) return; pool.push({...p, _team:team}); });
     });
   }
+  const selected=[...builderGive,...builderGet], known=new Set(pool.map(p=>normalize(p.ranked_name||p.player_name)));
+  builderCatalog().forEach(p=>{if(!known.has(normalize(p.player_name))&&!selected.some(b=>normalize(b.ranked_name||b.player_name)===normalize(p.player_name)))pool.push(p);});
   const scored = pool.map(p=>{
     const n = normalize(p.player_name);
     let score = 0;
@@ -2323,6 +2364,10 @@ function setWorkspace(view){
   document.getElementById('leagueWorkspace').hidden=view!=='league';
   document.querySelectorAll('[data-workspace]').forEach(b=>{b.classList.toggle('active',b.dataset.workspace===view);b.setAttribute('aria-current',b.dataset.workspace===view?'page':'false');});
   history.replaceState(null,'','#'+view);
+  if(view==='trades'){
+    document.querySelectorAll('[data-dock]').forEach(b=>{b.classList.toggle('active',b.dataset.dock==='builder');b.setAttribute('aria-selected',String(b.dataset.dock==='builder'));});
+    document.querySelectorAll('.dock-panel').forEach(p=>p.hidden=p.id!=='dock-builder');
+  }
 }
 function setDock(tab){
   setWorkspace('trades');
