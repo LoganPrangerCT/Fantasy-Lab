@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-fZVvMQfBQl6xw6JqLfG/5rdbghPP2kE7GLO11E3VtQ0='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-6p/78q/yHQ/sU3mW/5tvusAaKVonSTEdY8oxYC8kgqw=' 'sha256-GBu7SZxA4vcjyMc8Fm6meDQ0al2cJ0lveUHHNIhXFkg='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -239,7 +239,7 @@ body.dialog-open>.toast{filter:blur(9px);will-change:filter}
 .league-menu .btn.league-import-button:hover{background:linear-gradient(120deg,#318491,#6856b3);border-color:#96b1e2;transform:translateY(-1px)}
 .league-import-button>span:nth-child(2){flex:1}.league-import-button b{display:block;font-size:12px;line-height:1.4}.league-import-button small{display:block;font-size:10px;font-weight:400;color:#d3dfef;margin-top:5px;line-height:1.5}.import-icon{display:grid;place-items:center;width:32px;height:32px;flex-shrink:0;border:1px solid #ffffff30;border-radius:9px;background:#ffffff10;font:600 14px 'JetBrains Mono',monospace}
 .league-sleeper-form{display:grid;gap:9px;padding:14px;background:#0c1421;border:1px solid #35465e;border-radius:11px}.league-sleeper-form[hidden]{display:none}.league-sleeper-form label{font-size:12px;font-weight:700}.league-sleeper-form p{font-size:11px;color:var(--text3);line-height:1.5;margin:0}.league-sleeper-form .sleeper-load-btn{width:100%}
-.league-saved-section{border-top:1px solid var(--border2);padding-top:16px;display:grid;gap:10px}.league-saved-card{border:1px solid var(--border2);border-radius:10px;background:#152031;padding:10px;margin-bottom:8px}.league-saved-card.is-active{border-color:#62e5d170;background:#1a323a}.league-saved-card .btn{width:100%;padding:3px 0;font-size:12px}.league-saved-card .small{font-size:10px;margin-top:7px;line-height:1.6}.league-saved-card a{color:var(--text3)}.league-menu .league-clear{justify-content:center;border-top:1px solid var(--border);border-radius:0;color:var(--text3);padding-top:12px}
+.league-saved-section{border-top:1px solid var(--border2);padding-top:16px;display:grid;gap:10px}.league-saved-card{border:1px solid var(--border2);border-radius:10px;background:#152031;padding:10px;margin-bottom:8px}.league-saved-card.is-active{background:#1a323a}.league-saved-card .btn{width:100%;padding:3px 0;font-size:12px}.league-saved-card .small{font-size:10px;margin-top:7px;line-height:1.6}.league-saved-card a{color:var(--text3)}.league-menu .league-clear{justify-content:center;border-top:1px solid var(--border);border-radius:0;color:var(--text3);padding-top:12px}
 .values-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.values-toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:600px){.values-toolbar{align-items:flex-start;flex-direction:column}.values-toolbar-actions{width:100%}.values-toolbar-actions .btn{flex:1;justify-content:center}.league-menu .data-menu-body{padding:14px}}
 
@@ -837,7 +837,7 @@ function renderLeagueLibrary(){
   box.innerHTML=__libOrder.map((k,i)=>{
     const e=lib[k]||{}; const isActive=k===activeKey;
     const when=e.savedAt?new Date(e.savedAt).toLocaleDateString():'';
-    return '<div class="league-saved-card '+(isActive?'is-active':'')+'"><button class="btn" onclick="switchLibraryIndex('+i+')" title="Switch to this league" style="'+(isActive?'border-color:var(--accent);':'')+'"><span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+safeHTML(e.name||'League')+(isActive?' ✓':'')+'</span></button><div class="small">'+safeHTML(libraryLabel(e))+' · '+safeHTML(e.teams||0)+' teams'+(when?' · '+when:'')+' <a href="#" onclick="removeLibraryIndex('+i+',event);return false" style="float:right">remove</a></div></div>';
+    return '<div class="league-saved-card '+(isActive?'is-active':'')+'"><button class="btn" onclick="switchLibraryIndex('+i+')" title="Switch to this league"><span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+safeHTML(e.name||'League')+(isActive?' ✓':'')+'</span></button><div class="small">'+safeHTML(libraryLabel(e))+' · '+safeHTML(e.teams||0)+' teams'+(when?' · '+when:'')+' <a href="#" onclick="removeLibraryIndex('+i+',event);return false" style="float:right">remove</a></div></div>';
   }).join('');
 }
 function clearSavedLabData(){
