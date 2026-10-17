@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-+ih7khvVFw/1l3ndkj+Yd8EKl+SKY6XaU2RonAXjch8='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-GRYqjXzaEQhe85G16WRkEu+k7Z++JTyOU6zQ+NBvoJg='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -1060,11 +1060,14 @@ function tierOverpayNeeded(give, recv){
 function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
   if(!ev.valid||ev.give_val<=0||ev.recv_val<=0) return null;
   const give=ev.give,recv=ev.recv;
-  // Depth Spread waives the receiver-side climb tax: you are the one accepting
-  // the haircut when spreading a stud into depth, so the opponent is not also
-  // required to overpay you. Your net benefit is still enforced via the utility
-  // gate below and the value step-up inside the C branch.
-  const userClimb=tierOverpayNeeded(give,recv),oppClimb=id==='C'?{steps:0,premium:0}:tierOverpayNeeded(recv,give);
+  // Direction-dependent climb taxes. Depth Spread waives the receiver-side tax:
+  // you are the one accepting the haircut when spreading a stud into depth, so
+  // the opponent is not also required to overpay you. Stud Consolidation waives
+  // the sender-side tax for the same reason: the opponent accepting a tier-down
+  // haircut is the point of the trade, and demanding a 10–20% overpay on top of
+  // the 80% balance floor makes that direction structurally impossible.
+  const userClimb=id==='B'?{steps:0,premium:0}:tierOverpayNeeded(give,recv),
+    oppClimb=id==='C'?{steps:0,premium:0}:tierOverpayNeeded(recv,give);
   const balance=ev.ratio+1e-9>=fairnessFloor/100;
   const premiumOK=(!userClimb.steps||ev.give_val-ev.recv_val+1e-6>=userClimb.premium)&&
     (!oppClimb.steps||ev.recv_val-ev.give_val+1e-6>=oppClimb.premium);
@@ -1086,7 +1089,11 @@ function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
   }
   if(!balance||!premiumOK||!workable) return null;
   // Do not recommend a sacrifice with no compensating lineup/depth benefit.
-  if(ev.your_utility<=0 || (ev.opp_delta<=0 && ev.their_utility<0)) return null;
+  // B and C are exempt: their whole point is a bounded starter-quality dip
+  // ( Stud Consolidation / Depth Spread), which the workable bound and their
+  // own branch gates already control. A/E still require it below.
+  if(id!=='B'&&id!=='C'&&
+    (ev.your_utility<=0 || (ev.opp_delta<=0 && ev.their_utility<0))) return null;
   if(id==='A'){
     const improvement=ev.your_pos_delta[weakPos]||0;
     if(improvement<=5||ev.logan_delta<=0||ev.your_utility<=0) return null;
@@ -1105,7 +1112,9 @@ function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
       .sort((a,b)=>b.value-a.value)[0]?.__id===p.__id;
     if(!starts(studRoster,stud[0])||!mid.some(p=>starts(depthRoster,p))||!mid.every(useful)) return null;
     if(id==='B'&&ev.logan_delta<=0) return null;
-    if(id==='C'&&ev.your_utility<=0) return null;
+    // C has no utility minimum: trading a starter into two mids always dips
+    // your starting output a little; that is what Depth Spread means. The dip
+    // is bounded by `workable` (4% of your base) and the value/ratio gates.
     return ev.logan_delta/10+ev.opp_delta/20+ev.your_utility/20+ev.ratio*5;
   }
   if(id==='E'){
