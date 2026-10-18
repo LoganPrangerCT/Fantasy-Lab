@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-GRYqjXzaEQhe85G16WRkEu+k7Z++JTyOU6zQ+NBvoJg='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-2IzqZEycrAAFP5KwF6D9cqnKGbHZybFluIJw4s4JI+Y='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -1101,7 +1101,11 @@ function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
   }
   if(id==='B'||id==='C'){
     const mid=id==='B'?give:recv,stud=id==='B'?recv:give;
-    if(mid.length!==2||stud.length!==1||stud[0].rank>36||mid.some(p=>p.rank>85)) return null;
+    // A stud is any top-12 player at their position (or overall rank <=36),
+    // so consolidation does not only target the 2-3 very best at each spot.
+    // Kickers/defenses are excluded regardless: they are not realistic studs.
+    const studQualified=['QB','RB','WR','TE'].includes(stud[0].position)&&(stud[0].rank<=36||stud[0].pos_rank<=12);
+    if(mid.length!==2||stud.length!==1||!studQualified||mid.some(p=>p.rank>85)) return null;
     const known=bestKnownTier(mid),top=bestKnownTier(stud);
     const tierUp=top>=0&&known>=0?top<known:stud[0].rank<Math.min(...mid.map(p=>p.rank))*0.70;
     if(!tierUp||stud[0].value<=Math.max(...mid.map(p=>p.value))*1.05) return null;
