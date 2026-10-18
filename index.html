@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-2IzqZEycrAAFP5KwF6D9cqnKGbHZybFluIJw4s4JI+Y='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-6dgH/YQ1f1QdjR9k14LplNryoSgzN9iLYgoYFhFOGMw='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -1122,7 +1122,13 @@ function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
     return ev.logan_delta/10+ev.opp_delta/20+ev.your_utility/20+ev.ratio*5;
   }
   if(id==='E'){
-    if(new Set([...give,...recv].map(p=>p.position)).size!==1||ev.your_utility<=0) return null;
+    // Positional Swap means trading one position for another (WR->RB, 2 WR for
+    // 1 RB, ...): each side must be a single-position package and the two
+    // positions must differ. Grouping one position is checked per side.
+    const gp=[...new Set(give.map(p=>p.position))],rp=[...new Set(recv.map(p=>p.position))];
+    const okPos=p=>['QB','RB','WR','TE'].includes(p);
+    if(gp.length!==1||rp.length!==1||gp[0]===rp[0]||!okPos(gp[0])||!okPos(rp[0])) return null;
+    if(ev.your_utility<=0) return null;
     return ev.logan_delta/10+ev.your_utility/20+ev.opp_delta/30+ev.ratio*5;
   }
   return null;
