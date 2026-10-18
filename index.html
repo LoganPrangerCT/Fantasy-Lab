@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-6dgH/YQ1f1QdjR9k14LplNryoSgzN9iLYgoYFhFOGMw='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; script-src-elem 'sha256-BM0/pp+05KCxzS/a0E8h3n8Iwun7gSncxfHkYmXvx3s=' 'sha256-33xfhSE/1Kq8iRwtNmKXOfWvouTFhCHQeOhZ0jTtVjU='; script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.sleeper.app; img-src 'self' data:; worker-src blob:; base-uri 'none'; object-src 'none'; form-action 'none'; frame-src 'none'"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fantasy Lab — Trade Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
@@ -1116,9 +1116,10 @@ function scoreArchetype(id,ev,weakPos,oppGaps,oppSD){
       .sort((a,b)=>b.value-a.value)[0]?.__id===p.__id;
     if(!starts(studRoster,stud[0])||!mid.some(p=>starts(depthRoster,p))||!mid.every(useful)) return null;
     if(id==='B'&&ev.logan_delta<=0) return null;
-    // C has no utility minimum: trading a starter into two mids always dips
-    // your starting output a little; that is what Depth Spread means. The dip
-    // is bounded by `workable` (4% of your base) and the value/ratio gates.
+    // Depth Spread never trades into a net loss: overall roster utility
+    // (starters + 20% bench credit) must not go negative. Spreading cost the
+    // lineup a bounded dip, but the received depth has to be worth it.
+    if(id==='C'&&ev.your_utility<=0) return null;
     return ev.logan_delta/10+ev.opp_delta/20+ev.your_utility/20+ev.ratio*5;
   }
   if(id==='E'){
